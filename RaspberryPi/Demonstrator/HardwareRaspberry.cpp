@@ -5,6 +5,8 @@
 #include <iostream>				// Needed for File-IO
 #include <fstream>				// Needed for File-IO
 
+#include <wiringPi.h>
+
 #include <fcntl.h>   			// Needed for SPI port
 #include <sys/ioctl.h>			// Needed for SPI port
 #include <linux/spi/spidev.h>	// Needed for SPI port
@@ -24,15 +26,8 @@
 
 HardwareRaspberry::HardwareRaspberry()
 {
-	// Export GPIO's for use
-	export_pin(max14819::port0LedGreen);
-	export_pin(max14819::port0LedRed);
-	export_pin(max14819::port0LedRxErr);
-	export_pin(max14819::port0LedRxRdy);
-
-	// Export CE0/CE1 for SPI
-	//export_pin(max14819::port01CS);
-	//export_pin(max14819::port23CS);
+	// Init Wiring Pi
+	wiringPiSetup();
 
 	// Init SPI
 	Serial_Write("Init_SPI starts");
@@ -85,11 +80,6 @@ HardwareRaspberry::HardwareRaspberry()
 
 HardwareRaspberry::~HardwareRaspberry()
 {
-	unexport_pin(max14819::port0LedGreen);
-	unexport_pin(max14819::port0LedRed);
-	unexport_pin(max14819::port0LedRxErr);
-	unexport_pin(max14819::port0LedRxRdy);
-
 	//Deinit SPI
 	// TODO
 }
@@ -97,8 +87,8 @@ HardwareRaspberry::~HardwareRaspberry()
 void HardwareRaspberry::IO_Write(uint8_t pinnumber, uint8_t state)
 {
 	switch (state) {
-		case HIGH	: set_output_level_high(pinnumber, true); break;
-		case LOW	: set_output_level_high(pinnumber, false); break;
+		case HIGH	: digitalWrite(pinnumber, HIGH); break;
+		case LOW	: digitalWrite(pinnumber, LOW); break;
 	}
 
 }
@@ -106,9 +96,17 @@ void HardwareRaspberry::IO_Write(uint8_t pinnumber, uint8_t state)
 void HardwareRaspberry::IO_PinMode(uint8_t pinnumber, PinMode mode)
 {
 	switch (mode) {
-	case out      : set_pin_direction_output(pinnumber, true); break;
-	case in_pullup: set_pin_direction_output(pinnumber, false); break;
-	case in       : set_pin_direction_output(pinnumber, false); break;
+	case out: 
+		pinMode(pinnumber, OUTPUT);
+		break;
+	case in_pullup: 
+		pinMode(pinnumber, INPUT);
+		pullUpDnControl(pinnumber, PUD_UP);
+		break;
+	case in:
+		pinMode(pinnumber, INPUT);
+		pullUpDnControl(pinnumber, PUD_OFF);
+		break;
 	}
 }
 
@@ -203,44 +201,4 @@ void HardwareRaspberry::init_spi(){
 	printf("SPI-Mode...: %d\n", mode);
 	printf("Byte Length: %d\n", bits);
 	printf("Batrate....: %d Hz (%d kHz)\n", speed, speed/1000);
-}
-
-void HardwareRaspberry::export_pin(unsigned int pin)
-{
-	std::ofstream file;
-	file.open ("/sys/class/gpio/export");
-	file << pin;
-	file.close();
-}
-
-void HardwareRaspberry::unexport_pin(unsigned int pin)
-{
-	std::ofstream file;
-	file.open ("/sys/class/gpio/unexport");
-	file << pin;
-	file.close();
-}
-
-void HardwareRaspberry::set_pin_direction_output(unsigned int pin, bool state)
-{
-	std::ofstream file;
-	char buf[256];
-	sprintf(buf, "/sys/class/gpio/gpio%d/direction", pin);
-	switch (state) {
-		case true  	: file << "out"; break;
-		case false	: file << "in"; break;
-	}
-	file.close();
-}
-
-void HardwareRaspberry::set_output_level_high(unsigned int pin, bool state)
-{
-	std::ofstream file;
-	char buf[256];
-	sprintf(buf, "/sys/class/gpio/gpio%d/value", pin);
-	switch (state) {
-		case true  	: file << "1"; break;
-		case false	: file << "0"; break;
-	}
-	file.close();
 }
