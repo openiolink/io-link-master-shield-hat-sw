@@ -82,6 +82,8 @@ public:
 
     virtual void writeISDU() = 0;
 
+	virtual uint8_t readDirectParameterPage(uint8_t address, uint8_t *pData) = 0;
+
     virtual uint8_t readPD(uint8_t *pData, uint8_t sizeData) = 0;
 
     virtual uint8_t writePD(uint8_t sizeData, uint8_t *pData, uint8_t sizeAnswer, uint8_t mSeqType) = 0;

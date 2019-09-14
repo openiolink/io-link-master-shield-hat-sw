@@ -678,8 +678,7 @@ uint8_t Max14819::writeData(uint8_t mc, uint8_t data, uint8_t sizeAnswer, uint8_
     retValue |= writeRegister(bufferRegister, sizeAnswer); // number of bytes for answer
     retValue |= writeRegister(bufferRegister, 3); // 3 bytes to send including master command and checksum
     retValue |= writeRegister(bufferRegister, mc); // begin of message, master command
-    retValue |= writeRegister(bufferRegister,
-            calculateCKT(mc, &data, 1, mSeqType)); // second byte of message, checksum (CKT)
+    retValue |= writeRegister(bufferRegister, calculateCKT(mc, &data, 1, mSeqType)); // second byte of message, checksum (CKT)
     retValue |= writeRegister(bufferRegister, data); // send data to buffer, increment address of data after every byte
 
     // Enable transmit message

@@ -516,7 +516,9 @@ void IOLGenericDevice::readMasterCycleTime() {
 //!
 //!*****************************************************************************
 void IOLGenericDevice::readMinCycleTime() {
-
+	uint8_t pData[2];
+	uint8_t time = port->readDirectParameterPage(0x2, pData);	
+	HardwareRaspberry::Serial_Write("Time read");
 }
 
 //!*****************************************************************************

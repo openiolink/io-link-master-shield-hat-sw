@@ -142,8 +142,24 @@ uint8_t IOLMasterPortMax14819::begin() {
        // TODO: Serial.print(" Baud/s \n");
    }
 
+   uint8_t pData[3];
+   uint16_t VendorID;
+   uint32_t DeviceID;
+   readDirectParameterPage(0x02, pData);
+
+   // VendorID
+   readDirectParameterPage(0x07, pData); //MSB
+   readDirectParameterPage(0x08, pData+1); //LSB
+   VendorID = (pData[0] << 8) + pData[1];
+   // DeviceID
+   readDirectParameterPage(0x09, pData); //MSB
+   readDirectParameterPage(0x0A, pData+1); //LSB
+   readDirectParameterPage(0x0B, pData+2); //LSB
+   DeviceID = (pData[0] << 16) + (pData[1] << 8) + pData[2];
+
     // Switch to operational
-    uint8_t value[1] = {IOL::MC::DEV_OPERATE};
+
+   uint8_t value[1] = {IOL::MC::DEV_OPERATE};
     if(pDriver_->writeData(IOL::MC::WRITE, 1, value , 1, IOL::M_TYPE_0, port_) == ERROR){
         printf("Error operate driver01 PortA");// TODO: 
     }
@@ -299,6 +315,30 @@ void IOLMasterPortMax14819::readISDU() {
 //!
 //!*******************************************************************************
 void IOLMasterPortMax14819::writeISDU() {
+
+}
+
+uint8_t IOLMasterPortMax14819::readDirectParameterPage(uint8_t address, uint8_t *pData) {
+	uint8_t MC;
+
+	if (address > 31) {
+		HardwareRaspberry::Serial_Write("readDirectParameterPage: address to big\n");
+		return 0;
+	}
+
+	MC = (1 << 7) + (0b01 << 5) + address;
+
+	uint8_t retValue = SUCCESS;
+
+	// Send processdata request to device
+	retValue |= pDriver_->writeData(MC, 0, nullptr, 1, IOL::M_TYPE_0, port_);
+
+	HardwareRaspberry::wait_for(2);
+
+	// Receive answer
+	retValue |= pDriver_->readData(pData, 1, port_);
+
+	return retValue;
 
 }
 
