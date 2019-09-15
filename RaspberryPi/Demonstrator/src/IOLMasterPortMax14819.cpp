@@ -33,9 +33,9 @@
 
 //!***** Header-Files ************************************************************
 #include "stdio.h"
-#include "IOLMasterPortMax14819.h"
-#include "Max14819.h"
-#include "IOLink.h"
+#include "../include/IOLMasterPortMax14819.h"
+#include "../include/Max14819.h"
+#include "../include/IOLink.h"
 
 //!***** Macros ******************************************************************
 

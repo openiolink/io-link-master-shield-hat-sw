@@ -36,8 +36,8 @@
 //#include "Arduino.h"
 //#include <SPI.h>
 
-#include "IOLMasterPort.h"
-#include "Max14819.h"
+#include "../include/IOLMasterPort.h"
+#include "../include/Max14819.h"
 
 //!**** Macros ******************************************************************
 constexpr uint8_t read = 0b00000001;

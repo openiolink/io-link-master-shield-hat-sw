@@ -31,16 +31,16 @@
 //!*****************************************************************************
 
 //!**** Header-Files ***********************************************************
-#include "Demonstrator_V1_0.h"
+#include "../include/Demonstrator_V1_0.h"
 #include <stdio.h>
 
-#include "Max14819.h"
-#include "BallufBus0023.h"
-#include "IOLMasterPort.h"
-#include "IOLMasterPortMax14819.h"
-#include "IOLGenericDevice.h"
-#include "IOLink.h"
-#include "HardwareRaspberry.h"
+#include "../include/Max14819.h"
+#include "../include/BallufBus0023.h"
+#include "../include/IOLMasterPort.h"
+#include "../include/IOLMasterPortMax14819.h"
+#include "../include/IOLGenericDevice.h"
+#include "../include/IOLink.h"
+#include "../include/HardwareRaspberry.h"
 
 //!**** Macros *****************************************************************
 
