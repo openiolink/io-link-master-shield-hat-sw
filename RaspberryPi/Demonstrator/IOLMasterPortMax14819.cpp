@@ -131,7 +131,7 @@ uint8_t IOLMasterPortMax14819::begin() {
         // TODO: Serial.println("Error initialize driver01 PortA");
     }
     // Generate wakeup
-    retValue |= pDriver_->wakeUpRequest(port_, &comSpeed_ );
+    retValue = uint8_t(retValue | pDriver_->wakeUpRequest(port_, &comSpeed_ ));
    if(retValue == ERROR){
        // TODO: Serial.println("Error wakeup driver01 PortA");
    }
@@ -150,12 +150,13 @@ uint8_t IOLMasterPortMax14819::begin() {
    // VendorID
    readDirectParameterPage(0x07, pData); //MSB
    readDirectParameterPage(0x08, pData+1); //LSB
-   VendorID = (pData[0] << 8) + pData[1];
+   VendorID = uint16_t((pData[0] << 8) + pData[1]);
    // DeviceID
    readDirectParameterPage(0x09, pData); //MSB
-   readDirectParameterPage(0x0A, pData+1); //LSB
+   readDirectParameterPage(0x0A, pData+1);
    readDirectParameterPage(0x0B, pData+2); //LSB
    DeviceID = (pData[0] << 16) + (pData[1] << 8) + pData[2];
+   printf("Vendor ID: %d, Device ID: %d\n", VendorID, DeviceID);
 
     // Switch to operational
 
@@ -182,10 +183,10 @@ uint8_t IOLMasterPortMax14819::end() {
     uint8_t retValue = SUCCESS;
 
     // Send device fallback command
-    retValue |= pDriver_->writeData(IOL::MC::DEV_FALLBACK, 0, nullptr , 1, IOL::M_TYPE_0, port_);
+	retValue = uint8_t(retValue | pDriver_->writeData(IOL::MC::DEV_FALLBACK, 0, nullptr , 1, IOL::M_TYPE_0, port_));
 
     // Reset port
-    retValue |= pDriver_->reset(port_);
+	retValue = uint8_t(retValue | pDriver_->reset(port_));
 
     return retValue;
 }
@@ -250,7 +251,7 @@ void IOLMasterPortMax14819::sendMCmd() {
 //!  \return       communication speed
 //!
 //!*******************************************************************************
-uint16_t IOLMasterPortMax14819::readComSpeed() {
+uint32_t IOLMasterPortMax14819::readComSpeed() {
     return comSpeed_;
 }
 
@@ -326,17 +327,17 @@ uint8_t IOLMasterPortMax14819::readDirectParameterPage(uint8_t address, uint8_t 
 		return 0;
 	}
 
-	MC = (1 << 7) + (0b01 << 5) + address;
+	MC = uint8_t((1 << 7) + (0b01 << 5) + address);
 
 	uint8_t retValue = SUCCESS;
 
 	// Send processdata request to device
-	retValue |= pDriver_->writeData(MC, 0, nullptr, 1, IOL::M_TYPE_0, port_);
+	retValue = uint8_t(retValue | pDriver_->writeData(MC, 0, nullptr, 1, IOL::M_TYPE_0, port_));
 
 	HardwareRaspberry::wait_for(2);
 
 	// Receive answer
-	retValue |= pDriver_->readData(pData, 1, port_);
+	retValue = uint8_t(retValue | pDriver_->readData(pData, 1, port_));
 
 	return retValue;
 
@@ -360,12 +361,12 @@ uint8_t IOLMasterPortMax14819::readPD(uint8_t *pData, uint8_t sizeData) {
     uint8_t retValue = SUCCESS;
 
     // Send processdata request to device
-    retValue |= pDriver_->writeData(IOL::MC::PD_READ, 0, nullptr , sizeData, IOL::M_TYPE_2_X, port_);
+    retValue = uint8_t(retValue | pDriver_->writeData(IOL::MC::PD_READ, 0, nullptr , sizeData, IOL::M_TYPE_2_X, port_));
 
 	HardwareRaspberry::wait_for(10);
 
     // Receive answer
-    retValue |= pDriver_->readData(pData,  4,  port_);
+    retValue = uint8_t(retValue | pDriver_->readData(pData,  4,  port_));
     if((pData[3]&IOL::PD_VALID_BIT) != 0){
 		retValue = ERROR;
 	}
@@ -392,7 +393,7 @@ uint8_t IOLMasterPortMax14819::writePD(uint8_t sizeData, uint8_t *pData, uint8_t
     uint8_t retValue = SUCCESS;
 
     // Send processdata to device
-    retValue |= pDriver_->writeData(IOL::MC::WRITE, sizeData, pData, sizeAnswer, mSeqType, port_);
+    retValue = uint8_t(retValue | pDriver_->writeData(IOL::MC::WRITE, sizeData, pData, sizeAnswer, mSeqType, port_));
 
     return retValue;
 }

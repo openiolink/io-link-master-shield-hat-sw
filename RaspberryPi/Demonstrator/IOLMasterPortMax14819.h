@@ -57,7 +57,7 @@ private:
     uint16_t portMode_;
     uint16_t portStatus_;
     uint16_t actualCycleTime_;
-    uint16_t comSpeed_;
+    uint32_t comSpeed_;
 public: 
     IOLMasterPortMax14819();
 
@@ -75,7 +75,7 @@ public:
 
 	void sendMCmd();
 
-	uint16_t readComSpeed();
+	uint32_t readComSpeed();
 
 	void readPage();
 

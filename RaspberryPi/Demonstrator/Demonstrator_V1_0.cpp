@@ -82,16 +82,6 @@ void Demo_setup()
     port2.begin();
     port3.begin();
 
-    // Variables used for distance and level conversation
-    uint16_t distance = 0;
-    uint16_t testVal = 0;
-    uint16_t level = 0;
-    uint8_t data[4];
-	char buf[64];
-
-
-
-
 }
 
 // The loop function is called in an endless loop
@@ -132,7 +122,7 @@ void Demo_loop()
 		HardwareRaspberry::Serial_Write("Messung");
 		sprintf(buf, "%d", distance);
 		HardwareRaspberry::Serial_Write(buf);
-		level = 250 - distance / 10;
+		level = (uint16_t)(250 - distance / 10);
         
         // When there is a valid level
         if((level < 250) && (level > 0)){
@@ -142,39 +132,40 @@ void Demo_loop()
 
            if(level <= TANK_EMPTY_LVL){
                // Smartlight color red
-               dataLED[0] = 0b00100010;				// Segment dominance 2: not (0b0), Segment color 2 : red (0b010), Segment dominance 1: not (0b0) ,Segment color 1 : red (0b010)
-               dataLED[1] = 0b00000010;				// 0b0000,                                                        Segment dominance 3: not (0b0), Segment color 3 : red (0b010)
-               dataLED[2] = 0;						// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
-               dataLED[3] = 0b00000010;				// No Sync (0b0000), Level Mode (0b0010)
-               dataLED[4] = 0;						// Leveltype bottom - up (0x00)
+               dataLED[0] = 0b00100010;						               dataLED[5] = (uint8_t)(testVal&0xFF);		// Level Value, Lower Byte
+               dataLED[6] = (uint8_t)((testVal&0xFF00)>>8);	// Level Value, Higher Byte	// Segment dominance 2: not (0b0), Segment color 2 : red (0b010), Segment dominance 1: not (0b0) ,Segment color 1 : red (0b010)
+               dataLED[1] = 0b00000010;							// 0b0000,                                                        Segment dominance 3: not (0b0), Segment color 3 : red (0b010)
+               dataLED[2] = 0;									// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
+               dataLED[3] = 0b00000010;							// No Sync (0b0000), Level Mode (0b0010)
+               dataLED[4] = 0;									// Leveltype bottom - up (0x00)
                testVal = (uint16_t) ((float) level /(float) TANK_MAX_LVL * 65535.0);
-               dataLED[5] = testVal&0xFF;			// Level Value, Lower Byte
-               dataLED[6] = (testVal&0xFF00)>>8;	// Level Value, Higher Byte
-               dataLED[7] = 0;						// Buzzer Volume zero
+			   dataLED[5] = (uint8_t)(testVal & 0xFF);			// Level Value, Lower Byte
+			   dataLED[6] = (uint8_t)((testVal & 0xFF00) >> 8);	// Level Value, Higher Byte
+               dataLED[7] = 0;									// Buzzer Volume zero
            }
            else if(level <= TANK_WARNING_LVL){
                // Smartlight color yellow
                dataLED[0] = 0b00110011;
                dataLED[1] = 0b00000011;
-               dataLED[2] = 0;						// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
-               dataLED[3] = 0b00000010;				// No Sync (0b0000), Level Mode (0b0010)
+               dataLED[2] = 0;									// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
+               dataLED[3] = 0b00000010;							// No Sync (0b0000), Level Mode (0b0010)
                dataLED[4] = 0;
                testVal = (uint16_t) ((float) level / (float)TANK_MAX_LVL * 65535.0);
-               dataLED[5] = testVal&0xFF;
-               dataLED[6] = (testVal&0xFF00)>>8;
-               dataLED[7] = 0;						// Buzzer Volume zero
+			   dataLED[5] = (uint8_t)(testVal & 0xFF);			// Level Value, Lower Byte
+			   dataLED[6] = (uint8_t)((testVal & 0xFF00) >> 8);	// Level Value, Higher Byte
+               dataLED[7] = 0;									// Buzzer Volume zero
            }
            else if(level <= TANK_MAX_LVL){
                // Smartlight color green
                dataLED[0] = 0b00010001;
                dataLED[1] = 0b00000001;
-               dataLED[2] = 0;						// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
-               dataLED[3] = 0b00000010;				// No Sync (0b0000), Level Mode (0b0010)
+               dataLED[2] = 0;									// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
+               dataLED[3] = 0b00000010;							// No Sync (0b0000), Level Mode (0b0010)
                dataLED[4] = 0;
                testVal = (uint16_t) ((float) level / (float)TANK_MAX_LVL * 65535.0);
-               dataLED[5] = testVal&0xFF;
-               dataLED[6] = (testVal&0xFF00)>>8;
-               dataLED[7] = 0;						// Buzzer Volume zero
+			   dataLED[5] = (uint8_t)(testVal & 0xFF);			// Level Value, Lower Byte
+			   dataLED[6] = (uint8_t)((testVal & 0xFF00) >> 8);	// Level Value, Higher Byte
+               dataLED[7] = 0;									// Buzzer Volume zero
            }
            else{
         	   // Smartlight starts blinking red

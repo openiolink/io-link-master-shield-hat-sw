@@ -39,6 +39,7 @@
 
 //!**** Header-Files ***********************************************************
 #include "IOLGenericDevice.h"
+#include <stdio.h>
 
 //!**** Macros *****************************************************************
 
@@ -517,8 +518,10 @@ void IOLGenericDevice::readMasterCycleTime() {
 //!*****************************************************************************
 void IOLGenericDevice::readMinCycleTime() {
 	uint8_t pData[2];
+	char buf[64];
 	uint8_t time = port->readDirectParameterPage(0x2, pData);	
-	HardwareRaspberry::Serial_Write("Time read");
+	sprintf(buf, "Min Cycle Time Data: %d, %d, Retval: %d", pData[0], pData[1], time);
+	HardwareRaspberry::Serial_Write(buf);
 }
 
 //!*****************************************************************************

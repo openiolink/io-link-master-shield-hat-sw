@@ -32,6 +32,7 @@
 
 //!**** Header-Files ***********************************************************
 #include "BallufBus0023.h"
+#include <stdio.h>
 
 //!**** Macros *****************************************************************
 
@@ -67,7 +68,7 @@ BallufBus0023::BallufBus0023(IOLMasterPort * port) : IOLGenericDevice(port){
 void BallufBus0023::begin() {
 	port->begin();
 
-	uint8_t pData[3];
+	/*uint8_t pData[3];
 	uint16_t VendorID;
 	uint32_t DeviceID;
 	port->readDirectParameterPage(0x02, pData);
@@ -75,12 +76,13 @@ void BallufBus0023::begin() {
 	// VendorID
 	port->readDirectParameterPage(0x07, pData); //MSB
 	port->readDirectParameterPage(0x08, pData + 1); //LSB
-	VendorID = (pData[0] << 8) + pData[1];
+	VendorID = uint16_t((pData[0] << 8) + (pData[1]));
 	// DeviceID
 	port->readDirectParameterPage(0x09, pData); //MSB
-	port->readDirectParameterPage(0x0A, pData + 1); //LSB
+	port->readDirectParameterPage(0x0A, pData + 1);
 	port->readDirectParameterPage(0x0B, pData + 2); //LSB
 	DeviceID = (pData[0] << 16) + (pData[1] << 8) + pData[2];
+	printf("Vendor ID: %d, Device ID: %d\n", VendorID, DeviceID);*/
 
 }
 
@@ -116,7 +118,7 @@ uint16_t BallufBus0023::readDistance() {
 	uint8_t data[4];
 	uint16_t distance = 0;
 	if(port->readPD(data, 4)!= ERROR){
-		distance = ((data[1] <<8) + data[2]) >> 1;
+		distance = (uint16_t)(((data[1] << 8) | data[2]) >> 1);
 	}
 	return distance;
 }

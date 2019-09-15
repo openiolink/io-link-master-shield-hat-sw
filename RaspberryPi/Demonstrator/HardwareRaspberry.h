@@ -65,6 +65,5 @@ public:
 	static void wait_for(uint32_t delay_ms);
 
 private:
-	void init_spi();
 
 };

@@ -68,9 +68,15 @@ using namespace max14819;
 //!  \return        void
 //!
 //!******************************************************************************
-Max14819::Max14819()	:
-	driver_(DRIVER01), isInitPortA_(0), isInitPortB_(0), isLedCtrlPortAEn_(0), isLedCtrlPortBEn_(
-		0), comSpeedRegA(0), comSpeedRegB(0), Hardware(nullptr) {
+Max14819::Max14819(){
+	driver_ = DRIVER01;
+	isInitPortA_ = 0;
+	isInitPortB_ = 0;
+	isLedCtrlPortAEn_ = 0;
+	isLedCtrlPortBEn_ = 0;
+	comSpeedRegA = 0;
+	comSpeedRegB = 0;
+	Hardware = nullptr;
 }
 
 //!******************************************************************************
@@ -85,9 +91,15 @@ Max14819::Max14819()	:
 //!  \return        void
 //!
 //!******************************************************************************
-Max14819::Max14819(DriverSelect driver, HardwareRaspberry * hardware) :
-        driver_(driver), isInitPortA_(0), isInitPortB_(0), isLedCtrlPortAEn_(0), isLedCtrlPortBEn_(
-                0), comSpeedRegA(0), comSpeedRegB(0), Hardware(hardware) {
+Max14819::Max14819(DriverSelect driver, HardwareRaspberry * hardware){
+	driver_ = driver;
+	isInitPortA_ = 0;
+	isInitPortB_ = 0;
+	isLedCtrlPortAEn_ = 0;
+	isLedCtrlPortBEn_ = 0;
+	comSpeedRegA = 0;
+	comSpeedRegB = 0;
+	Hardware = hardware;
 
 }
 //!******************************************************************************
@@ -149,7 +161,7 @@ uint8_t Max14819::begin(PortSelect port) {
             Hardware->IO_PinMode(53, Hardware->in);*/
 
             // Enable extern crystal
-            retValue |= writeRegister(Clock, TXTXENDis | ClkOEn | XtalEn); // Frequency is 14.745 MHz
+            retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ClkOEn | XtalEn)); // Frequency is 14.745 MHz
 
             switch (port) {
             case PORTA:
@@ -209,7 +221,7 @@ uint8_t Max14819::begin(PortSelect port) {
             Hardware->IO_Write(port23CS, HIGH);
 
             // Enable clocking from another max14819
-            retValue |= writeRegister(Clock, TXTXENDis | ExtClkEn | ClkDiv0 | ClkDiv1); // external OSC enable, 3.686 MHz input frequency
+            retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ExtClkEn | ClkDiv0 | ClkDiv1)); // external OSC enable, 3.686 MHz input frequency
         }
         switch (port) {
         case PORTA:
@@ -252,37 +264,37 @@ uint8_t Max14819::begin(PortSelect port) {
     } // switch(driver)
 
     // Reset max14819 register
-    retValue |= reset(port);
+    retValue = uint8_t(retValue | reset(port));
 
     // Wait 1 s for turning on the powersupply for sensor
 	Hardware->wait_for(INIT_POWER_OFF_DELAY);
 
     // Initialize global registers
-    retValue |= writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
+    retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
 
     // Initialize the port sepcific registers
     switch (port) {
     case PORTA:
         // Set all Interrupts
         shadowReg = readRegister(InterruptEn);
-        retValue |= writeRegister(InterruptEn, StatusIntEn | WURQIntEn | TxErrIntEnA | RxErrIntEnA | RxDaRdyIntEnA | shadowReg);
+        retValue = uint8_t(retValue | writeRegister(InterruptEn, StatusIntEn | WURQIntEn | TxErrIntEnA | RxErrIntEnA | RxDaRdyIntEnA | shadowReg));
         // Enable RxReady and RyError LED
         shadowReg = readRegister(LEDCtrl);
-        retValue |= writeRegister(LEDCtrl, RxRdyEnA | RxErrEnA | shadowReg);
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, RxRdyEnA | RxErrEnA | shadowReg));
         // Initialize the Channel A register
-        retValue |= writeRegister(LCnfgA, LRT0 | LBL0 | LBL1 | LClimDis | LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        retValue |= writeRegister(CQCfgA, SinkSel0 | PushPul); // Int Current Sink, 5 mA, PushPull, Channel Enable
+        retValue = uint8_t(retValue | writeRegister(LCnfgA, LRT0 | LBL0 | LBL1 | LClimDis | LEn)); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+        retValue = uint8_t(retValue | writeRegister(CQCfgA, SinkSel0 | PushPul)); // Int Current Sink, 5 mA, PushPull, Channel Enable
         break;
     case PORTB:
         // Set all Interrupts
         shadowReg = readRegister(InterruptEn);
-        retValue |= writeRegister(InterruptEn, StatusIntEn | WURQIntEn | TxErrIntEnB | RxErrIntEnB | RxDaRdyIntEnB | shadowReg);
+        retValue = uint8_t(retValue | writeRegister(InterruptEn, StatusIntEn | WURQIntEn | TxErrIntEnB | RxErrIntEnB | RxDaRdyIntEnB | shadowReg));
         // Enable RxReady and RyError LED
         shadowReg = readRegister(LEDCtrl);
-        retValue |= writeRegister(LEDCtrl, RxRdyEnB | RxErrEnB | shadowReg);
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, RxRdyEnB | RxErrEnB | shadowReg));
         // Initialize the Channel A register
-        retValue |= writeRegister(LCnfgB, LRT0 | LBL0 | LBL1 | LClimDis | LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        retValue |= writeRegister(CQCfgB, SinkSel0 | PushPul); // Int Current Sink, 5 mA, PushPull, Channel Enable
+        retValue = uint8_t(retValue | writeRegister(LCnfgB, LRT0 | LBL0 | LBL1 | LClimDis | LEn)); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+        retValue = uint8_t(retValue | writeRegister(CQCfgB, SinkSel0 | PushPul)); // Int Current Sink, 5 mA, PushPull, Channel Enable
         break;
     default:
         retValue = ERROR;
@@ -349,11 +361,11 @@ uint8_t Max14819::reset(void) {
     uint8_t retValue = SUCCESS;
     // Reset all max14819 registers
     retValue = writeRegister(ChanStatA, Rst);
-    retValue |= writeRegister(ChanStatB, Rst);
-    retValue |= writeRegister(InterruptEn, 0);
-    retValue |= writeRegister(LEDCtrl, 0);
-    retValue |= writeRegister(Trigger, 0);
-    retValue |= writeRegister(DrvrCurrLim, 0);
+    retValue = uint8_t(retValue | writeRegister(ChanStatB, Rst));
+    retValue = uint8_t(retValue | writeRegister(InterruptEn, 0));
+    retValue = uint8_t(retValue | writeRegister(LEDCtrl, 0));
+    retValue = uint8_t(retValue | writeRegister(Trigger, 0));
+    retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, 0));
     // Return Error state
     return retValue;
 }
@@ -375,34 +387,32 @@ uint8_t Max14819::reset(PortSelect port) {
 // Reset all max14819 registers only for selected port
     if (port == PORTA) {
 // Reset all port A register
-        retValue |= writeRegister(ChanStatA, Rst);
+        retValue = uint8_t(retValue | writeRegister(ChanStatA, Rst));
 // Reset trigger register
-        retValue |= writeRegister(Trigger, 0);
+        retValue = uint8_t(retValue | writeRegister(Trigger, 0));
 // Reset DrvrCurrentLimit register
-        retValue |= writeRegister(DrvrCurrLim, 0);
+        retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, 0));
 // Disable Interrupts only for port A
         uint8_t shadowReg = readRegister(InterruptEn);
-        retValue |= writeRegister(InterruptEn, shadowReg & ~(TxErrIntEnA | RxErrIntEnA | RxDaRdyIntEnA));
+        retValue = uint8_t(retValue | writeRegister(InterruptEn, uint8_t(shadowReg & ~(TxErrIntEnA | RxErrIntEnA | RxDaRdyIntEnA))));
 // Disable LEDs only for port A
         shadowReg = readRegister(LEDCtrl);
-        retValue |= writeRegister(LEDCtrl, shadowReg & ~(LEDEn2A | RxErrEnA | LEDEn1A | RxRdyEnA));
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, uint8_t(shadowReg & ~(LEDEn2A | RxErrEnA | LEDEn1A | RxRdyEnA))));
     }
 // Reset all max14819 registers only for selected port
     if (port == PORTB) {
 // Reset all port B register
-        retValue |= writeRegister(ChanStatB, Rst);
+        retValue = uint8_t(retValue | writeRegister(ChanStatB, Rst));
 // Reset trigger register
-        retValue |= writeRegister(Trigger, 0);
+        retValue = uint8_t(retValue | writeRegister(Trigger, 0));
 // Reset DrvrCurrentLimit register
-        retValue |= writeRegister(DrvrCurrLim, 0);
+        retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, 0));
 // Disable Interrupts only for port B
         uint8_t shadowReg = readRegister(InterruptEn);
-        retValue |= writeRegister(InterruptEn,
-                shadowReg & ~(TxErrIntEnB | RxErrIntEnB | RxDaRdyIntEnB));
+        retValue = uint8_t(retValue | writeRegister(InterruptEn, uint8_t(shadowReg & ~(TxErrIntEnB | RxErrIntEnB | RxDaRdyIntEnB))));
 // Disable LEDs only for port A
         shadowReg = readRegister(LEDCtrl);
-        retValue |= writeRegister(LEDCtrl,
-                shadowReg & ~(LEDEn2B | RxErrEnB | LEDEn1B | RxRdyEnB));
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, uint8_t(shadowReg & ~(LEDEn2B | RxErrEnB | LEDEn1B | RxRdyEnB))));
     }
 // Return Error state
     return retValue;
@@ -435,7 +445,7 @@ uint8_t Max14819::readStatus(PortSelect port) {
 //!  \return        communication speed. 1 if Error
 //!
 //!******************************************************************************
-uint8_t Max14819::wakeUpRequest(PortSelect port, uint16_t * comSpeed_ret) {
+uint8_t Max14819::wakeUpRequest(PortSelect port, uint32_t * comSpeed_ret) {
     uint32_t comSpeed;
     uint8_t retValue = 0;
     uint8_t comReqRunning = 0;
@@ -446,10 +456,10 @@ uint8_t Max14819::wakeUpRequest(PortSelect port, uint16_t * comSpeed_ret) {
     switch(port){
     case PORTA:
         // Start wakeup and communcation
-        retValue |= writeRegister(IOStCfgA, 0); // Disable tx needed for wake up
-        retValue |= writeRegister(ChanStatA, FramerEn); // Enable ChanA Framer
-        retValue |= writeRegister(MsgCtrlA, 0); // Dont use InsChks when transmit OD Data, max14819 doesnt calculate it right
-        retValue |= writeRegister(CQCtrlA, EstCom);     // Start communication
+        retValue = uint8_t(retValue | writeRegister(IOStCfgA, 0)); // Disable tx needed for wake up
+        retValue = uint8_t(retValue | writeRegister(ChanStatA, FramerEn)); // Enable ChanA Framer
+        retValue = uint8_t(retValue | writeRegister(MsgCtrlA, 0)); // Dont use InsChks when transmit OD Data, max14819 doesnt calculate it right
+        retValue = uint8_t(retValue | writeRegister(CQCtrlA, EstCom));     // Start communication
 
         // Wait till establish communication sequence is over or timeout is reached
         do {
@@ -475,10 +485,10 @@ uint8_t Max14819::wakeUpRequest(PortSelect port, uint16_t * comSpeed_ret) {
         break;
     case PORTB:
         // Start wakeup and communcation
-        retValue |= writeRegister(IOStCfgB, 0); // Disable tx needed for wake up
-        retValue |= writeRegister(ChanStatB, FramerEn); // Enable Chanb Framer
-        retValue |= writeRegister(MsgCtrlB, 0); // Dont use InsChks when transmit OD Data, max14819 doesnt calculate it right
-        retValue |= writeRegister(CQCtrlB, EstCom);     // Start communication
+        retValue = uint8_t(retValue | writeRegister(IOStCfgB, 0)); // Disable tx needed for wake up
+        retValue = uint8_t(retValue | writeRegister(ChanStatB, FramerEn)); // Enable Chanb Framer
+        retValue = uint8_t(retValue | writeRegister(MsgCtrlB, 0)); // Dont use InsChks when transmit OD Data, max14819 doesnt calculate it right
+        retValue = uint8_t(retValue | writeRegister(CQCtrlB, EstCom));     // Start communication
 
         // Wait till establish communication sequence is over or timeout is reached
         do {
@@ -548,8 +558,7 @@ uint8_t Max14819::wakeUpRequest(PortSelect port, uint16_t * comSpeed_ret) {
 //!  \return        registervalue
 //!
 //!******************************************************************************
-uint16_t Max14819::readRegister(uint8_t reg) {
-    uint8_t inByte = 0;    	// incoming byte from the SPI
+uint8_t Max14819::readRegister(uint8_t reg) {
     uint8_t channel = 0;
     uint8_t buf[2];
 
@@ -675,19 +684,19 @@ uint8_t Max14819::writeData(uint8_t mc, uint8_t data, uint8_t sizeAnswer, uint8_
       } // switch(port)
 
     // Write message to max14819 FIFO
-    retValue |= writeRegister(bufferRegister, sizeAnswer); // number of bytes for answer
-    retValue |= writeRegister(bufferRegister, 3); // 3 bytes to send including master command and checksum
-    retValue |= writeRegister(bufferRegister, mc); // begin of message, master command
-    retValue |= writeRegister(bufferRegister, calculateCKT(mc, &data, 1, mSeqType)); // second byte of message, checksum (CKT)
-    retValue |= writeRegister(bufferRegister, data); // send data to buffer, increment address of data after every byte
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, sizeAnswer)); // number of bytes for answer
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, 3)); // 3 bytes to send including master command and checksum
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, mc)); // begin of message, master command
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, calculateCKT(mc, &data, 1, mSeqType))); // second byte of message, checksum (CKT)
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, data)); // send data to buffer, increment address of data after every byte
 
     // Enable transmit message
     switch(port){
     case PORTA:
-        retValue |= writeRegister(CQCtrlA, CQSend | comSpeedRegA);
+        retValue = uint8_t(retValue | writeRegister(CQCtrlA, CQSend | comSpeedRegA));
         break;
     case PORTB:
-        retValue |= writeRegister(CQCtrlB, CQSend | comSpeedRegB);
+        retValue = uint8_t(retValue | writeRegister(CQCtrlB, CQSend | comSpeedRegB));
         break;
     default:
         retValue = ERROR;
@@ -738,21 +747,21 @@ uint8_t Max14819::writeData(uint8_t mc, uint8_t sizeData, uint8_t *pData, uint8_
     } // switch(port)
 
     // Write message to max14819 FIFO
-    retValue |= writeRegister(bufferRegister, sizeAnswer); // number of bytes for answer
-    retValue |= writeRegister(bufferRegister, sizeData + 2); // number of bytes to send including master command and checksum
-    retValue |= writeRegister(bufferRegister, mc); // begin of message, master command
-    retValue |= writeRegister(bufferRegister, calculateCKT(mc, pData, sizeData, mSeqType)); // second byte of message, checksum (CKT)
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, sizeAnswer)); // number of bytes for answer
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, uint8_t(sizeData + 2))); // number of bytes to send including master command and checksum
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, mc)); // begin of message, master command
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, calculateCKT(mc, pData, sizeData, mSeqType))); // second byte of message, checksum (CKT)
     for (uint8_t i = 0; i < sizeData; i++) {
-        retValue |= writeRegister(bufferRegister, *pData); // send data to buffer, increment address of data after every byte
+        retValue = uint8_t(retValue | writeRegister(bufferRegister, *pData)); // send data to buffer, increment address of data after every byte
         pData++;
     }
     // Enable transmit message
     switch(port){
     case PORTA:
-       retValue |= writeRegister(CQCtrlA, CQSend | comSpeedRegA);
+       retValue = uint8_t(retValue | writeRegister(CQCtrlA, CQSend | comSpeedRegA));
        break;
     case PORTB:
-       retValue |= writeRegister(CQCtrlB, CQSend | comSpeedRegB);
+       retValue = uint8_t(retValue | writeRegister(CQCtrlB, CQSend | comSpeedRegB));
        break;
     default:
        retValue = ERROR;
@@ -835,30 +844,30 @@ uint8_t Max14819::enableCyclicSend(uint8_t mc, uint8_t sizeData, uint8_t *pData,
     } else if ((cycleTime >= 4) && (cycleTime <= 63)) {
         // Calculate CyclTmr register values, base 0.1ms, no offset
         cycleBase = 1;
-        cycleMult = cycleTime / cycleBase;
+        cycleMult = uint8_t(cycleTime / cycleBase);
         // Write cycle base and cycle multiplicator in cycle register
         if (port == PORTA)
-            retValue |= writeRegister(CyclTmrA, cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrA, cycleMult));
         if (port == PORTB)
-            retValue |= writeRegister(CyclTmrB, cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrB, cycleMult));
     } else if (cycleTime <= 316) {
         // Calculate CyclTmr register values, base 0.4ms, offset 6.4ms
         cycleBase = 4;
-        cycleMult = (cycleTime - 64) / cycleBase;
+        cycleMult = uint8_t((cycleTime - 64) / cycleBase);
         // Write cycle base and cycle multiplicator in cycle register
         if (port == PORTA)
-            retValue |= writeRegister(CyclTmrA, TCyclBs0 | cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrA, TCyclBs0 | cycleMult));
         if (port == PORTB)
-            retValue |= writeRegister(CyclTmrB, TCyclBs0 | cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrB, TCyclBs0 | cycleMult));
     } else if (cycleTime <= 1328) {
         // Calculate CyclTmr register values, base 1.6ms, offset 32ms
         cycleBase = 16;
-        cycleMult = (cycleTime - 320) / cycleBase;
+        cycleMult = uint8_t((cycleTime - 320) / cycleBase);
         // Write cycle base and cycle multiplicator in cycle register
         if (port == PORTA)
-            retValue |= writeRegister(CyclTmrA, TCyclBs1 | cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrA, TCyclBs1 | cycleMult));
         if (port == PORTB)
-            retValue |= writeRegister(CyclTmrB, TCyclBs1 | cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrB, TCyclBs1 | cycleMult));
     } else {
         return ERROR;
     }
@@ -876,20 +885,20 @@ uint8_t Max14819::enableCyclicSend(uint8_t mc, uint8_t sizeData, uint8_t *pData,
         bufferRegister = TxRxDataB;
 
     // Write message to max14819 FIFO
-    retValue |= writeRegister(bufferRegister, sizeAnswer); // number of bytes for answer
-    retValue |= writeRegister(bufferRegister, sizeData + 2); // number of bytes to send including master command and checksum
-    retValue |= writeRegister(bufferRegister, mc); // begin of message, master command
-    retValue |= writeRegister(bufferRegister, calculateCKT(mc, pData, sizeData, mSeqType)); // second byte of message, checksum (CKT)
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, sizeAnswer)); // number of bytes for answer
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, uint8_t(sizeData + 2))); // number of bytes to send including master command and checksum
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, mc)); // begin of message, master command
+    retValue = uint8_t(retValue | writeRegister(bufferRegister, calculateCKT(mc, pData, sizeData, mSeqType))); // second byte of message, checksum (CKT)
     for (uint8_t i = 0; i < sizeData; i++) {
-        retValue |= writeRegister(bufferRegister, *pData); // send data to buffer, increment address of data after every byte
+        retValue = uint8_t(retValue | writeRegister(bufferRegister, *pData)); // send data to buffer, increment address of data after every byte
         pData++;
     }
 
     // enable cyclic send
     if (port == PORTA)
-        retValue |= writeRegister(CQCtrlA, CycleTmrEn | comSpeedRegA);
+        retValue = uint8_t(retValue | writeRegister(CQCtrlA, CycleTmrEn | comSpeedRegA));
     if (port == PORTB)
-        retValue |= writeRegister(CQCtrlB, CycleTmrEn | comSpeedRegB);
+        retValue = uint8_t(retValue | writeRegister(CQCtrlB, CycleTmrEn | comSpeedRegB));
 
     // Return Error state
     return retValue;
@@ -912,9 +921,9 @@ uint8_t Max14819::disableCyclicSend(PortSelect port) {
 
     // Disable cyclic send
     if (port == PORTA)
-        retValue |= writeRegister(CQCtrlA, comSpeedRegA);
+        retValue = uint8_t(retValue | writeRegister(CQCtrlA, comSpeedRegA));
     if (port == PORTB)
-        retValue |= writeRegister(CQCtrlB, comSpeedRegB);
+        retValue = uint8_t(retValue | writeRegister(CQCtrlB, comSpeedRegB));
 
     // Reset CyclTmr register to minCycleTime
     uint16_t cycleTime = 100; // TODO use minCycleTime stored in port Object
@@ -923,30 +932,30 @@ uint8_t Max14819::disableCyclicSend(PortSelect port) {
     if ((cycleTime >= 4) && (cycleTime <= 63)) {
         // Calculate CyclTmr register values, base 0.1ms, no offset
         cycleBase = 1;
-        cycleMult = cycleTime / cycleBase;
+        cycleMult = uint8_t(cycleTime / cycleBase);
         // Write cycle base and cycle multiplicator in cycle register
         if (port == PORTA)
-            retValue |= writeRegister(CyclTmrA, cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrA, cycleMult));
         if (port == PORTB)
-            retValue |= writeRegister(CyclTmrB, cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrB, cycleMult));
     } else if (cycleTime <= 316) {
         // Calculate CyclTmr register values, base 0.4ms, offset 6.4ms
         cycleBase = 4;
-        cycleMult = (cycleTime - 64) / cycleBase;
+        cycleMult = uint8_t((cycleTime - 64) / cycleBase);
         // Write cycle base and cycle multiplicator in cycle register
         if (port == PORTA)
-            retValue |= writeRegister(CyclTmrA, TCyclBs0 | cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrA, TCyclBs0 | cycleMult));
         if (port == PORTB)
-            retValue |= writeRegister(CyclTmrB, TCyclBs0 | cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrB, TCyclBs0 | cycleMult));
     } else if (cycleTime <= 1328) {
         // Calculate CyclTmr register values, base 1.6ms, offset 32ms
         cycleBase = 16;
-        cycleMult = (cycleTime - 320) / cycleBase;
+        cycleMult = uint8_t((cycleTime - 320) / cycleBase);
         // Write cycle base and cycle multiplicator in cycle register
         if (port == PORTA)
-            retValue |= writeRegister(CyclTmrA, TCyclBs1 | cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrA, TCyclBs1 | cycleMult));
         if (port == PORTB)
-            retValue |= writeRegister(CyclTmrB, TCyclBs1 | cycleMult);
+            retValue = uint8_t(retValue | writeRegister(CyclTmrB, TCyclBs1 | cycleMult));
     }
     // Return Error state
     return retValue;
@@ -972,12 +981,12 @@ uint8_t Max14819::enableLedControl(PortSelect port) {
     uint8_t shadowReg = readRegister(LEDCtrl);
     switch(port){
     case PORTA:
-        retValue |= writeRegister(LEDCtrl, (shadowReg & 0xF0));
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, (shadowReg & 0xF0)));
        // Set Led Controll variable true
        isLedCtrlPortAEn_ = 1;
         break;
     case PORTB:
-        retValue |= writeRegister(LEDCtrl, (shadowReg & 0x0F));
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, (shadowReg & 0x0F)));
        // Set Led Controll variable true
        isLedCtrlPortBEn_ = 1;
         break;
@@ -1009,12 +1018,12 @@ uint8_t Max14819::disableLedControl(PortSelect port) {
     uint8_t shadowReg = readRegister(LEDCtrl);
     switch(port){
     case PORTA:
-        retValue |= writeRegister(LEDCtrl, (shadowReg & 0xF0) | RxRdyEnA | RxErrEnA);
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, (shadowReg & 0xF0) | RxRdyEnA | RxErrEnA));
        // Set Led Controll variable false
        isLedCtrlPortAEn_ = 0;
         break;
     case PORTB:
-        retValue |= writeRegister(LEDCtrl, (shadowReg & 0x0F) | RxRdyEnB | RxErrEnB);
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, (shadowReg & 0x0F) | RxRdyEnB | RxErrEnB));
         // Set Led Controll variable false
         isLedCtrlPortBEn_ = 0;
         break;
@@ -1061,12 +1070,12 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn2A | shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn2A | shadowReg));
                 }
                 // Switch LED on, erase corresponding bit in LEDCtrl register
                 if (state == LED_OFF) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn2A ^ shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn2A ^ shadowReg));
                 }
             } else
                 retValue = ERROR;
@@ -1076,12 +1085,12 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn1A | shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn1A | shadowReg));
                 }
                 // Switch LED on, erase corresponding bit in LEDCtrl register
                 if (state == LED_OFF) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn1A ^ shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn1A ^ shadowReg));
                 }
             }
             break;
@@ -1096,12 +1105,12 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn2B | shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn2B | shadowReg));
                 }
                 // Switch LED on, erase corresponding bit in LEDCtrl register
                 if (state == LED_OFF) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn2B ^ shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn2B ^ shadowReg));
                 }
             } else
                 retValue = ERROR;
@@ -1111,12 +1120,12 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn1B | shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn1B | shadowReg));
                 }
                 // Switch LED on, erase corresponding bit in LEDCtrl register
                 if (state == LED_OFF) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn1B ^ shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn1B ^ shadowReg));
                 }
             } else
                 retValue = ERROR;
@@ -1136,12 +1145,12 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn2A | shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn2A | shadowReg));
                 }
                 // Switch LED on, erase corresponding bit in LEDCtrl register
                 if (state == LED_OFF) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn2A ^ shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn2A ^ shadowReg));
                 }
             } else
                 retValue = ERROR;
@@ -1151,12 +1160,12 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn1A | shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn1A | shadowReg));
                 }
                 // Switch LED on, erase corresponding bit in LEDCtrl register
                 if (state == LED_OFF) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn1A ^ shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn1A ^ shadowReg));
                 }
             }
             break;
@@ -1171,12 +1180,12 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn2B | shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn2B | shadowReg));
                 }
                 // Switch LED on, erase corresponding bit in LEDCtrl register
                 if (state == LED_OFF) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn2B ^ shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn2B ^ shadowReg));
                 }
             } else
                 retValue = ERROR;
@@ -1186,12 +1195,12 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn1B | shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn1B | shadowReg));
                 }
                 // Switch LED on, erase corresponding bit in LEDCtrl register
                 if (state == LED_OFF) {
                     shadowReg = readRegister(LEDCtrl);
-                    retValue |= writeRegister(LEDCtrl, LEDEn1B ^ shadowReg);
+                    retValue = uint8_t(retValue | writeRegister(LEDCtrl, LEDEn1B ^ shadowReg));
                 }
             } else
                 retValue = ERROR;
@@ -1227,14 +1236,12 @@ uint8_t Max14819::writeDIConfig(PortSelect port, uint8_t currentType,
     if (port == PORTA) {
         // Read back the actual state, does not change upper 4 bits
         shadowReg = (readRegister(IOStCfgA)) & 0xF0;
-        retValue |= writeRegister(IOStCfgA,
-                (shadowReg | currentType | threshold | filter));
+        retValue = uint8_t(retValue | writeRegister(IOStCfgA, (shadowReg | currentType | threshold | filter)));
     }
     if (port == PORTB) {
         // Read back the actual state, does not change upper 4 bits
         shadowReg = (readRegister(IOStCfgB)) & 0xF0;
-        retValue |= writeRegister(IOStCfgB,
-                (shadowReg | currentType | threshold | filter));
+        retValue = uint8_t(retValue | writeRegister(IOStCfgB, (shadowReg | currentType | threshold | filter)));
     }
 
     return retValue;
@@ -1312,12 +1319,12 @@ uint8_t Max14819::writeCQ(PortSelect port, uint8_t value) {
         // Set Port A CQ level
         switch (value) {
         case HIGH:
-            retValue |= writeRegister(IOStCfgA, TxEn | Tx);
-            retValue |= writeRegister(LCnfgA, LRT0 | LBL0 | LBL1 | LClimDis);
+            retValue = uint8_t(retValue | writeRegister(IOStCfgA, TxEn | Tx));
+            retValue = uint8_t(retValue | writeRegister(LCnfgA, LRT0 | LBL0 | LBL1 | LClimDis));
             break;
         case LOW:
-            retValue |= writeRegister(IOStCfgA, TxEn);
-            retValue |= writeRegister(LCnfgA, LRT0 | LBL0 | LBL1 | LClimDis | LEn);
+            retValue = uint8_t(retValue | writeRegister(IOStCfgA, TxEn));
+            retValue = uint8_t(retValue | writeRegister(LCnfgA, LRT0 | LBL0 | LBL1 | LClimDis | LEn));
             break;
         default:
             retValue = ERROR;
@@ -1328,12 +1335,12 @@ uint8_t Max14819::writeCQ(PortSelect port, uint8_t value) {
         // Set Port B CQ level
         switch (value) {
         case HIGH:
-            retValue |= writeRegister(IOStCfgB, TxEn | Tx);
-            retValue |= writeRegister(LCnfgB, LRT0 | LBL0 | LBL1 | LClimDis);
+            retValue = uint8_t(retValue | writeRegister(IOStCfgB, TxEn | Tx));
+            retValue = uint8_t(retValue | writeRegister(LCnfgB, LRT0 | LBL0 | LBL1 | LClimDis));
             break;
         case LOW:
-            retValue |= writeRegister(IOStCfgB, TxEn);
-            retValue |= writeRegister(LCnfgB, LRT0 | LBL0 | LBL1 | LClimDis | LEn);
+            retValue = uint8_t(retValue | writeRegister(IOStCfgB, TxEn));
+            retValue = uint8_t(retValue | writeRegister(LCnfgB, LRT0 | LBL0 | LBL1 | LClimDis | LEn));
             break;
         default:
             retValue = ERROR;
@@ -1385,10 +1392,9 @@ uint8_t Max14819::readDI(PortSelect port) {
 //!  \return        uint8_t CKT         checksum
 //!
 //!******************************************************************************
-uint8_t calculateCKT(uint8_t mc, uint8_t *data, uint8_t dataSize,
-        uint8_t type) {
+uint8_t calculateCKT(uint8_t mc, uint8_t *data, uint8_t dataSize, uint8_t type) {
     // Insert m-sequence type (bit6, 7)
-    uint8_t CKT = type << 6;
+    uint8_t CKT = uint8_t(type << 6);
 
     // XOR all Bytes (including MC, CKT, PD and OD)
     uint8_t CKT_XOR = mc ^ 0x52; // Seed value 0x52
@@ -1398,14 +1404,12 @@ uint8_t calculateCKT(uint8_t mc, uint8_t *data, uint8_t dataSize,
     }
 
     // calculate bits 5-0
-    CKT |= (((CKT_XOR >> 7) ^ (CKT_XOR >> 5) ^ (CKT_XOR >> 3) ^ (CKT_XOR >> 1))
-            & 0x01) << 5;
-    CKT |= (((CKT_XOR >> 6) ^ (CKT_XOR >> 4) ^ (CKT_XOR >> 2) ^ (CKT_XOR >> 0))
-            & 0x01) << 4;
-    CKT |= (((CKT_XOR >> 7) ^ ((CKT_XOR >> 6))) & 0x01) << 3;
-    CKT |= (((CKT_XOR >> 5) ^ ((CKT_XOR >> 4))) & 0x01) << 2;
-    CKT |= (((CKT_XOR >> 3) ^ ((CKT_XOR >> 2))) & 0x01) << 1;
-    CKT |= (((CKT_XOR >> 1) ^ ((CKT_XOR >> 0))) & 0x01) << 0;
+    CKT |= uint8_t((((CKT_XOR >> 7) ^ (CKT_XOR >> 5) ^ (CKT_XOR >> 3) ^ (CKT_XOR >> 1))  & 0x01) << 5);
+    CKT |= uint8_t((((CKT_XOR >> 6) ^ (CKT_XOR >> 4) ^ (CKT_XOR >> 2) ^ (CKT_XOR >> 0)) & 0x01) << 4);
+    CKT |= uint8_t((((CKT_XOR >> 7) ^ ((CKT_XOR >> 6))) & 0x01) << 3);
+    CKT |= uint8_t((((CKT_XOR >> 5) ^ ((CKT_XOR >> 4))) & 0x01) << 2);
+    CKT |= uint8_t((((CKT_XOR >> 3) ^ ((CKT_XOR >> 2))) & 0x01) << 1);
+    CKT |= uint8_t((((CKT_XOR >> 1) ^ ((CKT_XOR >> 0))) & 0x01) << 0);
 
     return CKT;
 }

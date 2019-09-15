@@ -72,7 +72,7 @@ public:
 
     virtual void sendMCmd() = 0;
 
-    virtual uint16_t readComSpeed() = 0;
+    virtual uint32_t readComSpeed() = 0;
 
     virtual void readPage() = 0;
 

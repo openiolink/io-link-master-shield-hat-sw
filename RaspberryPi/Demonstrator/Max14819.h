@@ -302,9 +302,9 @@ namespace max14819 {
 
         uint8_t readStatus(PortSelect port);
 
-        uint8_t wakeUpRequest(PortSelect port, uint16_t * comSpeed_ret);
+        uint8_t wakeUpRequest(PortSelect port, uint32_t * comSpeed_ret);
 
-        uint16_t readRegister(uint8_t reg);
+        uint8_t readRegister(uint8_t reg);
 
         uint8_t writeRegister(uint8_t reg, uint8_t data);
 

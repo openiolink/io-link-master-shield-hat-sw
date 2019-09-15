@@ -34,8 +34,6 @@ HardwareRaspberry::HardwareRaspberry()
 	wiringPiSPISetup(0, 500000);
 	wiringPiSPISetup(1, 500000);
 
-	Serial_Write("Init_SPI semi");
-	init_spi();
 	Serial_Write("Init_SPI finished");
 	wait_for(1*1000);
 
@@ -50,7 +48,7 @@ HardwareRaspberry::HardwareRaspberry()
 	buf[7] = 170;
 
 	while(0){
-		for(int i = 0; i<2; i++){ 
+		for(uint8_t i = 0; i<2; i++){ 
 			SPI_Write(i, &buf[0], 2);
 			SPI_Write(i, &buf[2], 2);
 			buf[0] = 14;
@@ -132,73 +130,4 @@ void HardwareRaspberry::wait_for(uint32_t delay_ms)
 	//printf("Sleep_in\n");
 	usleep(delay_ms*1000);
 	//printf("Sleep_out\n");
-}
-
-void HardwareRaspberry::init_spi(){
-	static const char *device = "/dev/spidev0.0";
-	static uint8_t mode;
-	static uint8_t bits = 8;
-	static uint32_t speed = 500000;
-	static uint16_t delay;
-	int ret, fd;
-
-	// Open device
-	if ((fd = open(device, O_RDWR)) < 0)
-	{
-		perror("Error Opening Device");
-		exit(1);
-	}
-	// Set mode 
-	/*ret = ioctl(fd, SPI_IOC_WR_MODE, &mode);
-	if (ret < 0)
-	{
-		perror("Error setting SPI-Mode");
-		exit(1);
-	}*/
-
-	// Get mode
-	ret = ioctl(fd, SPI_IOC_RD_MODE, &mode);
-	if (ret < 0)
-	{
-		perror("Error getting SPI-Mode");
-		exit(1);
-	}
-
-	// Set byte-length
-	/*ret = ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
-	if (ret < 0)
-	{
-		perror("Error setting byte length");
-		exit(1);
-	}*/
-
-	// Get byte-length
-	ret = ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
-	if (ret < 0)
-	{
-		perror("Error getting byte length");
-		exit(1);
-	}
-
-	// Set bitrate
-	/*ret = ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
-	if (ret < 0)
-	{
-		perror("Error setting speed");
-		exit(1);
-	}*/
-	
-	// Get bitrate
-	ret = ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
-	if (ret < 0)
-	{
-		perror("Error getting speed");
-		exit(1);
-	}
-
-	/* Output */
-	printf("SPI-Device.: %s\n", device);
-	printf("SPI-Mode...: %d\n", mode);
-	printf("Byte Length: %d\n", bits);
-	printf("Batrate....: %d Hz (%d kHz)\n", speed, speed/1000);
 }
