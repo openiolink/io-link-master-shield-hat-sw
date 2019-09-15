@@ -2,27 +2,18 @@
 
 all: Demonstrator
 
-Demonstrator:	BallufBus0023.o BalluffBni0088.o Demonstrator_V1_0.o HardwareRaspberry.o IOLGenericDevice.o IOLMasterPort.o IOLMasterPortMax14819.o main.o Max14819.o
-	g++ -o $@ $^ -lwiringPi
+LIBS=-lwiringPi
 
-BallufBus0023.o: BallufBus0023.cpp
+ODIR=obj
+_OBJ = BallufBus0023.o BalluffBni0088.o Demonstrator_V1_0.o HardwareRaspberry.o IOLGenericDevice.o IOLMasterPort.o IOLMasterPortMax14819.o main.o Max14819.o
+OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-BalluffBni0088.o: BalluffBni0088.cpp
+Demonstrator: $(OBJ)
+	g++ -o $@.elf $^ $(LIBS)
 
-Demonstrator_V1_0.o: Demonstrator_V1_0.cpp
-
-HardwareRaspberry.o: HardwareRaspberry.cpp
-
-IOLGenericDevice.o: IOLGenericDevice.cpp
-
-IOLMasterPort.o: IOLMasterPort.cpp
-
-IOLMasterPortMax14819.o: IOLMasterPortMax14819.cpp
-
-main.o: main.cpp
-
-Max14819.o: Max14819.cpp
-
+$(ODIR)/%.o: src/%.cpp
+	@mkdir -p $(ODIR)
+	g++ -c -o $@ $<
 clean:
-	rm -rf *.o
+	rm -rf $(ODIR)/*.o
 	rm -rf Demonstrator
