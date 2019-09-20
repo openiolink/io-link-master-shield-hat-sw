@@ -1,3 +1,5 @@
+#include <SPI.h>
+
 /*
   Blink
 
@@ -22,11 +24,21 @@
   http://www.arduino.cc/en/Tutorial/Blink
 */
 
+#include "include/Demonstrator_V1_0.h"
+
+
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(8, OUTPUT);
   Serial.begin(115200);
+
+  Serial.println("Test_out");
+  delay(1*1000);
+
+  Demo_setup();
+  delay(10*1000);
 }
 
 // the loop function runs over and over again forever

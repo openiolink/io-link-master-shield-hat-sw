@@ -122,6 +122,7 @@ IOLMasterPortMax14819::~IOLMasterPortMax14819() {
 //!
 //!*******************************************************************************
 uint8_t IOLMasterPortMax14819::begin() {
+	char buf[256];
     uint8_t retValue = SUCCESS;
 
     // Initialize drivers
@@ -129,18 +130,20 @@ uint8_t IOLMasterPortMax14819::begin() {
         retValue = ERROR;
         // TODO: Serial.println("Error initialize driver01 PortA");
     }
+    HardwareArduino::Serial_Write("WakeUp");
     // Generate wakeup
-    retValue = uint8_t(retValue | pDriver_->wakeUpRequest(port_, &comSpeed_ ));
+    //retValue = uint8_t(retValue | pDriver_->wakeUpRequest(port_, &comSpeed_ ));
    if(retValue == ERROR){
        // TODO: Serial.println("Error wakeup driver01 PortA");
    }
    else{
-       printf("Communication established with %d bauds\n", comSpeed_);// TODO: 
+       sprintf(buf, "Communication established with %d bauds\n", comSpeed_);// TODO:
+       HardwareArduino::Serial_Write(buf);
        // TODO: Serial.print("Communication established with ");
        // TODO: Serial.print(comSpeed_);
        // TODO: Serial.print(" Baud/s \n");
    }
-
+    HardwareArduino::Serial_Write("Device");
    uint8_t pData[3];
    uint16_t VendorID;
    uint32_t DeviceID;
@@ -155,13 +158,15 @@ uint8_t IOLMasterPortMax14819::begin() {
    readDirectParameterPage(0x0A, pData+1);
    readDirectParameterPage(0x0B, pData+2); //LSB
    DeviceID = (pData[0] << 16) + (pData[1] << 8) + pData[2];
-   printf("Vendor ID: %d, Device ID: %d\n", VendorID, DeviceID);
+   sprintf(buf, "Vendor ID: %d, Device ID: %d\n", VendorID, DeviceID);
+   HardwareArduino::Serial_Write(buf);
 
     // Switch to operational
 
    uint8_t value[1] = {IOL::MC::DEV_OPERATE};
     if(pDriver_->writeData(IOL::MC::WRITE, 1, value , 1, IOL::M_TYPE_0, port_) == ERROR){
-        printf("Error operate driver01 PortA");// TODO: 
+        sprintf(buf, "Error operate driver01 PortA");// TODO: 
+		HardwareArduino::Serial_Write(buf);
     }
     return retValue;
 }

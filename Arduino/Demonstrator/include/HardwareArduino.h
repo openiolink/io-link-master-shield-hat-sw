@@ -55,6 +55,8 @@ public:
 	HardwareArduino();
 	~HardwareArduino();
 
+	void begin();
+
 	enum PinMode { out, in_pullup, in };
 
 	void IO_Write(uint8_t pinnumber, uint8_t state);

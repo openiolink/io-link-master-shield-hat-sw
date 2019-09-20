@@ -62,9 +62,12 @@ void Demo_setup()
     //testDistSensorPortLayer();
 	// Create hardware setup
 	hardware = HardwareArduino();
+    hardware.begin();
     // Create drivers
     max14819::Max14819 *pDriver01 = new max14819::Max14819(max14819::DRIVER01, &hardware);
     max14819::Max14819 *pDriver23 = new max14819::Max14819(max14819::DRIVER23, &hardware);
+
+    hardware.Serial_Write("Create Ports");
 
     // Create ports
 	port0 = IOLMasterPortMax14819(pDriver01, max14819::PORT0PORT);
@@ -72,14 +75,59 @@ void Demo_setup()
 	port2 = IOLMasterPortMax14819(pDriver23, max14819::PORT2PORT);
 	port3 = IOLMasterPortMax14819(pDriver23, max14819::PORT3PORT);
 
+    hardware.Serial_Write("BUS0023");
+
 	BUS0023 = BallufBus0023(&port0);
 
     // Start IO-Link communication
+    hardware.Serial_Write("Begin_1");
 	BUS0023.begin();
     //port0.begin();
+    hardware.Serial_Write("Begin_2");
     port1.begin();
+    hardware.Serial_Write("Begin_3");
     port2.begin();
+    hardware.Serial_Write("Begin_4");
     port3.begin();
+
+    uint8_t buf[8];
+	buf[0] = 14;
+	buf[1] = 0;
+	buf[2] = 78;
+	buf[3] = 0;
+	buf[4] = 14;
+	buf[5] = 170;
+	buf[6] = 78;
+	buf[7] = 170;
+
+	while(1){
+		for(uint8_t i = 0; i<2; i++){ 
+			hardware.Serial_Write("Pos one");
+			hardware.SPI_Write(i, &buf[0], 2);
+			hardware.SPI_Write(i, &buf[2], 2);
+			buf[0] = 14;
+			buf[1] = 0;
+			buf[2] = 78;
+			buf[3] = 0;
+			buf[4] = 14;
+			buf[5] = 170;
+			buf[6] = 78;
+			buf[7] = 170;
+			hardware.wait_for(1*1000);
+			hardware.Serial_Write("Pos two");
+			hardware.SPI_Write(i, &buf[4], 2);
+			hardware.SPI_Write(i, &buf[6], 2);
+			hardware.wait_for(1*1000);
+			buf[0] = 14;
+			buf[1] = 0;
+			buf[2] = 78;
+			buf[3] = 0;
+			buf[4] = 14;
+			buf[5] = 170;
+			buf[6] = 78;
+			buf[7] = 170;
+		}
+	}
 
 }
 

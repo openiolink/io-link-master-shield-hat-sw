@@ -37,6 +37,7 @@
 
 #include "../include/IOLMasterPort.h"
 #include "../include/Max14819.h"
+#include "Arduino.h"
 
 //!**** Macros ******************************************************************
 constexpr uint8_t read = 0b00000001;
