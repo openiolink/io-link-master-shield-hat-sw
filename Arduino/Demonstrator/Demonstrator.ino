@@ -1,68 +1,40 @@
+/*
+  Blink
 
-//!*****************************************************************************
-//!  \file       Demonstrator.ino
-//!*****************************************************************************
-//!
-//!  \brief		 Software Demonstration for the bachelor thesis.
-//!
-//!  \author     Pascal Frei (freip2)
-//!
-//! \date       27.06.2019
-//!
-//! \remark     Last Modification
-//!				 \li freip2, 27.06.2019, Cleaned
-//!              \li freip2, 14.05.2019, Created
-//!
-//!*****************************************************************************
-//!	Copyright (C) 2019, Pascal Frei
-//!
-//!	This program is free software: you can redistribute it and/or modify
-//!	it under the terms of the GNU General Public License as published by
-//!	the Free Software Foundation, either version 3 of the License, or
-//!	any later version.
-//!
-//!	but WITHOUT ANY WARRANTY; without even the implied warranty of
-//!	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//!	GNU General Public License for more details.
-//!
-//!	You should have received a copy of the GNU General Public License
-//!	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//!
-//!*****************************************************************************
+  Turns an LED on for one second, then off for one second, repeatedly.
 
-//!**** Header-Files ***********************************************************
-#include "Demonstrator_V1_0.h"
+  Most Arduinos have an on-board LED you can control. On the UNO, MEGA and ZERO
+  it is attached to digital pin 13, on MKR1000 on pin 6. LED_BUILTIN is set to
+  the correct LED pin independent of which board is used.
+  If you want to know what pin the on-board LED is connected to on your Arduino
+  model, check the Technical Specs of your board at:
+  https://www.arduino.cc/en/Main/Products
 
-//!**** Macros *****************************************************************
+  modified 8 May 2014
+  by Scott Fitzgerald
+  modified 2 Sep 2016
+  by Arturo Guadalupi
+  modified 8 Sep 2016
+  by Colby Newman
 
-//!**** Data types *************************************************************
+  This example code is in the public domain.
 
-//!**** Function prototypes ****************************************************
+  http://www.arduino.cc/en/Tutorial/Blink
+*/
 
-//!**** Data *******************************************************************
-
-//!**** Implementation *********************************************************
-
-//The setup function is called once at startup of the sketch
-// setup() is defined in "Demonstrator_V1_0.h"
+// the setup function runs once when you press reset or power the board
 void setup() {
-
-	Serial.begin(115200);
-
-	Serial.print("\nBeginne mit der Initialisierung\n");
-	// put your setup code here, to run once:
-	delay(1000); 
-	Demo_setup();
-
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(115200);
 }
 
-
-
-// The loop function is called in an endless loop
-// loop() is defined in "Demonstrator_V1_0.h"
+// the loop function runs over and over again forever
 void loop() {
-	// put your main code here, to run repeatedly:
-	delay(1000); 
-	//Demo_loop();
-	
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  Serial.println("HIGH");
+  delay(1);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  Serial.println("LOW");
+  delay(1);                       // wait for a second
 }

@@ -286,13 +286,13 @@ namespace max14819 {
         uint8_t isInitPortB_;
         uint8_t isLedCtrlPortAEn_;
         uint8_t isLedCtrlPortBEn_;
-		HardwareArduino * Hardware;
+		HardwareArduino* Hardware;
 
     public:
         uint8_t comSpeedRegA;
         uint8_t comSpeedRegB;
         Max14819();
-        Max14819(DriverSelect driver, HardwareArduino * Hardware);
+        Max14819(DriverSelect driver, HardwareArduino* Hardware);
         ~Max14819();
         uint8_t begin (PortSelect port);
         uint8_t end(PortSelect port);
@@ -302,9 +302,9 @@ namespace max14819 {
 
         uint8_t readStatus(PortSelect port);
 
-        uint32_t wakeUpRequest(PortSelect port);
+        uint8_t wakeUpRequest(PortSelect port, uint32_t * comSpeed_ret);
 
-        uint16_t readRegister(uint8_t reg);
+        uint8_t readRegister(uint8_t reg);
 
         uint8_t writeRegister(uint8_t reg, uint8_t data);
 

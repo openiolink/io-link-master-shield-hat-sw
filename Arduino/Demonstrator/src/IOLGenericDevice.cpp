@@ -38,7 +38,7 @@
 //!*****************************************************************************
 
 //!**** Header-Files ***********************************************************
-#include "IOLGenericDevice.h"
+#include "../include/IOLGenericDevice.h"
 
 //!**** Macros *****************************************************************
 
@@ -516,7 +516,11 @@ void IOLGenericDevice::readMasterCycleTime() {
 //!
 //!*****************************************************************************
 void IOLGenericDevice::readMinCycleTime() {
-
+	uint8_t pData[2];
+	char buf[64];
+	uint8_t time = port->readDirectParameterPage(0x2, pData);	
+	sprintf(buf, "Min Cycle Time Data: %d, %d, Retval: %d", pData[0], pData[1], time);
+	HardwareArduino::Serial_Write(buf);
 }
 
 //!*****************************************************************************

@@ -36,7 +36,7 @@
 
 //!***** Header-Files ***********************************************************
 #include <stdint.h>
-#include "max14819.h"
+#include "Max14819.h"
 
 //!***** Macros *****************************************************************
 
@@ -72,7 +72,7 @@ public:
 
     virtual void sendMCmd() = 0;
 
-    virtual uint16_t readComSpeed() = 0;
+    virtual uint32_t readComSpeed() = 0;
 
     virtual void readPage() = 0;
 
@@ -81,6 +81,8 @@ public:
     virtual void readISDU() = 0;
 
     virtual void writeISDU() = 0;
+
+	virtual uint8_t readDirectParameterPage(uint8_t address, uint8_t *pData) = 0;
 
     virtual uint8_t readPD(uint8_t *pData, uint8_t sizeData) = 0;
 

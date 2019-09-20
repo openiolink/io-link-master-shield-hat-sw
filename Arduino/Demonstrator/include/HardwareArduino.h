@@ -60,11 +60,13 @@ public:
 	void IO_Write(uint8_t pinnumber, uint8_t state);
 	void IO_PinMode(uint8_t pinnumber, PinMode mode); //pinMode
 
-	static void Serial_Write(char * buf);
+	static void Serial_Write(char const * buf);
 	static void Serial_Write(int number);
 
-	uint8_t SPI_Write(uint8_t data);
+	void SPI_Write(uint8_t channel, uint8_t * data, uint8_t length);
 
 	static void wait_for(uint32_t delay_ms);
+
+private:
 
 };

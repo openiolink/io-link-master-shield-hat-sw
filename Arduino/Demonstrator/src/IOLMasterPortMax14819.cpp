@@ -32,10 +32,9 @@
 //!*******************************************************************************
 
 //!***** Header-Files ************************************************************
-#include "IOLMasterPortMax14819.h"
-#include "Arduino.h"
-#include "Max14819.h"
-#include "IOLink.h"
+#include "../include/IOLMasterPortMax14819.h"
+#include "../include/Max14819.h"
+#include "../include/IOLink.h"
 
 //!***** Macros ******************************************************************
 
@@ -128,24 +127,42 @@ uint8_t IOLMasterPortMax14819::begin() {
     // Initialize drivers
     if( pDriver_->begin(port_) == ERROR){
         retValue = ERROR;
-        Serial.println("Error initialize driver01 PortA");
+        // TODO: Serial.println("Error initialize driver01 PortA");
     }
     // Generate wakeup
-    retValue |= pDriver_->wakeUpRequest(port_);
+    retValue = uint8_t(retValue | pDriver_->wakeUpRequest(port_, &comSpeed_ ));
    if(retValue == ERROR){
-       Serial.println("Error wakeup driver01 PortA");
+       // TODO: Serial.println("Error wakeup driver01 PortA");
    }
    else{
-       comSpeed_ = retValue;
-       Serial.print("Communication established with ");
-       Serial.print(comSpeed_);
-       Serial.print(" Baud/s \n");
+       printf("Communication established with %d bauds\n", comSpeed_);// TODO: 
+       // TODO: Serial.print("Communication established with ");
+       // TODO: Serial.print(comSpeed_);
+       // TODO: Serial.print(" Baud/s \n");
    }
 
-    // Switch to operational
-    uint8_t value[1] = {IOL::MC::DEV_OPERATE};
-    if(pDriver_->writeData(IOL::MC::WRITE, 1, value , 1, IOL::M_TYPE_0, port_) == ERROR) Serial.println("Error operate driver01 PortA");
+   uint8_t pData[3];
+   uint16_t VendorID;
+   uint32_t DeviceID;
+   readDirectParameterPage(0x02, pData);
 
+   // VendorID
+   readDirectParameterPage(0x07, pData); //MSB
+   readDirectParameterPage(0x08, pData+1); //LSB
+   VendorID = uint16_t((pData[0] << 8) + pData[1]);
+   // DeviceID
+   readDirectParameterPage(0x09, pData); //MSB
+   readDirectParameterPage(0x0A, pData+1);
+   readDirectParameterPage(0x0B, pData+2); //LSB
+   DeviceID = (pData[0] << 16) + (pData[1] << 8) + pData[2];
+   printf("Vendor ID: %d, Device ID: %d\n", VendorID, DeviceID);
+
+    // Switch to operational
+
+   uint8_t value[1] = {IOL::MC::DEV_OPERATE};
+    if(pDriver_->writeData(IOL::MC::WRITE, 1, value , 1, IOL::M_TYPE_0, port_) == ERROR){
+        printf("Error operate driver01 PortA");// TODO: 
+    }
     return retValue;
 }
 
@@ -165,10 +182,10 @@ uint8_t IOLMasterPortMax14819::end() {
     uint8_t retValue = SUCCESS;
 
     // Send device fallback command
-    retValue |= pDriver_->writeData(IOL::MC::DEV_FALLBACK, 0, NULL , 1, IOL::M_TYPE_0, port_);
+	retValue = uint8_t(retValue | pDriver_->writeData(IOL::MC::DEV_FALLBACK, 0, nullptr , 1, IOL::M_TYPE_0, port_));
 
     // Reset port
-    retValue |= pDriver_->reset(port_);
+	retValue = uint8_t(retValue | pDriver_->reset(port_));
 
     return retValue;
 }
@@ -233,7 +250,7 @@ void IOLMasterPortMax14819::sendMCmd() {
 //!  \return       communication speed
 //!
 //!*******************************************************************************
-uint16_t IOLMasterPortMax14819::readComSpeed() {
+uint32_t IOLMasterPortMax14819::readComSpeed() {
     return comSpeed_;
 }
 
@@ -301,6 +318,30 @@ void IOLMasterPortMax14819::writeISDU() {
 
 }
 
+uint8_t IOLMasterPortMax14819::readDirectParameterPage(uint8_t address, uint8_t *pData) {
+	uint8_t MC;
+
+	if (address > 31) {
+		HardwareArduino::Serial_Write("readDirectParameterPage: address to big\n");
+		return 0;
+	}
+
+	MC = uint8_t((1 << 7) + (0b01 << 5) + address);
+
+	uint8_t retValue = SUCCESS;
+
+	// Send processdata request to device
+	retValue = uint8_t(retValue | pDriver_->writeData(MC, 0, nullptr, 1, IOL::M_TYPE_0, port_));
+
+	HardwareArduino::wait_for(2);
+
+	// Receive answer
+	retValue = uint8_t(retValue | pDriver_->readData(pData, 1, port_));
+
+	return retValue;
+
+}
+
 //!*******************************************************************************
 //!  function :    readPD
 //!*******************************************************************************
@@ -319,11 +360,15 @@ uint8_t IOLMasterPortMax14819::readPD(uint8_t *pData, uint8_t sizeData) {
     uint8_t retValue = SUCCESS;
 
     // Send processdata request to device
-    retValue |= pDriver_->writeData(IOL::MC::PD_READ, 0, NULL , sizeData, IOL::M_TYPE_2_X, port_);
+    retValue = uint8_t(retValue | pDriver_->writeData(IOL::MC::PD_READ, 0, nullptr , sizeData, IOL::M_TYPE_2_X, port_));
+
+	HardwareArduino::wait_for(10);
 
     // Receive answer
-    retValue |= pDriver_->readData(pData,  4,  port_);
-    if((pData[3]&IOL::PD_VALID_BIT) != 0) retValue = ERROR;
+    retValue = uint8_t(retValue | pDriver_->readData(pData,  4,  port_));
+    if((pData[3]&IOL::PD_VALID_BIT) != 0){
+		retValue = ERROR;
+	}
     return retValue;
 }
 
@@ -347,7 +392,7 @@ uint8_t IOLMasterPortMax14819::writePD(uint8_t sizeData, uint8_t *pData, uint8_t
     uint8_t retValue = SUCCESS;
 
     // Send processdata to device
-    retValue |= pDriver_->writeData(IOL::MC::WRITE, sizeData, pData, sizeAnswer, mSeqType, port_);
+    retValue = uint8_t(retValue | pDriver_->writeData(IOL::MC::WRITE, sizeData, pData, sizeAnswer, mSeqType, port_));
 
     return retValue;
 }

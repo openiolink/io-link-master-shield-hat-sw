@@ -31,16 +31,15 @@
 //!*****************************************************************************
 
 //!**** Header-Files ***********************************************************
-#include "Demonstrator_V1_0.h"
-#include <stdio.h>
+#include "../include/Demonstrator_V1_0.h"
 
-#include "Max14819.h"
-#include "BallufBus0023.h"
-#include "IOLMasterPort.h"
-#include "IOLMasterPortMax14819.h"
-#include "IOLGenericDevice.h"
-#include "IOLink.h"
-#include "HardwareArduino.h"
+#include "../include/Max14819.h"
+#include "../include/BallufBus0023.h"
+#include "../include/IOLMasterPort.h"
+#include "../include/IOLMasterPortMax14819.h"
+#include "../include/IOLGenericDevice.h"
+#include "../include/IOLink.h"
+#include "../include/HardwareArduino.h"
 
 //!**** Macros *****************************************************************
 
@@ -60,11 +59,10 @@ void printDataMatlab(uint16_t level, uint32_t measureNr);
 //The setup function is called once at startup of the sketch
 void Demo_setup()
 {
-  //testDistSensorPortLayer();
+    //testDistSensorPortLayer();
 	// Create hardware setup
 	hardware = HardwareArduino();
-  // Create drivers
-
+    // Create drivers
     max14819::Max14819 *pDriver01 = new max14819::Max14819(max14819::DRIVER01, &hardware);
     max14819::Max14819 *pDriver23 = new max14819::Max14819(max14819::DRIVER23, &hardware);
 
@@ -83,21 +81,12 @@ void Demo_setup()
     port2.begin();
     port3.begin();
 
-    // Variables used for distance and level conversation
-    uint16_t distance = 0;
-    uint16_t testVal = 0;
-    uint16_t level = 0;
-    uint8_t data[4];
-	char buf[64];
-
-
-
-
 }
 
 // The loop function is called in an endless loop
 void Demo_loop()
 {
+    HardwareArduino::Serial_Write("LOOP");
 	// Variables used for distance and level conversation
 	uint16_t distance = 0;
 	uint16_t testVal = 0;
@@ -132,7 +121,7 @@ void Demo_loop()
 		HardwareArduino::Serial_Write("Messung");
 		sprintf(buf, "%d", distance);
 		HardwareArduino::Serial_Write(buf);
-		level = 250 - distance / 10;
+		level = (uint16_t)(250 - distance / 10);
         
         // When there is a valid level
         if((level < 250) && (level > 0)){
@@ -142,39 +131,40 @@ void Demo_loop()
 
            if(level <= TANK_EMPTY_LVL){
                // Smartlight color red
-               dataLED[0] = 0b00100010;				// Segment dominance 2: not (0b0), Segment color 2 : red (0b010), Segment dominance 1: not (0b0) ,Segment color 1 : red (0b010)
-               dataLED[1] = 0b00000010;				// 0b0000,                                                        Segment dominance 3: not (0b0), Segment color 3 : red (0b010)
-               dataLED[2] = 0;						// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
-               dataLED[3] = 0b00000010;				// No Sync (0b0000), Level Mode (0b0010)
-               dataLED[4] = 0;						// Leveltype bottom - up (0x00)
+               dataLED[0] = 0b00100010;						               dataLED[5] = (uint8_t)(testVal&0xFF);		// Level Value, Lower Byte
+               dataLED[6] = (uint8_t)((testVal&0xFF00)>>8);	// Level Value, Higher Byte	// Segment dominance 2: not (0b0), Segment color 2 : red (0b010), Segment dominance 1: not (0b0) ,Segment color 1 : red (0b010)
+               dataLED[1] = 0b00000010;							// 0b0000,                                                        Segment dominance 3: not (0b0), Segment color 3 : red (0b010)
+               dataLED[2] = 0;									// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
+               dataLED[3] = 0b00000010;							// No Sync (0b0000), Level Mode (0b0010)
+               dataLED[4] = 0;									// Leveltype bottom - up (0x00)
                testVal = (uint16_t) ((float) level /(float) TANK_MAX_LVL * 65535.0);
-               dataLED[5] = testVal&0xFF;			// Level Value, Lower Byte
-               dataLED[6] = (testVal&0xFF00)>>8;	// Level Value, Higher Byte
-               dataLED[7] = 0;						// Buzzer Volume zero
+			   dataLED[5] = (uint8_t)(testVal & 0xFF);			// Level Value, Lower Byte
+			   dataLED[6] = (uint8_t)((testVal & 0xFF00) >> 8);	// Level Value, Higher Byte
+               dataLED[7] = 0;									// Buzzer Volume zero
            }
            else if(level <= TANK_WARNING_LVL){
                // Smartlight color yellow
                dataLED[0] = 0b00110011;
                dataLED[1] = 0b00000011;
-               dataLED[2] = 0;						// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
-               dataLED[3] = 0b00000010;				// No Sync (0b0000), Level Mode (0b0010)
+               dataLED[2] = 0;									// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
+               dataLED[3] = 0b00000010;							// No Sync (0b0000), Level Mode (0b0010)
                dataLED[4] = 0;
                testVal = (uint16_t) ((float) level / (float)TANK_MAX_LVL * 65535.0);
-               dataLED[5] = testVal&0xFF;
-               dataLED[6] = (testVal&0xFF00)>>8;
-               dataLED[7] = 0;						// Buzzer Volume zero
+			   dataLED[5] = (uint8_t)(testVal & 0xFF);			// Level Value, Lower Byte
+			   dataLED[6] = (uint8_t)((testVal & 0xFF00) >> 8);	// Level Value, Higher Byte
+               dataLED[7] = 0;									// Buzzer Volume zero
            }
            else if(level <= TANK_MAX_LVL){
                // Smartlight color green
                dataLED[0] = 0b00010001;
                dataLED[1] = 0b00000001;
-               dataLED[2] = 0;						// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
-               dataLED[3] = 0b00000010;				// No Sync (0b0000), Level Mode (0b0010)
+               dataLED[2] = 0;									// Buzzer state : off (0b0), 0b0, Buzzer Type: Continuous (0b00), 0b0000
+               dataLED[3] = 0b00000010;							// No Sync (0b0000), Level Mode (0b0010)
                dataLED[4] = 0;
                testVal = (uint16_t) ((float) level / (float)TANK_MAX_LVL * 65535.0);
-               dataLED[5] = testVal&0xFF;
-               dataLED[6] = (testVal&0xFF00)>>8;
-               dataLED[7] = 0;						// Buzzer Volume zero
+			   dataLED[5] = (uint8_t)(testVal & 0xFF);			// Level Value, Lower Byte
+			   dataLED[6] = (uint8_t)((testVal & 0xFF00) >> 8);	// Level Value, Higher Byte
+               dataLED[7] = 0;									// Buzzer Volume zero
            }
            else{
         	   // Smartlight starts blinking red
@@ -206,24 +196,7 @@ void Demo_loop()
 }
 
 void printDataMatlab(uint16_t level, uint32_t measureNr) {
-	hardware.Serial_Write(measureNr);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(0);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(0);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(0);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(0);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(0);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(0);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(0);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(0);
-	hardware.Serial_Write(";");
-	hardware.Serial_Write(level);
-	hardware.Serial_Write("\n");
+	char buf[256];
+	sprintf(buf, "%d;0;0;0;0;0;0;0;0;%d", measureNr, level);
+	hardware.Serial_Write(buf);
 }
