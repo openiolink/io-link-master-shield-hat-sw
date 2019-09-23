@@ -90,45 +90,6 @@ void Demo_setup()
     hardware.Serial_Write("Begin_4");
     port3.begin();
 
-    uint8_t buf[8];
-	buf[0] = 14;
-	buf[1] = 0;
-	buf[2] = 78;
-	buf[3] = 0;
-	buf[4] = 14;
-	buf[5] = 170;
-	buf[6] = 78;
-	buf[7] = 170;
-
-	while(1){
-		for(uint8_t i = 0; i<2; i++){ 
-			hardware.Serial_Write("Pos one");
-			hardware.SPI_Write(i, &buf[0], 2);
-			hardware.SPI_Write(i, &buf[2], 2);
-			buf[0] = 14;
-			buf[1] = 0;
-			buf[2] = 78;
-			buf[3] = 0;
-			buf[4] = 14;
-			buf[5] = 170;
-			buf[6] = 78;
-			buf[7] = 170;
-			hardware.wait_for(1*1000);
-			hardware.Serial_Write("Pos two");
-			hardware.SPI_Write(i, &buf[4], 2);
-			hardware.SPI_Write(i, &buf[6], 2);
-			hardware.wait_for(1*1000);
-			buf[0] = 14;
-			buf[1] = 0;
-			buf[2] = 78;
-			buf[3] = 0;
-			buf[4] = 14;
-			buf[5] = 170;
-			buf[6] = 78;
-			buf[7] = 170;
-		}
-	}
-
 }
 
 // The loop function is called in an endless loop

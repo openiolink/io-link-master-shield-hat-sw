@@ -132,7 +132,7 @@ uint8_t IOLMasterPortMax14819::begin() {
     }
     HardwareArduino::Serial_Write("WakeUp");
     // Generate wakeup
-    //retValue = uint8_t(retValue | pDriver_->wakeUpRequest(port_, &comSpeed_ ));
+    retValue = uint8_t(retValue | pDriver_->wakeUpRequest(port_, &comSpeed_ ));
    if(retValue == ERROR){
        // TODO: Serial.println("Error wakeup driver01 PortA");
    }

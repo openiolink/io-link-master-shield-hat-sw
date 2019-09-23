@@ -28,10 +28,6 @@ void HardwareArduino::begin(){
 
 	SPI.begin();
 	SPI.beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE0));
-
-	delay(10);
-
-	SPI.transfer(0xABCD);
 	delay(1000);
 
 	Serial_Write("Init_SPI finished");
@@ -69,11 +65,11 @@ void HardwareArduino::SPI_Write(uint8_t channel, uint8_t * data, uint8_t length)
     switch(channel){
         case 0:
             // Enable chipselect -> output high (low-active)
-            IO_Write(10, LOW);
+            IO_Write(max14819::port01CS, LOW);
             break;
         case 1:
             // Enable chipselect -> output high (low-active)
-            IO_Write(4, LOW);
+            IO_Write(max14819::port23CS, LOW);
             break;
     }
 
@@ -83,8 +79,8 @@ void HardwareArduino::SPI_Write(uint8_t channel, uint8_t * data, uint8_t length)
     }
 
     // Disable chipselect -> output high (low-active)
-    IO_Write(10, HIGH);
-    IO_Write(4, HIGH);
+    IO_Write(max14819::port01CS, HIGH);
+    IO_Write(max14819::port23CS, HIGH);
     
 
 }
