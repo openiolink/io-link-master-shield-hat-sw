@@ -91,7 +91,7 @@ Max14819::Max14819(){
 //!  \return        void
 //!
 //!******************************************************************************
-Max14819::Max14819(DriverSelect driver, HardwareArduino * hardware){
+Max14819::Max14819(DriverSelect driver, HardwareBase * hardware){
 	driver_ = driver;
 	isInitPortA_ = 0;
 	isInitPortB_ = 0;
@@ -1375,6 +1375,14 @@ uint8_t Max14819::readDI(PortSelect port) {
         break;
     }
     return state;
+}
+void max14819::Max14819::Serial_Write(char const * buf)
+{
+	Hardware->Serial_Write(buf);
+}
+void max14819::Max14819::wait_for(uint32_t delay_ms)
+{
+	Hardware->wait_for(delay_ms);
 }
 //!******************************************************************************
 //!  function :    	calculate_CKT

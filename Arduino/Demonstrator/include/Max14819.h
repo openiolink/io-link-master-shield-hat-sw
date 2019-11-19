@@ -32,7 +32,7 @@
 #ifndef MAX14819_H_INCLUDED
 #define MAX14819_H_INCLUDED
 
-#include "HardwareArduino.h"
+#include "HardwareBase.h"
 
 //!**** Header-Files **********************************************************
 
@@ -286,13 +286,13 @@ namespace max14819 {
         uint8_t isInitPortB_;
         uint8_t isLedCtrlPortAEn_;
         uint8_t isLedCtrlPortBEn_;
-		HardwareArduino* Hardware;
+		HardwareBase* Hardware;
 
     public:
         uint8_t comSpeedRegA;
         uint8_t comSpeedRegB;
         Max14819();
-        Max14819(DriverSelect driver, HardwareArduino* Hardware);
+        Max14819(DriverSelect driver, HardwareBase* Hardware);
         ~Max14819();
         uint8_t begin (PortSelect port);
         uint8_t end(PortSelect port);
@@ -333,6 +333,9 @@ namespace max14819 {
         uint8_t readCQ(PortSelect port);
 
         uint8_t readDI(PortSelect port);
+
+		void Serial_Write(char const * buf);
+		void wait_for(uint32_t delay_ms);
     };// class max14819
 } // namespace max14819
 
