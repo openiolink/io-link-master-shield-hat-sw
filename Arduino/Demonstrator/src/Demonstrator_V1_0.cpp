@@ -32,6 +32,7 @@
 
 //!**** Header-Files ***********************************************************
 #include "../include/Demonstrator_V1_0.h"
+#include <stdio.h>
 
 #include "../include/Max14819.h"
 #include "../include/BallufBus0023.h"
@@ -62,12 +63,10 @@ void Demo_setup()
     //testDistSensorPortLayer();
 	// Create hardware setup
 	hardware = HardwareArduino();
-    hardware.begin();
+	hardware.begin();
     // Create drivers
     max14819::Max14819 *pDriver01 = new max14819::Max14819(max14819::DRIVER01, &hardware);
     max14819::Max14819 *pDriver23 = new max14819::Max14819(max14819::DRIVER23, &hardware);
-
-    hardware.Serial_Write("Create Ports");
 
     // Create ports
 	port0 = IOLMasterPortMax14819(pDriver01, max14819::PORT0PORT);
@@ -75,19 +74,13 @@ void Demo_setup()
 	port2 = IOLMasterPortMax14819(pDriver23, max14819::PORT2PORT);
 	port3 = IOLMasterPortMax14819(pDriver23, max14819::PORT3PORT);
 
-    hardware.Serial_Write("BUS0023");
-
 	BUS0023 = BallufBus0023(&port0);
 
     // Start IO-Link communication
-    hardware.Serial_Write("Begin_1");
 	BUS0023.begin();
     //port0.begin();
-    hardware.Serial_Write("Begin_2");
     port1.begin();
-    hardware.Serial_Write("Begin_3");
     port2.begin();
-    hardware.Serial_Write("Begin_4");
     port3.begin();
 
 }
@@ -131,7 +124,7 @@ void Demo_loop()
 		sprintf(buf, "%d", distance);
 		HardwareArduino::Serial_Write(buf);
 		level = (uint16_t)(250 - distance / 10);
-        
+
         // When there is a valid level
         if((level < 250) && (level > 0)){
             //Serial.println(level);

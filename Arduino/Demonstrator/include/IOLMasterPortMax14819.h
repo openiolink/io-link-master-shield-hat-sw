@@ -37,7 +37,6 @@
 #include <stdint.h>
 #include "IOLMasterPort.h"
 #include "Max14819.h"
-#include "stdio.h"
 
 //!***** Macros *****************************************************************
 

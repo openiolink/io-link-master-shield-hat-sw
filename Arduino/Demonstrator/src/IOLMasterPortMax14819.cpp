@@ -32,6 +32,7 @@
 //!*******************************************************************************
 
 //!***** Header-Files ************************************************************
+#include "stdio.h"
 #include "../include/IOLMasterPortMax14819.h"
 #include "../include/Max14819.h"
 #include "../include/IOLink.h"
