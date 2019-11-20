@@ -32,8 +32,10 @@
 
 #ifndef _Demonstrator_V1_0_H_
 #define _Demonstrator_V1_0_H_
+#include "../include/HardwareBase.h"
+
 //add your includes for the project Demonstrator_V1_0 here
-void Demo_setup();
+void Demo_setup(HardwareBase *hardware_loc);
 void Demo_loop();
 
 //end of add your includes here

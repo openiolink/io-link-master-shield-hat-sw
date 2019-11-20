@@ -40,9 +40,9 @@
 #include "../include/IOLMasterPortMax14819.h"
 #include "../include/IOLGenericDevice.h"
 #include "../include/IOLink.h"
-#include "../include/HardwareBase.h"
-#include "../include/HardwareArduino.h"
-//#include "../include/HardwareRaspberry.h"
+
+//#include "../include/HardwareArduino.h"
+#include "../include/HardwareRaspberry.h"
 
 //!**** Macros *****************************************************************
 
@@ -52,7 +52,7 @@ IOLMasterPortMax14819 port1;
 IOLMasterPortMax14819 port2;
 IOLMasterPortMax14819 port3;
 BallufBus0023 BUS0023;
-HardwareArduino hardware;
+HardwareBase * hardware;
 //!**** Function prototypes ****************************************************
 void printDataMatlab(uint16_t level, uint32_t measureNr);
 //!**** Data *******************************************************************
@@ -60,15 +60,16 @@ void printDataMatlab(uint16_t level, uint32_t measureNr);
 //!**** Implementation *********************************************************
 
 //The setup function is called once at startup of the sketch
-void Demo_setup()
+void Demo_setup(HardwareBase *hardware_loc)
 {
     //testDistSensorPortLayer();
 	// Create hardware setup
-	hardware.begin();
+    hardware = hardware_loc;
+	hardware->begin();
 	
     // Create drivers
-    max14819::Max14819 *pDriver01 = new max14819::Max14819(max14819::DRIVER01, &hardware);
-    max14819::Max14819 *pDriver23 = new max14819::Max14819(max14819::DRIVER23, &hardware);
+    max14819::Max14819 *pDriver01 = new max14819::Max14819(max14819::DRIVER01, hardware);
+    max14819::Max14819 *pDriver23 = new max14819::Max14819(max14819::DRIVER23, hardware);
 
     // Create ports
 	port0 = IOLMasterPortMax14819(pDriver01, max14819::PORT0PORT);
@@ -90,7 +91,7 @@ void Demo_setup()
 // The loop function is called in an endless loop
 void Demo_loop()
 {
-    hardware.Serial_Write("LOOP");
+    hardware->Serial_Write("LOOP");
 	// Variables used for distance and level conversation
 	uint16_t distance = 0;
 	uint16_t testVal = 0;
@@ -119,12 +120,12 @@ void Demo_loop()
 	
 
     while(1){
-        hardware.wait_for(100);
+        hardware->wait_for(100);
         // Read process data and convert them if there is no error
 		distance = BUS0023.readDistance();
-		hardware.Serial_Write("Messung");
+		hardware->Serial_Write("Messung");
 		sprintf(buf, "%d", distance);
-		hardware.Serial_Write(buf);
+		hardware->Serial_Write(buf);
 		level = (uint16_t)(500 - distance / 10);
 
         // When there is a valid level
@@ -202,5 +203,5 @@ void Demo_loop()
 void printDataMatlab(uint16_t level, uint32_t measureNr) {
 	char buf[256];
 	sprintf(buf, "%d;0;0;0;0;0;0;0;0;%d", measureNr, level);
-	hardware.Serial_Write(buf);
+	hardware->Serial_Write(buf);
 }

@@ -25,12 +25,13 @@
 */
 
 #include "include/Demonstrator_V1_0.h"
+#include "include/HardwareArduino.h"
 
+HardwareArduino hardware_loc;
 
 // the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  Demo_setup();
+void setup() {  
+  Demo_setup(& hardware_loc);
 }
 
 // the loop function runs over and over again forever
