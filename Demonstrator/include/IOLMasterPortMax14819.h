@@ -8,13 +8,9 @@
 //!
 //! \author     Pascal Frei (freip2)
 //!
-//! \date       27.06.2019
+//! \date       2019-06-27
 //!
-//! \remark     Last Modification
-//!				 \li freip2, 27.06.2019, Cleaned
-//!              \li freip2, 14.05.2019, Created
-//!
-//!******************************************************************************
+//!*****************************************************************************
 //!	Copyright (C) 2019, Pascal Frei
 //!
 //!	This program is free software: you can redistribute it and/or modify
@@ -34,10 +30,10 @@
 #define IOLMASTERPORTMAX14819_H_INCLUDED
 
 //!***** Header-Files ***********************************************************
-#include <stdint.h>
 #include "IOLMasterPort.h"
 #include "Max14819.h"
 
+#include <stdint.h>
 //!***** Macros *****************************************************************
 
 //!***** Data types *************************************************************

@@ -7,11 +7,7 @@
 //!
 //!  \author     Pascal Frei (freip2)
 //!
-//! \date       27.06.2019
-//!
-//! \remark     Last Modification
-//!				 \li freip2, 27.06.2019, Cleaned
-//!              \li freip2, 14.05.2019, Created
+//!  \date       2019-06-27
 //!
 //!*****************************************************************************
 //!	Copyright (C) 2019, Pascal Frei
@@ -31,13 +27,12 @@
 //!******************************************************************************
 
 //!**** Header-Files ************************************************************
-#include <stdint.h>
-#include <stdio.h>
-//#include "Arduino.h"
-//#include <SPI.h>
-
 #include "../include/IOLMasterPort.h"
+
 #include "../include/Max14819.h"
+
+#include <cstdint>
+#include <cstdio>
 
 //!**** Macros ******************************************************************
 constexpr uint8_t read = 0b00000001;

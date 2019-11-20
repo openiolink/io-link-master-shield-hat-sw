@@ -7,11 +7,7 @@
 //!
 //!  \author     Pascal Frei (freip2)
 //!
-//! \date       27.06.2019
-//!
-//! \remark     Last Modification
-//!				 \li freip2, 27.06.2019, Cleaned
-//!              \li freip2, 14.05.2019, Created
+//!  \date       2019-06-27
 //!
 //!*****************************************************************************
 //!	Copyright (C) 2019, Pascal Frei
@@ -28,7 +24,7 @@
 //!	You should have received a copy of the GNU General Public License
 //!	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //!
-//!******************************************************************************
+//!*****************************************************************************
 
 //!**** Header-Files ************************************************************
 #include "../include/BalluffBni0088.h"

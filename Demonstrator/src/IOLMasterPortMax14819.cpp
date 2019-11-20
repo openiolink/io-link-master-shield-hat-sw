@@ -8,13 +8,9 @@
 //!
 //!  \author    Pascal Frei (freip2)
 //!
-//! \date       27.06.2019
+//!  \date       2019-06-27
 //!
-//! \remark     Last Modification
-//!				 \li freip2, 27.06.2019, Cleaned
-//!              \li freip2, 14.05.2019, Created
-//!
-//!*******************************************************************************
+//!*****************************************************************************
 //!	Copyright (C) 2019, Pascal Frei
 //!
 //!	This program is free software: you can redistribute it and/or modify
@@ -29,13 +25,14 @@
 //!	You should have received a copy of the GNU General Public License
 //!	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //!
-//!*******************************************************************************
+//!*****************************************************************************
 
 //!***** Header-Files ************************************************************
-#include "stdio.h"
 #include "../include/IOLMasterPortMax14819.h"
 #include "../include/Max14819.h"
 #include "../include/IOLink.h"
+
+#include <cstdio>
 
 //!***** Macros ******************************************************************
 
