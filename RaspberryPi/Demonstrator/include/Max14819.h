@@ -33,7 +33,6 @@
 #define MAX14819_H_INCLUDED
 
 #include "HardwareBase.h"
-#include "HardwareRaspberry.h"
 
 //!**** Header-Files **********************************************************
 
