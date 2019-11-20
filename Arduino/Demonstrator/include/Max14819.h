@@ -322,7 +322,7 @@ namespace max14819 {
 
         uint8_t disableLedControl(PortSelect port);
 
-        uint8_t writeLed(uint8_t led, uint8_t state);
+        uint8_t writeLed(HardwareBase::PinNames led, uint8_t state);
 
         uint8_t writeDIConfig(PortSelect port, uint8_t currentType, uint8_t threshold, uint8_t filter);
 

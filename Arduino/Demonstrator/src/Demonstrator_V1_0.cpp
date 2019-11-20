@@ -42,7 +42,7 @@
 #include "../include/IOLink.h"
 #include "../include/HardwareBase.h"
 #include "../include/HardwareArduino.h"
-//#include "../include/HardwareRaspberryPi.h"
+//#include "../include/HardwareRaspberry.h"
 
 //!**** Macros *****************************************************************
 
@@ -125,7 +125,7 @@ void Demo_loop()
 		hardware.Serial_Write("Messung");
 		sprintf(buf, "%d", distance);
 		hardware.Serial_Write(buf);
-		level = (uint16_t)(250 - distance / 10);
+		level = (uint16_t)(500 - distance / 10);
 
         // When there is a valid level
         if((level < 250) && (level > 0)){
