@@ -521,7 +521,7 @@ void IOLGenericDevice::readMinCycleTime() {
 	char buf[64];
 	uint8_t time = port->readDirectParameterPage(0x2, pData);	
 	sprintf(buf, "Min Cycle Time Data: %d, %d, Retval: %d", pData[0], pData[1], time);
-	HardwareRaspberry::Serial_Write(buf);
+	//HardwareBase::Serial_Write(buf);
 }
 
 //!*****************************************************************************

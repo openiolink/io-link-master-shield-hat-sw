@@ -82,17 +82,22 @@ HardwareRaspberry::~HardwareRaspberry()
 	// TODO
 }
 
-void HardwareRaspberry::IO_Write(uint8_t pinnumber, uint8_t state)
+void HardwareRaspberry::begin(){
+
+}
+
+void HardwareRaspberry::IO_Write(PinNames pinname, uint8_t state)
 {
+	uint8_t pinnumber = get_pinnumber(pinname);
 	switch (state) {
 		case HIGH	: digitalWrite(pinnumber, HIGH); break;
 		case LOW	: digitalWrite(pinnumber, LOW); break;
 	}
-
 }
 
-void HardwareRaspberry::IO_PinMode(uint8_t pinnumber, PinMode mode)
+void HardwareRaspberry::IO_PinMode(PinNames pinname, PinMode mode)
 {
+	uint8_t pinnumber = get_pinnumber(pinname);
 	switch (mode) {
 	case out: 
 		pinMode(pinnumber, OUTPUT);
@@ -130,4 +135,39 @@ void HardwareRaspberry::wait_for(uint32_t delay_ms)
 	//printf("Sleep_in\n");
 	usleep(delay_ms*1000);
 	//printf("Sleep_out\n");
+}
+
+uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
+{
+	switch (pinname) {
+		case port01CS:		return 31u;			//SPI_CS0	(Pin24, output)
+		case port23CS:		return 31u;			//SPI_CS1	(Pin26, output)
+		case port01IRQ:		return 0u;			//P01_IRQ	(Pin11, input)
+		case port23IRQ:		return 4u;			//P23_IRQ	(Pin16, input)
+		case port0DI:		return 7u;			//P0_DI     (Pin 7, input)
+		case port1DI:		return 15u;			//P1_DI     (Pin 8, input)
+		case port2DI:		return 16u;			//P2_DI     (Pin 10, input)
+		case port3DI:		return 30u;			//P3_DI     (Not avaiable)
+
+		case port0LedGreen: return 9u;			//P1_LED_GN	(Pin 5, output)
+		case port0LedRed:	return 8u;			//P1_LED_RD	(Pin 3, output)
+		case port0LedRxErr:	return 23u;			//P0_RX_ERR	(Pin33, input, pullup)
+		case port0LedRxRdy:	return 24u;			//P0_RX_RDY (Pin35, input, pullup)	
+
+		case port1LedGreen: return 21u;			//P0_LED_GN	(Pin29, output)
+		case port1LedRed:	return 22u;			//P0_LED_RD	(Pin31, output)
+		case port1LedRxErr:	return 2u;			//P1_RX_ERR	(Pin13, input, pullup)
+		case port1LedRxRdy:	return 3u;			//P1_RX_RDY (Pin15, input, pullup)	
+
+		case port2LedGreen: return 25u;			//P3_LED_GN	(Pin37, output)
+		case port2LedRed:	return 1u;			//P3_LED_RD	(Pin12, output)
+		case port2LedRxErr:	return 27u;			//P2_RX_ERR	(Pin36, input, pullup)
+		case port2LedRxRdy:	return 26u;			//P2_RX_RDY (Pin32, input, pullup)	
+ 
+		case port3LedGreen: return 29u;			//P2_LED_GN	(Pin40, output)
+		case port3LedRed:	return 5u;			//P2_LED_RD	(Pin18, output)
+		case port3LedRxErr:	return 6u;			//P3_RX_ERR	(Pin22, input, pullup)
+		case port3LedRxRdy:	return 28u;			//P3_RX_RDY (Pin38, input, pullup)	
+	}
+	return uint8_t();
 }

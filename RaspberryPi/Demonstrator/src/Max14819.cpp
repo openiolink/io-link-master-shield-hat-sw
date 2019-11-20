@@ -91,7 +91,7 @@ Max14819::Max14819(){
 //!  \return        void
 //!
 //!******************************************************************************
-Max14819::Max14819(DriverSelect driver, HardwareRaspberry * hardware){
+Max14819::Max14819(DriverSelect driver, HardwareBase * hardware){
 	driver_ = driver;
 	isInitPortA_ = 0;
 	isInitPortB_ = 0;
@@ -142,18 +142,18 @@ uint8_t Max14819::begin(PortSelect port) {
         // only initialize IOs and clock once for both
         if ((isInitPortA_ == 0) && (isInitPortB_ == 0)) {
             // Initialize IOs
-            Hardware->IO_PinMode(port01CS, Hardware->out);
-			Hardware->IO_PinMode(port01IRQ, Hardware->in_pullup);
-            Hardware->IO_PinMode(port0DI, Hardware->in_pullup);
-            Hardware->IO_PinMode(port1DI, Hardware->in_pullup);
-            Hardware->IO_PinMode(port0LedGreen, Hardware->out);
-            Hardware->IO_PinMode(port0LedRed, Hardware->out);
-            Hardware->IO_PinMode(port0RxError, Hardware->in_pullup);
-            Hardware->IO_PinMode(port0RxReady, Hardware->in_pullup);
-            Hardware->IO_PinMode(port1LedGreen, Hardware->out);
-            Hardware->IO_PinMode(port1LedRed, Hardware->out);
-            Hardware->IO_PinMode(port1RxError, Hardware->in_pullup);
-            Hardware->IO_PinMode(port1RxReady, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port01CS, Hardware->out);
+			Hardware->IO_PinMode(Hardware->port01IRQ, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port0DI, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port1DI, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port0LedGreen, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port0LedRed, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port0LedRxErr, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port0LedRxRdy, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port1LedGreen, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port1LedRed, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port1LedRxErr, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port1LedRxRdy, Hardware->in_pullup);
 
             // Define all SPI signals for the Geckoboard as inputs. if not, MOSI cant be thrown to 0V
             /*Hardware->IO_PinMode(50, Hardware->in);
@@ -166,13 +166,13 @@ uint8_t Max14819::begin(PortSelect port) {
             switch (port) {
             case PORTA:
                 // Set outputs high for Port A (low-active)
-                Hardware->IO_Write(port0LedGreen, HIGH);
-                Hardware->IO_Write(port0LedRed, HIGH);
+                Hardware->IO_Write(Hardware->port0LedGreen, HIGH);
+                Hardware->IO_Write(Hardware->port0LedRed, HIGH);
 
                 // Initialize LEDs for other port if not allready initialized
                 if (isInitPortB_ == 0) {
-                    Hardware->IO_Write(port1LedGreen, HIGH);
-                    Hardware->IO_Write(port1LedRed, HIGH);
+                    Hardware->IO_Write(Hardware->port1LedGreen, HIGH);
+                    Hardware->IO_Write(Hardware->port1LedRed, HIGH);
                 }
 
                 // Port A successfully initialized
@@ -180,13 +180,13 @@ uint8_t Max14819::begin(PortSelect port) {
                 break;
             case PORTB:
                 // Set outputs high for Port B (low-active)
-                Hardware->IO_Write(port1LedGreen, HIGH);
-                Hardware->IO_Write(port1LedRed, HIGH);
+                Hardware->IO_Write(Hardware->port1LedGreen, HIGH);
+                Hardware->IO_Write(Hardware->port1LedRed, HIGH);
 
                 // Initialize LEDs for other port if not allready initialized
                 if (isInitPortA_ == 0) {
-                    Hardware->IO_Write(port0LedGreen, HIGH);
-                    Hardware->IO_Write(port0LedRed, HIGH);
+                    Hardware->IO_Write(Hardware->port0LedGreen, HIGH);
+                    Hardware->IO_Write(Hardware->port0LedRed, HIGH);
                 }
 
                 // Port B successfully initialized
@@ -204,21 +204,21 @@ uint8_t Max14819::begin(PortSelect port) {
         // only initialize IOs and clock once for both ports
         if ((isInitPortA_ == 0) && (isInitPortB_ == 0)) {
             // Initialize IOs
-            Hardware->IO_PinMode(port23CS, Hardware->out);
-            Hardware->IO_PinMode(port23IRQ, Hardware->in_pullup);
-            Hardware->IO_PinMode(port2DI, Hardware->in_pullup);
-            Hardware->IO_PinMode(port3DI, Hardware->in_pullup);
-            Hardware->IO_PinMode(port2LedGreen, Hardware->out);
-            Hardware->IO_PinMode(port2LedRed, Hardware->out);
-            Hardware->IO_PinMode(port2RxError, Hardware->in_pullup);
-            Hardware->IO_PinMode(port2RxReady, Hardware->in_pullup);
-            Hardware->IO_PinMode(port3LedGreen, Hardware->out);
-            Hardware->IO_PinMode(port3LedRed, Hardware->out);
-            Hardware->IO_PinMode(port3RxError, Hardware->in_pullup);
-            Hardware->IO_PinMode(port3RxReady, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port23CS, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port23IRQ, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port2DI, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port3DI, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port2LedGreen, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port2LedRed, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port2LedRxErr, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port2LedRxRdy, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port3LedGreen, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port3LedRed, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port3LedRxErr, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port3LedRxRdy, Hardware->in_pullup);
 
             // Set chipselect output high (low-active)
-            Hardware->IO_Write(port23CS, HIGH);
+            Hardware->IO_Write(Hardware->port23CS, HIGH);
 
             // Enable clocking from another max14819
             retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ExtClkEn | ClkDiv0 | ClkDiv1)); // external OSC enable, 3.686 MHz input frequency
@@ -226,13 +226,13 @@ uint8_t Max14819::begin(PortSelect port) {
         switch (port) {
         case PORTA:
             // Set outputs high for Port A (low-active)
-            Hardware->IO_Write(port2LedGreen, HIGH);
-            Hardware->IO_Write(port2LedRed, HIGH);
+            Hardware->IO_Write(Hardware->port2LedGreen, HIGH);
+            Hardware->IO_Write(Hardware->port2LedRed, HIGH);
 
             // Initialize LEDs for other port if not allready initialized
             if (isInitPortA_ == 0) {
-                Hardware->IO_Write(port3LedGreen, HIGH);
-                Hardware->IO_Write(port3LedRed, HIGH);
+                Hardware->IO_Write(Hardware->port3LedGreen, HIGH);
+                Hardware->IO_Write(Hardware->port3LedRed, HIGH);
             }
 
             // Port A successfully initialized
@@ -241,13 +241,13 @@ uint8_t Max14819::begin(PortSelect port) {
             break;
         case PORTB:
             // Set outputs high for Port B (low-active)
-            Hardware->IO_Write(port3LedGreen, HIGH);
-            Hardware->IO_Write(port3LedRed, HIGH);
+            Hardware->IO_Write(Hardware->port3LedGreen, HIGH);
+            Hardware->IO_Write(Hardware->port3LedRed, HIGH);
 
             // Initialize LEDs for other port if not allready initialized
             if (isInitPortB_ == 0) {
-                Hardware->IO_Write(port2LedGreen, HIGH);
-                Hardware->IO_Write(port2LedRed, HIGH);
+                Hardware->IO_Write(Hardware->port2LedGreen, HIGH);
+                Hardware->IO_Write(Hardware->port2LedRed, HIGH);
             }
             // Port B successfully initialized
             isInitPortB_ = 1;
@@ -278,7 +278,7 @@ uint8_t Max14819::begin(PortSelect port) {
         // Set all Interrupts
         shadowReg = readRegister(InterruptEn);
         retValue = uint8_t(retValue | writeRegister(InterruptEn, StatusIntEn | WURQIntEn | TxErrIntEnA | RxErrIntEnA | RxDaRdyIntEnA | shadowReg));
-        // Enable RxReady and RyError LED
+        // Enable LedRxRdy and RyError LED
         shadowReg = readRegister(LEDCtrl);
         retValue = uint8_t(retValue | writeRegister(LEDCtrl, RxRdyEnA | RxErrEnA | shadowReg));
         // Initialize the Channel A register
@@ -289,7 +289,7 @@ uint8_t Max14819::begin(PortSelect port) {
         // Set all Interrupts
         shadowReg = readRegister(InterruptEn);
         retValue = uint8_t(retValue | writeRegister(InterruptEn, StatusIntEn | WURQIntEn | TxErrIntEnB | RxErrIntEnB | RxDaRdyIntEnB | shadowReg));
-        // Enable RxReady and RyError LED
+        // Enable LedRxRdy and RyError LED
         shadowReg = readRegister(LEDCtrl);
         retValue = uint8_t(retValue | writeRegister(LEDCtrl, RxRdyEnB | RxErrEnB | shadowReg));
         // Initialize the Channel A register
@@ -329,12 +329,12 @@ uint8_t Max14819::end(PortSelect port) {
     // turn off all LEDs
     switch(port) {
         case PORTA:
-            Hardware->IO_Write(port1LedGreen, HIGH);
-            Hardware->IO_Write(port1LedRed, HIGH);
+            Hardware->IO_Write(Hardware->port1LedGreen, HIGH);
+            Hardware->IO_Write(Hardware->port1LedRed, HIGH);
             break;
         case PORTB:
-            Hardware->IO_Write(port0LedGreen, HIGH);
-            Hardware->IO_Write(port0LedRed, HIGH);
+            Hardware->IO_Write(Hardware->port0LedGreen, HIGH);
+            Hardware->IO_Write(Hardware->port0LedRed, HIGH);
             break;
         default:
         retValue = ERROR;
@@ -522,22 +522,22 @@ uint8_t Max14819::wakeUpRequest(PortSelect port, uint32_t * comSpeed_ret) {
     case 0:
         // No communication established
         *comSpeed_ret = 0;
-        printf("WAKEUP-Error\n");// TODO: 
+        Hardware->Serial_Write("WAKEUP-Error\n");// TODO: 
         break;
     case ComRt0:
         // Communication established at 4.8 kBaud/s
         *comSpeed_ret = 4800;
-        printf("WAKEUP-4800\n");// TODO: 
+        Hardware->Serial_Write("WAKEUP-4800\n");// TODO: 
         break;
     case ComRt1:
         // Communication established at 38.4 kBaud/s
         *comSpeed_ret = 38400;
-        printf("WAKEUP-38400\n");// TODO: 
+        Hardware->Serial_Write("WAKEUP-38400\n");// TODO: 
         break;
     case (ComRt0 | ComRt1):
         // Communication established at 230.4 kBaud/s
         *comSpeed_ret = 230400;
-        printf("WAKEUP-230400\n");// TODO: 
+        Hardware->Serial_Write("WAKEUP-230400\n");// TODO: 
         break;
     default:
 		return ERROR;
@@ -963,7 +963,7 @@ uint8_t Max14819::disableCyclicSend(PortSelect port) {
 //!******************************************************************************
 //!  function :    	enableLedControl
 //!******************************************************************************
-//! \brief          Enables to controll the two leds portXRxReady, portXRxError
+//! \brief          Enables to controll the two leds portXLedRxRdy, portXLedRxErr
 //!                 with SPI. Interrupts on these pins are disabled.
 //!
 //!  \type          local
@@ -976,7 +976,7 @@ uint8_t Max14819::disableCyclicSend(PortSelect port) {
 uint8_t Max14819::enableLedControl(PortSelect port) {
     uint8_t retValue = SUCCESS;
 
-    // Enable RxReady and RxError LED, disable interrupts RxReady and RxError
+    // Enable LedRxRdy and LedRxErr LED, disable interrupts LedRxRdy and LedRxErr
     // LEDs are switched off
     uint8_t shadowReg = readRegister(LEDCtrl);
     switch(port){
@@ -1001,8 +1001,8 @@ uint8_t Max14819::enableLedControl(PortSelect port) {
 //!******************************************************************************
 //!  function :    	disableLedControl
 //!******************************************************************************
-//!  \brief        	Disables the controll of the two leds portXRxReady,
-//!					portXRxError with SPI. Interrupts on these pins are enabled.
+//!  \brief        	Disables the controll of the two leds portXLedRxRdy,
+//!					portXLedRxErr with SPI. Interrupts on these pins are enabled.
 //!
 //!  \type         	local
 //!
@@ -1014,7 +1014,7 @@ uint8_t Max14819::enableLedControl(PortSelect port) {
 uint8_t Max14819::disableLedControl(PortSelect port) {
     uint8_t retValue = SUCCESS;
 
-    // Disable RxReady and RxError LED, enable interrupts RxReady and RxError
+    // Disable LedRxRdy and LedRxErr LED, enable interrupts LedRxRdy and LedRxErr
     uint8_t shadowReg = readRegister(LEDCtrl);
     switch(port){
     case PORTA:
@@ -1048,7 +1048,7 @@ uint8_t Max14819::disableLedControl(PortSelect port) {
 //!  \return        0 if success
 //!
 //!******************************************************************************
-uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
+uint8_t Max14819::writeLed(HardwareBase::PinNames led, uint8_t state) {
     uint8_t retValue = SUCCESS;
     uint8_t shadowReg = 0;
 
@@ -1059,13 +1059,13 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
     switch(driver_){
     case DRIVER01:
         switch (led) {
-        case port0LedGreen:
+		case HardwareBase::port0LedGreen:
 			Hardware->IO_Write(led, state);
             break;
-        case port0LedRed:
+        case HardwareBase::port0LedRed:
 			Hardware->IO_Write(led, state);
             break;
-        case port0LedRxErr:
+        case HardwareBase::port0LedRxErr:
             if (isLedCtrlPortAEn_) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
@@ -1080,7 +1080,7 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
             } else
                 retValue = ERROR;
             break;
-        case port0LedRxRdy:
+        case HardwareBase::port0LedRxRdy:
             if (isLedCtrlPortAEn_) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
@@ -1094,13 +1094,13 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 }
             }
             break;
-        case port1LedGreen:
+        case HardwareBase::port1LedGreen:
 			Hardware->IO_Write(led, state);
             break;
-        case port1LedRed:
+        case HardwareBase::port1LedRed:
 			Hardware->IO_Write(led, state);
             break;
-        case port1LedRxErr:
+        case HardwareBase::port1LedRxErr:
             if (isLedCtrlPortBEn_) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
@@ -1115,7 +1115,7 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
             } else
                 retValue = ERROR;
             break;
-        case port1LedRxRdy:
+        case HardwareBase::port1LedRxRdy:
             if (isLedCtrlPortBEn_) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
@@ -1130,17 +1130,18 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
             } else
                 retValue = ERROR;
             break;
+		default: break;
         }// end switch(led)
         break;
     case DRIVER23:
         switch (led) {
-        case port2LedGreen:
+        case HardwareBase::port2LedGreen:
 			Hardware->IO_Write(led, state);
             break;
-        case port2LedRed:
+        case HardwareBase::port2LedRed:
 			Hardware->IO_Write(led, state);
             break;
-        case port2LedRxErr:
+        case HardwareBase::port2LedRxErr:
             if (isLedCtrlPortAEn_) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
@@ -1155,7 +1156,7 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
             } else
                 retValue = ERROR;
             break;
-        case port2LedRxRdy:
+        case HardwareBase::port2LedRxRdy:
             if (isLedCtrlPortAEn_) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
@@ -1169,13 +1170,13 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
                 }
             }
             break;
-        case port3LedGreen:
+        case HardwareBase::port3LedGreen:
 			Hardware->IO_Write(led, state);
             break;
-        case port3LedRed:
+        case HardwareBase::port3LedRed:
 			Hardware->IO_Write(led, state);
             break;
-        case port3LedRxErr:
+        case HardwareBase::port3LedRxErr:
             if (isLedCtrlPortBEn_) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
@@ -1190,7 +1191,7 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
             } else
                 retValue = ERROR;
             break;
-        case port3LedRxRdy:
+        case HardwareBase::port3LedRxRdy:
             if (isLedCtrlPortBEn_) {
                 // Switch LED on, set corresponding bit in LEDCtrl register
                 if (state == LED_ON) {
@@ -1205,6 +1206,7 @@ uint8_t Max14819::writeLed(uint8_t led, uint8_t state) {
             } else
                 retValue = ERROR;
             break;
+		default: break;
         } // end switch(led)
         break;
     default:
@@ -1375,6 +1377,14 @@ uint8_t Max14819::readDI(PortSelect port) {
         break;
     }
     return state;
+}
+void max14819::Max14819::Serial_Write(char const * buf)
+{
+	Hardware->Serial_Write(buf);
+}
+void max14819::Max14819::wait_for(uint32_t delay_ms)
+{
+	Hardware->wait_for(delay_ms);
 }
 //!******************************************************************************
 //!  function :    	calculate_CKT

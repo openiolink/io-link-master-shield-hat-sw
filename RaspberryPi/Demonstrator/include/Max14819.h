@@ -32,6 +32,7 @@
 #ifndef MAX14819_H_INCLUDED
 #define MAX14819_H_INCLUDED
 
+#include "HardwareBase.h"
 #include "HardwareRaspberry.h"
 
 //!**** Header-Files **********************************************************
@@ -286,13 +287,13 @@ namespace max14819 {
         uint8_t isInitPortB_;
         uint8_t isLedCtrlPortAEn_;
         uint8_t isLedCtrlPortBEn_;
-		HardwareRaspberry* Hardware;
+		HardwareBase* Hardware;
 
     public:
         uint8_t comSpeedRegA;
         uint8_t comSpeedRegB;
         Max14819();
-        Max14819(DriverSelect driver, HardwareRaspberry* Hardware);
+        Max14819(DriverSelect driver, HardwareBase* Hardware);
         ~Max14819();
         uint8_t begin (PortSelect port);
         uint8_t end(PortSelect port);
@@ -322,7 +323,7 @@ namespace max14819 {
 
         uint8_t disableLedControl(PortSelect port);
 
-        uint8_t writeLed(uint8_t led, uint8_t state);
+        uint8_t writeLed(HardwareBase::PinNames led, uint8_t state);
 
         uint8_t writeDIConfig(PortSelect port, uint8_t currentType, uint8_t threshold, uint8_t filter);
 
@@ -333,6 +334,9 @@ namespace max14819 {
         uint8_t readCQ(PortSelect port);
 
         uint8_t readDI(PortSelect port);
+
+		void Serial_Write(char const * buf);
+		void wait_for(uint32_t delay_ms);
     };// class max14819
 } // namespace max14819
 
