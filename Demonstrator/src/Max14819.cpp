@@ -522,22 +522,18 @@ uint8_t Max14819::wakeUpRequest(PortSelect port, uint32_t * comSpeed_ret) {
     case 0:
         // No communication established
         *comSpeed_ret = 0;
-        Hardware->Serial_Write("WAKEUP-Error\n");// TODO: 
         break;
     case ComRt0:
         // Communication established at 4.8 kBaud/s
         *comSpeed_ret = 4800;
-        Hardware->Serial_Write("WAKEUP-4800\n");// TODO: 
         break;
     case ComRt1:
         // Communication established at 38.4 kBaud/s
         *comSpeed_ret = 38400;
-        Hardware->Serial_Write("WAKEUP-38400\n");// TODO: 
         break;
     case (ComRt0 | ComRt1):
         // Communication established at 230.4 kBaud/s
         *comSpeed_ret = 230400;
-        Hardware->Serial_Write("WAKEUP-230400\n");// TODO: 
         break;
     default:
 		return ERROR;
