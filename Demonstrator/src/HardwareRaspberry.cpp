@@ -1,3 +1,5 @@
+#ifndef ARDUINO
+
 #include "../include/HardwareRaspberry.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -171,3 +173,4 @@ uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
 	}
 	return uint8_t();
 }
+#endif
