@@ -30,7 +30,7 @@
 #include "../include/Demonstrator_V1_0.h"
 
 #include "../include/Max14819.h"
-#include "../include/BallufBus0023.h"
+#include "../include/BalluffBus0023.h"
 #include "../include/IOLMasterPort.h"
 #include "../include/IOLMasterPortMax14819.h"
 #include "../include/IOLGenericDevice.h"
@@ -45,7 +45,7 @@ IOLMasterPortMax14819 port0;
 IOLMasterPortMax14819 port1;
 IOLMasterPortMax14819 port2;
 IOLMasterPortMax14819 port3;
-BallufBus0023 BUS0023;
+BalluffBus0023 BUS0023;
 HardwareBase * hardware;
 //!**** Function prototypes ****************************************************
 void printDataMatlab(uint16_t level, uint32_t measureNr);
@@ -71,7 +71,7 @@ void Demo_setup(HardwareBase *hardware_loc)
 	port2 = IOLMasterPortMax14819(pDriver23, max14819::PORT2PORT);
 	port3 = IOLMasterPortMax14819(pDriver23, max14819::PORT3PORT);
 
-	BUS0023 = BallufBus0023(&port0);
+	BUS0023 = BalluffBus0023(&port0);
 
     // Start IO-Link communication
 	BUS0023.begin();

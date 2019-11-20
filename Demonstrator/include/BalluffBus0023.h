@@ -1,9 +1,9 @@
 
 //!*****************************************************************************
-//!  \file       BallufBus0023.h
+//!  \file       BalluffBus0023.h
 //!*****************************************************************************
 //!
-//!  \brief		Balluf BUS0023 distance sensor specific driver, not implemented yet
+//!  \brief		Balluff BUS0023 distance sensor specific driver, not implemented yet
 //!
 //!  \author     Pascal Frei (freip2)
 //!
@@ -25,8 +25,8 @@
 //!	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //!
 //!******************************************************************************
-#ifndef BALLUFBUS0023_H_INCLUDED
-#define BALLUFBUS0023_H_INCLUDED
+#ifndef BALLUFFBUS0023_H_INCLUDED
+#define BALLUFFBUS0023_H_INCLUDED
 
 //!**** Header-Files ***********************************************************
 #include "IOLGenericDevice.h"
@@ -41,10 +41,10 @@
 
 //!**** Implementation *********************************************************
 
-class BallufBus0023: public IOLGenericDevice {
+class BalluffBus0023: public IOLGenericDevice {
 public:
-	BallufBus0023();
-	BallufBus0023(IOLMasterPort * port);
+	BalluffBus0023();
+	BalluffBus0023(IOLMasterPort * port);
     
 	void begin();
 
@@ -91,4 +91,4 @@ public:
 	void readTeachIn();
 };
 
-#endif //BALLUFBUS0023_H_INCLUDED
+#endif //BALLUFFBUS0023_H_INCLUDED

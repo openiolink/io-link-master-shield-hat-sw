@@ -1,6 +1,6 @@
 
 //!*****************************************************************************
-//!  \file       BallufBus0023.cpp
+//!  \file       BalluffBus0023.cpp
 //!*****************************************************************************
 //!
 //!  \brief		Balluf BUS0023 distance sensor specific driver, not implemented yet
@@ -27,7 +27,7 @@
 //!*****************************************************************************
 
 //!**** Header-Files ***********************************************************
-#include "../include/BallufBus0023.h"
+#include "../include/BalluffBus0023.h"
 
 #include <cstdio>
 
@@ -42,11 +42,11 @@
 //!**** Implementation *********************************************************
 
 
-BallufBus0023::BallufBus0023():IOLGenericDevice(nullptr) {
+BalluffBus0023::BalluffBus0023():IOLGenericDevice(nullptr) {
 
 }
 
-BallufBus0023::BallufBus0023(IOLMasterPort * port) : IOLGenericDevice(port){
+BalluffBus0023::BalluffBus0023(IOLMasterPort * port) : IOLGenericDevice(port){
 	
 }
 
@@ -62,7 +62,7 @@ BallufBus0023::BallufBus0023(IOLMasterPort * port) : IOLGenericDevice(port){
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::begin() {
+void BalluffBus0023::begin() {
 	port->begin();
 
 	/*uint8_t pData[3];
@@ -95,7 +95,7 @@ void BallufBus0023::begin() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::end() {
+void BalluffBus0023::end() {
 
 }
 
@@ -111,7 +111,7 @@ void BallufBus0023::end() {
 //!  \return       void
 //!
 //!*****************************************************************************
-uint16_t BallufBus0023::readDistance() {
+uint16_t BalluffBus0023::readDistance() {
 	uint8_t data[4];
 	uint16_t distance = 0;
 	if(port->readPD(data, 4)!= ERROR){
@@ -132,7 +132,7 @@ uint16_t BallufBus0023::readDistance() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readSwitchState() {
+void BalluffBus0023::readSwitchState() {
 
 }
 
@@ -148,7 +148,7 @@ void BallufBus0023::readSwitchState() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeDetPoint1() {
+void BalluffBus0023::writeDetPoint1() {
 
 }
 
@@ -164,7 +164,7 @@ void BallufBus0023::writeDetPoint1() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readDetPoint1() {
+void BalluffBus0023::readDetPoint1() {
 
 }
 
@@ -180,7 +180,7 @@ void BallufBus0023::readDetPoint1() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeRetDetPoint1() {
+void BalluffBus0023::writeRetDetPoint1() {
 
 }
 
@@ -196,7 +196,7 @@ void BallufBus0023::writeRetDetPoint1() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readRetDetPoint1() {
+void BalluffBus0023::readRetDetPoint1() {
 
 }
 
@@ -212,7 +212,7 @@ void BallufBus0023::readRetDetPoint1() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeDetPoint2() {
+void BalluffBus0023::writeDetPoint2() {
 
 }
 
@@ -228,7 +228,7 @@ void BallufBus0023::writeDetPoint2() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readDetPoint2() {
+void BalluffBus0023::readDetPoint2() {
 
 }
 
@@ -244,7 +244,7 @@ void BallufBus0023::readDetPoint2() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeRetDetPoint2() {
+void BalluffBus0023::writeRetDetPoint2() {
 
 }
 
@@ -260,7 +260,7 @@ void BallufBus0023::writeRetDetPoint2() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readRetDetPoint2() {
+void BalluffBus0023::readRetDetPoint2() {
 
 }
 
@@ -276,7 +276,7 @@ void BallufBus0023::readRetDetPoint2() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeSwitchMode() {
+void BalluffBus0023::writeSwitchMode() {
 
 }
 
@@ -292,7 +292,7 @@ void BallufBus0023::writeSwitchMode() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readSwitchMode() {
+void BalluffBus0023::readSwitchMode() {
 
 }
 
@@ -308,7 +308,7 @@ void BallufBus0023::readSwitchMode() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeFilter() {
+void BalluffBus0023::writeFilter() {
 
 }
 
@@ -324,7 +324,7 @@ void BallufBus0023::writeFilter() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readFilter() {
+void BalluffBus0023::readFilter() {
 
 }
 
@@ -340,7 +340,7 @@ void BallufBus0023::readFilter() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeFilterStrength() {
+void BalluffBus0023::writeFilterStrength() {
 
 }
 
@@ -356,7 +356,7 @@ void BallufBus0023::writeFilterStrength() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readFilterStrength() {
+void BalluffBus0023::readFilterStrength() {
 
 }
 
@@ -372,7 +372,7 @@ void BallufBus0023::readFilterStrength() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeForgroundSuppression() {
+void BalluffBus0023::writeForgroundSuppression() {
 
 }
 
@@ -388,7 +388,7 @@ void BallufBus0023::writeForgroundSuppression() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readForegroundSuppression() {
+void BalluffBus0023::readForegroundSuppression() {
 
 }
 
@@ -404,7 +404,7 @@ void BallufBus0023::readForegroundSuppression() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::writeTeachIn() {
+void BalluffBus0023::writeTeachIn() {
 
 }
 
@@ -420,6 +420,6 @@ void BallufBus0023::writeTeachIn() {
 //!  \return       void
 //!
 //!*****************************************************************************
-void BallufBus0023::readTeachIn() {
+void BalluffBus0023::readTeachIn() {
 
 }

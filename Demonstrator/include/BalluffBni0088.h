@@ -3,7 +3,7 @@
 //!  \file       BalluffBni0088.h
 //!*****************************************************************************
 //!
-//!  \brief		Balluf BNI0088 Smartlight specific driver, not implemented yet
+//!  \brief		Balluff BNI0088 Smartlight specific driver, not implemented yet
 //!
 //!  \author     Pascal Frei (freip2)
 //!
