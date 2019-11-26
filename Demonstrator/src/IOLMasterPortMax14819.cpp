@@ -32,7 +32,7 @@
 #include "../include/Max14819.h"
 #include "../include/IOLink.h"
 
-#include <cstdio>
+#include <stdio.h>
 
 //!***** Macros ******************************************************************
 

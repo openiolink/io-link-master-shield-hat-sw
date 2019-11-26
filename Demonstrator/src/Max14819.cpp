@@ -32,7 +32,7 @@
 #include "../include/Max14819.h"
 
 #include <cstdint>
-#include <cstdio>
+#include <stdio.h>
 
 //!**** Macros ******************************************************************
 constexpr uint8_t read = 0b00000001;

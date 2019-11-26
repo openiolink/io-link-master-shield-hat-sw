@@ -36,7 +36,7 @@
 #include "../include/IOLGenericDevice.h"
 #include "../include/IOLink.h"
 
-#include <cstdio>
+#include <stdio.h>
 
 //!**** Macros *****************************************************************
 
