@@ -71,7 +71,7 @@ namespace max14819 {
 
 	// Timing constexprants for Max14819
 	constexpr uint32_t INIT_POWER_OFF_DELAY	= 1000u;	// Delay in ms for disable duration of sensor power when startup
-	constexpr uint32_t INIT_BOOTUP_DELAY    = 100u;	// Delay after switch-to-operational-command
+	constexpr uint32_t INIT_BOOTUP_DELAY    = 300u;	// Delay after switch-to-operational-command
 	constexpr uint32_t INIT_WURQ_TIMEOUT    = 80u;   // Timeout in ms for abort WURQ request (2x retry after 10ms, 3x tries a 20ms)
 
 	// IO-Link Master Shield Max14819 Address
