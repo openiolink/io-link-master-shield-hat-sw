@@ -27,7 +27,7 @@
 //!*****************************************************************************
 
 //!**** Header-Files ***********************************************************
-#include "../include/IOLGenericDevice.h"
+#include "IOLGenericDevice.h"
 
 #include <stdio.h>
 

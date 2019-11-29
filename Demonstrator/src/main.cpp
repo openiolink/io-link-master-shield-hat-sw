@@ -29,9 +29,9 @@
 	//!*****************************************************************************
 
 	//!**** Header-Files ***********************************************************
-	#include "../include/Demonstrator_V1_0.h"
+	#include "Demonstrator_V1_0.h"
 
-	#include "../include/HardwareRaspberry.h"
+	#include "HardwareRaspberry.h"
 
 	//!**** Macros *****************************************************************
 

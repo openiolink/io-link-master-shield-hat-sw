@@ -1,6 +1,6 @@
 #ifndef ARDUINO
 
-#include "../include/HardwareRaspberry.h"
+#include "HardwareRaspberry.h"
 #include <stdio.h>
 #include <unistd.h>
 

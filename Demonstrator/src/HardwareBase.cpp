@@ -1,4 +1,4 @@
-#include "../include/HardwareBase.h"
+#include "HardwareBase.h"
 
 HardwareBase::HardwareBase()
 {

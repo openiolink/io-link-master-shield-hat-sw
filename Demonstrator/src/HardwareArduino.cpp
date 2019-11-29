@@ -1,4 +1,4 @@
-#include "../include/HardwareArduino.h"
+#include "HardwareArduino.h"
 #include <Arduino.h>
 #include <SPI.h>
 #include <stdio.h>

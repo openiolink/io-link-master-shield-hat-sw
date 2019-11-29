@@ -1,5 +1,5 @@
 #pragma once
-#include "../include/HardwareBase.h"
+#include "HardwareBase.h"
 
 class HardwareRaspberry:
 	public HardwareBase

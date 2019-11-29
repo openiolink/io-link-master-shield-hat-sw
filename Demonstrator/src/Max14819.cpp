@@ -27,9 +27,9 @@
 //!******************************************************************************
 
 //!**** Header-Files ************************************************************
-#include "../include/IOLMasterPort.h"
+#include "IOLMasterPort.h"
 
-#include "../include/Max14819.h"
+#include "Max14819.h"
 
 #include <cstdint>
 #include <stdio.h>
