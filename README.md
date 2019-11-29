@@ -4,7 +4,7 @@
 - Pascal Frei
 - Markus Gafner
 
-## Readme how to build the application for Arduino
+## Readme how to build the application for Arduino Due
 ### Requirements on the host system
 The easiest way to deploy for Arduino is to use the Arduino IDE, It's available for Windows, Mac OS X and Linux as well. It could get downloaded there: [download]( https://www.arduino.cc/en/Main/Software)
 
