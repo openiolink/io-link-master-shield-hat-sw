@@ -24,7 +24,7 @@ To use the application on Raspberry Pi 3B, the operating system Raspbian is used
 
 This can get installed using the command 
 
-``` sudo apt-get install wiringpi cmake ```
+` sudo apt-get install wiringpi cmake `
 
 After a successful installation, the Raspberry Pi is ready to use.
 
@@ -32,13 +32,13 @@ After a successful installation, the Raspberry Pi is ready to use.
 
 The easiest was to compile the project is, to copy all sources to the Raspberry Pi, and compile the project on the Raspberry Pi itself.
 
-- Copy all source files to a folder you like, for example ```/home/pi/projects/```
-- With the SSH-connection, move to the folder you copied the files: ```cd /home/pi/projects/```
-- Move to the project folder: ```cd Demonstrator/```
-- Initialize CMake: ```cmake .```
-- Build the binary: ```make```
+- Copy all source files to a folder you like, for example `/home/pi/projects/`
+- With the SSH-connection, move to the folder you copied the files: `cd /home/pi/projects/`
+- Move to the project folder: `cd Demonstrator/`
+- Initialize CMake: `cmake .`
+- Build the binary: `make`
 
-If every step was successful, in the project folder should be an executable file, for example ```Demonstrator_v1_0.bin``` which could get executed using ```./Demonstrator_v1_0.bin```
+If every step was successful, in the project folder should be an executable file, for example `Demonstrator_v1_0.bin` which could get executed using `./Demonstrator_v1_0.bin`
 
 #### Editing on the target
 If a problem in the application exists, there is a possibility to edit the files on the target. This can be done for example using WinSCP.
