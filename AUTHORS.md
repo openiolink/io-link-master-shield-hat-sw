@@ -1,2 +1,2 @@
-- [Pascal Frei](paescu.frei@gmail.com)
-- [Markus Gafner](markus.gafner@bfh.ch), BFH-I3S, Burgdorf, Switzerland
+- [Pascal Frei](mailto:paescu.frei@gmail.com)
+- [Markus Gafner](mailto:markus.gafner@bfh.ch), BFH-I3S, Burgdorf, Switzerland
