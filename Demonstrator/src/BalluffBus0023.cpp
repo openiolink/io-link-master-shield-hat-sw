@@ -29,7 +29,11 @@
 //!**** Header-Files ***********************************************************
 #include "BalluffBus0023.h"
 
-#include <stdio.h>
+#ifdef ARDUINO
+	#include <stdio.h>
+#else
+	#include <cstdio>
+#endif	
 
 //!**** Macros *****************************************************************
 

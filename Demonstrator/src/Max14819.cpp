@@ -31,7 +31,14 @@
 
 #include "Max14819.h"
 
-#include <cstdint>
+#ifdef ARDUINO
+    #include <stdint.h>
+	#include <stdio.h>
+#else
+    #include <cstdint>
+	#include <cstdio>
+#endif	
+
 #include <stdio.h>
 
 //!**** Macros ******************************************************************

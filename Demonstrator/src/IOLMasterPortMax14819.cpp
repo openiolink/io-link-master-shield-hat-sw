@@ -32,7 +32,11 @@
 #include "Max14819.h"
 #include "IOLink.h"
 
-#include <stdio.h>
+#ifdef ARDUINO
+	#include <stdio.h>
+#else
+	#include <cstdio>
+#endif	
 
 //!***** Macros ******************************************************************
 
