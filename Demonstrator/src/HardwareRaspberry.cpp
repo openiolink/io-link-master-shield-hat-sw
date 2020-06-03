@@ -49,7 +49,7 @@
 //int wiringPiSPISetup     (int channel, int speed) ;
 
 //!**** Macros ******************************************************************
-W#define LOW 0
+#define LOW 0
 #define HIGH 1
 
 //!**** Data types **************************************************************

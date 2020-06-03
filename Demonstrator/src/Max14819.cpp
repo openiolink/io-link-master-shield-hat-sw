@@ -872,7 +872,7 @@ uint8_t Max14819::enableCyclicSend(uint8_t mc, uint8_t sizeData, uint8_t *pData,
     }
 
     // Test if message is not too long
-    if ((sizeData + 2) > MAX_MSG_LENGTH) { //include 1 byte masterc ommand and 1 byte for checksum
+    if ((sizeData + 2) > MAX_MSG_LENGTH) { //include 1 byte master command and 1 byte for checksum
         return ERROR;
     }
 
