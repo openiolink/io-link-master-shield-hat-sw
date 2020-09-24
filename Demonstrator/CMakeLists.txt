@@ -20,10 +20,11 @@ file(GLOB sources src/*.cpp)
 list(FILTER headers EXCLUDE REGEX ".*HardwareArduino.h$")
 list(FILTER sources EXCLUDE REGEX ".*HardwareArduino.cpp$")
 
+find_library(WIRINGPI_LIB wiringPi REQUIRED)
+
 # compiles the files defined by SOURCES to generante the executable defined by EXEC
 add_executable(${EXEC} ${sources} ${headers})
 
 # add Library to Link
-target_link_libraries(${EXEC} wiringPi)
-
-
+target_link_libraries(${EXEC} ${WIRINGPI_LIB})
+target_link_libraries(${EXEC} pthread rt)
