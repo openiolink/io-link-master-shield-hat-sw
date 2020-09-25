@@ -10,20 +10,24 @@ project(${EXEC})
 # set the C++14 standard
 set(CMAKE_CXX_STANDARD 14)
 
-#  include headers
-file(GLOB headers "src/*.h")
-
 # puts all .cpp files inside src to the SOURCES variable
-file(GLOB sources src/*.cpp)
-
-# exclude HardwareArduino.cpp
-list(FILTER headers EXCLUDE REGEX ".*HardwareArduino.h$")
-list(FILTER sources EXCLUDE REGEX ".*HardwareArduino.cpp$")
+set(SOURCES
+    src/BalluffBni0088.cpp
+    src/BalluffBus0023.cpp
+    src/Demonstrator_V1_0.cpp
+    src/HardwareBase.cpp
+    src/HardwareRaspberry.cpp
+    src/IOLGenericDevice.cpp
+    src/IOLMasterPort.cpp
+    src/IOLMasterPortMax14819.cpp
+    src/Max14819.cpp
+    src/main.cpp)
 
 find_library(WIRINGPI_LIB wiringPi REQUIRED)
 
 # compiles the files defined by SOURCES to generante the executable defined by EXEC
-add_executable(${EXEC} ${sources} ${headers})
+add_executable(${EXEC} ${SOURCES})
+target_include_directories(${EXEC} PRIVATE src)
 
 # add Library to Link
 target_link_libraries(${EXEC} ${WIRINGPI_LIB})
