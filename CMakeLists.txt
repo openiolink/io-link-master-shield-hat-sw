@@ -14,14 +14,14 @@ set(CMAKE_CXX_STANDARD 14)
 set(SOURCES
     src/BalluffBni0088.cpp
     src/BalluffBus0023.cpp
-    src/Demonstrator_V1_0.cpp
+    examples/Demonstrator_V1_0.cpp
     src/HardwareBase.cpp
     src/HardwareRaspberry.cpp
     src/IOLGenericDevice.cpp
     src/IOLMasterPort.cpp
     src/IOLMasterPortMax14819.cpp
     src/Max14819.cpp
-    src/main.cpp)
+    examples/main.cpp)
 
 find_library(WIRINGPI_LIB wiringPi REQUIRED)
 
