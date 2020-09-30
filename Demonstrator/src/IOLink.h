@@ -40,7 +40,7 @@ namespace IOL{
 
     constexpr uint8_t PD_VALID_BIT      = 0x40u;
     namespace MC{
-        constexpr uint8_t PD_READ       = 0xF1u;
+        constexpr uint8_t PD_READ       = 0x80u;
         constexpr uint8_t WRITE         = 0x20u;
 
         constexpr uint8_t DEV_FALLBACK  = 0x5Au;
