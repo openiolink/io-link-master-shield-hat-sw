@@ -12,15 +12,15 @@ set(CMAKE_CXX_STANDARD 14)
 
 # puts all .cpp files inside src to the SOURCES variable
 set(SOURCES
-    src/BalluffBni0088.cpp
-    src/BalluffBus0023.cpp
+    src/sensors/BalluffBni0088.cpp
+    src/sensors/BalluffBus0023.cpp
     examples/Demonstrator_V1_0.cpp
-    src/HardwareBase.cpp
-    src/HardwareRaspberry.cpp
-    src/IOLGenericDevice.cpp
-    src/IOLMasterPort.cpp
-    src/IOLMasterPortMax14819.cpp
-    src/Max14819.cpp
+    src/protocol/HardwareBase.cpp
+    src/BSP/HardwareRaspberry.cpp
+    src/protocol/IOLGenericDevice.cpp
+    src/protocol/IOLMasterPort.cpp
+    src/BSP/IOLMasterPortMax14819.cpp
+    src/BSP/Max14819.cpp
     examples/main.cpp)
 
 find_library(WIRINGPI_LIB wiringPi REQUIRED)

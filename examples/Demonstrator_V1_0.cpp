@@ -30,12 +30,12 @@
 //!**** Header-Files ***********************************************************
 #include "Demonstrator_V1_0.h"
 
-#include "Max14819.h"
-#include "BalluffBus0023.h"
-#include "IOLMasterPort.h"
-#include "IOLMasterPortMax14819.h"
-#include "IOLGenericDevice.h"
-#include "IOLink.h"
+#include "../src/BSP/Max14819.h"
+#include "../src/sensors/BalluffBus0023.h"
+#include "../src/protocol/IOLMasterPort.h"
+#include "../src/BSP/IOLMasterPortMax14819.h"
+#include "../src/protocol/IOLGenericDevice.h"
+#include "../src/protocol/IOLink.h"
 
 #ifdef ARDUINO
 	#include <stdio.h>

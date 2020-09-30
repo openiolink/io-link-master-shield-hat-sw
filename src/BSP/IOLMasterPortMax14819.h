@@ -31,7 +31,7 @@
 #define IOLMASTERPORTMAX14819_H_INCLUDED
 
 //!***** Header-Files ***********************************************************
-#include "IOLMasterPort.h"
+#include "../protocol/IOLMasterPort.h"
 #include "Max14819.h"
 
 #include <stdint.h>

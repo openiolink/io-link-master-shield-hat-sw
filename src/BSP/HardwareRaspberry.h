@@ -1,6 +1,6 @@
 
 //!*****************************************************************************
-//!  \file      HardwareArduino.h
+//!  \file      HardwareRaspberry.h
 //!*****************************************************************************
 //!
 //!  \brief		Generic Hardware Layer abstraction of a physical layer
@@ -26,11 +26,12 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef _HARDWARARDUINO_H
-#define _HARDWARARDUINO_H
+#ifndef _HARDWARRASPBERRY_H
+#define _HARDWARRASPBERRY_H
 
 //!**** Header-Files ************************************************************
-#include "HardwareBase.h"
+#include "../protocol/HardwareBase.h"
+#include <cstdint>
 //!**** Macros ******************************************************************
 
 //!**** Data types **************************************************************
@@ -41,19 +42,20 @@
 
 //!**** Implementation **********************************************************
 
-class HardwareArduino :
+
+class HardwareRaspberry:
 	public HardwareBase
 {
 	
 
 public:
-	HardwareArduino();
-	~HardwareArduino();
+	HardwareRaspberry();
+	~HardwareRaspberry();
 
-	virtual void begin();
+	virtual void begin();	
 
-	virtual void IO_Write(PinNames pinname, uint8_t state);
-	virtual void IO_PinMode(PinNames pinname, PinMode mode); //pinMode
+	virtual void IO_Write(PinNames pinnumber, uint8_t state);
+	virtual void IO_PinMode(PinNames pinnumber, PinMode mode); //pinMode
 
 	virtual void Serial_Write(char const * buf);
 	virtual void Serial_Write(int number);
@@ -63,7 +65,9 @@ public:
 	virtual void wait_for(uint32_t delay_ms);
 
 private:
+
 	uint8_t get_pinnumber(PinNames pinname);
+
 };
 
-#endif //_HARDWARARDUINO_H
+#endif //_HARDWARRASPBERRY_H

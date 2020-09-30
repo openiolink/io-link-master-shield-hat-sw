@@ -30,7 +30,7 @@
 #define BALLUFFBUS0023_H_INCLUDED
 
 //!**** Header-Files ***********************************************************
-#include "IOLGenericDevice.h"
+#include "../protocol/IOLGenericDevice.h"
 
 //!**** Macros *****************************************************************
 

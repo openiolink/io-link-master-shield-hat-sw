@@ -32,7 +32,7 @@
 
 
 //!**** Header-Files **********************************************************
-#include "HardwareBase.h"
+#include "../protocol/HardwareBase.h"
 //!**** Macros ****************************************************************
 // Error define
 constexpr uint8_t ERROR             = 1u;
