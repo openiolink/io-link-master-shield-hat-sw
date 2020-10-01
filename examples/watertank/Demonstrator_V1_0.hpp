@@ -26,9 +26,6 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef _Demonstrator_V1_0_H_
-#define _Demonstrator_V1_0_H_
-#include "../src/protocol/HardwareBase.h"
 
 //add your includes for the project Demonstrator_V1_0 here
 void Demo_setup(HardwareBase *hardware_loc);
@@ -43,4 +40,4 @@ void Demo_loop();
 
 
 //Do not add code below this line
-#endif /* _Demonstrator_V1_0_H_ */
+#endif /* Demonstrator_V1_0_H */
