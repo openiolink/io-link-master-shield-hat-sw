@@ -3,10 +3,12 @@
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
-set(CMAKE_SYSROOT /home/janik/sysroot)
+set(CMAKE_SYSROOT /home/janik/sysroot_local)
+set(CMAKE_STAGING_PREFIX /home/janik/sysroot/usr/local)
+set(TOOLCHAIN_BIN_PATH /usr/bin)
 
-set(CMAKE_C_COMPILER   arm-linux-gnueabihf-gcc)
-set(CMAKE_CXX_COMPILER arm-linux-gnueabihf-g++)
+set(CMAKE_C_COMPILER   ${TOOLCHAIN_BIN_PATH}/arm-linux-gnueabihf-gcc)
+set(CMAKE_CXX_COMPILER ${TOOLCHAIN_BIN_PATH}/arm-linux-gnueabihf-g++)
 
 # Use our definitions for compiler tools
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
