@@ -24,8 +24,7 @@
   http://www.arduino.cc/en/Tutorial/Blink
 */
 
-#include "Demonstrator_V1_0.h"
-#include "../src/BSP/HardwareArduino.h"
+#include "Demonstrator_V1_0.hpp"
 
 HardwareArduino hardware_loc;
 

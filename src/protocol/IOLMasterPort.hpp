@@ -32,7 +32,7 @@
 #define IOLMASTERPORT_H_INCLUDED
 
 //!***** Header-Files ***********************************************************
-#include "../BSP/Max14819.h"
+#include "board/Max14819.hpp"
 
 #include <cstdint>
 //!***** Macros *****************************************************************

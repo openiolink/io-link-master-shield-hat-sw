@@ -30,7 +30,7 @@
 #define _IOLGENERICDEVICE_H
 
 //!**** Header-Files ************************************************************
-#include "IOLMasterPort.h"
+#include "IOLMasterPort.hpp"
 
 #include <cstdint>
 //!**** Macros ******************************************************************

@@ -28,9 +28,9 @@
 //!*****************************************************************************
 
 //!**** Header-Files ************************************************************
-#include "../protocol/IOLMasterPort.h"
+#include "protocol/IOLMasterPort.hpp"
 
-#include "Max14819.h"
+#include "Max14819.hpp"
 
 #ifdef ARDUINO
     #include <stdint.h>
@@ -40,12 +40,11 @@
 	#include <cstdio>
 #endif	
 
-#include <stdio.h>
-
 //!**** Macros ******************************************************************
 constexpr uint8_t read = 0b00000001;
 constexpr uint8_t write = 0b01111111;
 
+//! FIXME Replace defines with constants!
 #define LOW 0
 #define HIGH 1
 

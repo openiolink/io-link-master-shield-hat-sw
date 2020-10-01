@@ -26,6 +26,9 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
+#ifndef Demonstrator_V1_0_H
+#define Demonstrator_V1_0_H
+#include "OpenIOLink.hpp"
 
 //add your includes for the project Demonstrator_V1_0 here
 void Demo_setup(HardwareBase *hardware_loc);

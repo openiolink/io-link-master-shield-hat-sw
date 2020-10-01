@@ -29,9 +29,9 @@
 //!*****************************************************************************
 
 //!***** Header-Files ************************************************************
-#include "IOLMasterPortMax14819.h"
-#include "Max14819.h"
-#include "../protocol/IOLink.h"
+#include "IOLMasterPortMax14819.hpp"
+#include "Max14819.hpp"
+#include "protocol/IOLink.hpp"
 
 #ifdef ARDUINO
 	#include <stdio.h>

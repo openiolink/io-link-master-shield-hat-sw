@@ -30,7 +30,7 @@
 #define _HARDWARARDUINO_H
 
 //!**** Header-Files ************************************************************
-#include "../protocol/HardwareBase.h"
+#include "protocol/HardwareBase.hpp"
 //!**** Macros ******************************************************************
 
 //!**** Data types **************************************************************

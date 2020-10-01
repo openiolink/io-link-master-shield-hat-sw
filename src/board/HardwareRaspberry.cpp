@@ -29,20 +29,18 @@
 //!*****************************************************************************
 
 //!**** Header-Files ************************************************************
-#include "HardwareRaspberry.h"
-#include <stdio.h>
-#include <unistd.h>
-
-#include <iostream>				// Needed for File-IO
-#include <fstream>				// Needed for File-IO
+#include "HardwareRaspberry.hpp"
 
 #include <wiringPi.h>
+#include <wiringPiSPI.h>		// Needed for SPI communication
 
+#include <stdio.h>
+#include <unistd.h>
+#include <iostream>				// Needed for File-IO
+#include <fstream>				// Needed for File-IO
 #include <fcntl.h>   			// Needed for SPI port
 #include <sys/ioctl.h>			// Needed for SPI port
 #include <linux/spi/spidev.h>	// Needed for SPI port
-
-#include <wiringPiSPI.h>		// Needed for SPI communication
 //int wiringPiSPIGetFd     (int channel) ;
 //int wiringPiSPIDataRW    (int channel, unsigned char *data, int len) ;
 //int wiringPiSPISetupMode (int channel, int speed, int mode) ;

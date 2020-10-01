@@ -30,7 +30,7 @@
 #define _HARDWARRASPBERRY_H
 
 //!**** Header-Files ************************************************************
-#include "../protocol/HardwareBase.h"
+#include "protocol/HardwareBase.hpp"
 #include <cstdint>
 //!**** Macros ******************************************************************
 

@@ -28,7 +28,7 @@
 //!*****************************************************************************
 
 //!**** Header-Files ************************************************************
-#include "HardwareArduino.h"
+#include "HardwareArduino.hpp"
 #include <Arduino.h>
 #include <SPI.h>
 #include <stdio.h>
