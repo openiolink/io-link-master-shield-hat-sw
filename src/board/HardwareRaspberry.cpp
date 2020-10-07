@@ -1,5 +1,3 @@
-#ifndef ARDUINO
-
 //!*****************************************************************************
 //!  \file      HardwareRaspberry.cpp
 //!*****************************************************************************
@@ -272,4 +270,3 @@ uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
 	}
 	return uint8_t();
 }
-#endif
