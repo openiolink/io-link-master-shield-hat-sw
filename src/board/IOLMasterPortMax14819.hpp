@@ -27,8 +27,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef IOLMASTERPORTMAX14819_H_INCLUDED
-#define IOLMASTERPORTMAX14819_H_INCLUDED
+#ifndef IOLMASTERPORTMAX14819_HPP_INCLUDED
+#define IOLMASTERPORTMAX14819_HPP_INCLUDED
 
 //!***** Header-Files ***********************************************************
 #include "protocol/IOLMasterPort.hpp"
@@ -97,4 +97,4 @@ public:
 	void isDeviceConnected();
 };
 
-#endif //IOLMASTERPORTMAX14819_H_INCLUDED
+#endif //IOLMASTERPORTMAX14819_HPP_INCLUDED

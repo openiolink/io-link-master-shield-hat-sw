@@ -28,8 +28,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef IOLMASTERPORT_H_INCLUDED
-#define IOLMASTERPORT_H_INCLUDED
+#ifndef IOLMASTERPORT_HPP_INCLUDED
+#define IOLMASTERPORT_HPP_INCLUDED
 
 //!***** Header-Files ***********************************************************
 #include "board/Max14819.hpp"
@@ -96,4 +96,4 @@ public:
 
 };
 
-#endif //IOLMASTERPORT_H_INCLUDED
+#endif //IOLMASTERPORT_HPP_INCLUDED

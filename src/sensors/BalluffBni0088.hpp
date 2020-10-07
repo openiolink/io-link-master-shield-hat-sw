@@ -26,8 +26,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef BALLUFFBNI0088_H_DEFINED
-#define BALLUFFBNI0088_H_DEFINED
+#ifndef BALLUFFBNI0088_HPP_INCLUDED
+#define BALLUFFBNI0088_HPP_INCLUDED
 
 //!**** Header-Files ************************************************************
 
@@ -47,4 +47,4 @@ public:
 	void end();
 };
 
-#endif // BALLUFFBNI0088_H_DEFINED
+#endif // BALLUFFBNI0088_HPP_INCLUDED

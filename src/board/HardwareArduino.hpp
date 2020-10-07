@@ -26,8 +26,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef _HARDWARARDUINO_H
-#define _HARDWARARDUINO_H
+#ifndef HARDWARARDUINO_HPP_INCLUDED
+#define HARDWARARDUINO_HPP_INCLUDED
 
 //!**** Header-Files ************************************************************
 #include "protocol/HardwareBase.hpp"
@@ -66,4 +66,4 @@ private:
 	uint8_t get_pinnumber(PinNames pinname);
 };
 
-#endif //_HARDWARARDUINO_H
+#endif //HARDWARARDUINO_HPP_INCLUDED

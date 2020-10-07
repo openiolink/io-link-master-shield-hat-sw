@@ -26,8 +26,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef MAX14819_H_INCLUDED
-#define MAX14819_H_INCLUDED
+#ifndef MAX14819_HPP_INCLUDED
+#define MAX14819_HPP_INCLUDED
 
 
 
@@ -336,4 +336,4 @@ namespace max14819 {
     };// class max14819
 } // namespace max14819
 
-#endif //MAX14819_H_INCLUDED
+#endif //MAX14819_HPP_INCLUDED

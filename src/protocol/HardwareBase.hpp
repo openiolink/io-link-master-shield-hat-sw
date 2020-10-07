@@ -26,8 +26,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef _HARDWAREBASE_H
-#define _HARDWAREBASE_H
+#ifndef HARDWAREBASE_HPP_INCLUDED
+#define HARDWAREBASE_HPP_INCLUDED
 
 //!**** Header-Files ************************************************************
 #include <cstdint>
@@ -75,4 +75,4 @@ private:
 
 };
 
-#endif //_HARDWAREBASE_H
+#endif //HARDWAREBASE_HPP_INCLUDED

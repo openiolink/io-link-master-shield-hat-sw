@@ -26,8 +26,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef Demonstrator_V1_0_H
-#define Demonstrator_V1_0_H
+#ifndef DEMONSTRATOR_V1_0_HPP_INCLUDED
+#define DEMONSTRATOR_V1_0_HPP_INCLUDED
 #include "OpenIOLink.hpp"
 
 //add your includes for the project Demonstrator_V1_0 here
@@ -43,4 +43,4 @@ void Demo_loop();
 
 
 //Do not add code below this line
-#endif /* Demonstrator_V1_0_H */
+#endif /* DEMONSTRATOR_V1_0_HPP_INCLUDED */

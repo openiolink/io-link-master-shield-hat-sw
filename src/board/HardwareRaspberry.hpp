@@ -26,8 +26,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef _HARDWARRASPBERRY_H
-#define _HARDWARRASPBERRY_H
+#ifndef HARDWARRASPBERRY_HPP_INCLUDED
+#define HARDWARRASPBERRY_HPP_INCLUDED
 
 //!**** Header-Files ************************************************************
 #include "protocol/HardwareBase.hpp"
@@ -70,4 +70,4 @@ private:
 
 };
 
-#endif //_HARDWARRASPBERRY_H
+#endif //HARDWARRASPBERRY_HPP_INCLUDED

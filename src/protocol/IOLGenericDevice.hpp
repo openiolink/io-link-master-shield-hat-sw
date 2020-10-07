@@ -26,8 +26,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef _IOLGENERICDEVICE_H
-#define _IOLGENERICDEVICE_H
+#ifndef IOLGENERICDEVICE_HPP_INCLUDED
+#define IOLGENERICDEVICE_HPP_INCLUDED
 
 //!**** Header-Files ************************************************************
 #include "IOLMasterPort.hpp"
@@ -127,4 +127,4 @@ protected:
     uint16_t comSpeed;
 };
 
-#endif //_IOLGENERICDEVICE_H
+#endif //IOLGENERICDEVICE_HPP_INCLUDED

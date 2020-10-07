@@ -26,8 +26,8 @@
 //!	 limitations under the License.
 //!	
 //!*****************************************************************************
-#ifndef IOLINK_H_INCLUDED
-#define IOLINK_H_INCLUDED
+#ifndef IOLINK_HPP_INCLUDED
+#define IOLINK_HPP_INCLUDED
 
 //!***** Header-Files ***********************************************************
 #include <cstdint>
@@ -71,4 +71,4 @@ namespace IOL{
 
 }
 
-#endif //IOLINK_H_INCLUDED
+#endif //IOLINK_HPP_INCLUDED
