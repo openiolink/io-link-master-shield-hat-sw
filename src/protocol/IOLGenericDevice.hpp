@@ -30,7 +30,7 @@
 #define IOLGENERICDEVICE_HPP_INCLUDED
 
 //!**** Header-Files ************************************************************
-#include "IOLMasterPort.hpp"
+#include "IOLMasterPort_old.hpp"
 
 #include <cstdint>
 //!**** Macros ******************************************************************

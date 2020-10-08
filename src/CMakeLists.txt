@@ -4,6 +4,8 @@ add_library(openiolink  OpenIOLink.hpp
                         board/IOLMasterPortMax14819.cpp
                         board/Max14819.hpp
                         board/Max14819.cpp
+                        protocol/IOLMasterPort_old.cpp
+                        protocol/IOLMasterPort_old.hpp
                         protocol/IOLMasterPort.cpp
                         protocol/IOLMasterPort.hpp
                         protocol/HardwareBase.hpp

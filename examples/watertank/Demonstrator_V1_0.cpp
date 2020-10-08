@@ -32,7 +32,7 @@
 
 #include "board/Max14819.hpp"
 #include "board/IOLMasterPortMax14819.hpp"
-#include "protocol/IOLMasterPort.hpp"
+#include "protocol/IOLMasterPort_old.hpp"
 #include "protocol/IOLGenericDevice.hpp"
 #include "protocol/IOLink.hpp"
 #include "sensors/BalluffBus0023.hpp"
