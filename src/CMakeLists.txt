@@ -1,9 +1,5 @@
 
 add_library(openiolink  OpenIOLink.hpp
-                        board/IOLMasterPortMax14819.hpp
-                        board/IOLMasterPortMax14819.cpp
-                        board/Max14819.hpp
-                        board/Max14819.cpp
                         protocol/IOLMasterPort_old.cpp
                         protocol/IOLMasterPort_old.hpp
                         protocol/IOLMasterPort.cpp
@@ -20,11 +16,19 @@ add_library(openiolink  OpenIOLink.hpp
 
 # Check hardwarespecific Files
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
-    add_library(arduionohw  board/HardwareArduino.hpp
+    add_library(arduionohw  board/IOLMasterPortMax14819.hpp
+                            board/IOLMasterPortMax14819.cpp
+                            board/Max14819.hpp
+                            board/Max14819.cpp
+                            board/HardwareArduino.hpp
                             board/HardwareArduino.cpp)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
-        add_library(raspberrypihw  board/HardwareRaspberry.hpp
+        add_library(raspberrypihw  board/IOLMasterPortMax14819.hpp
+                                board/IOLMasterPortMax14819.cpp
+                                board/Max14819.hpp
+                                board/Max14819.cpp
+                                board/HardwareRaspberry.hpp
                                 board/HardwareRaspberry.cpp)
         target_link_libraries(openiolink raspberrypihw)
         target_link_libraries(raspberrypihw openiolink)
