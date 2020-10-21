@@ -41,6 +41,11 @@ sudo apt-get install wiringpi cmake
 After a successful installation, the Raspberry&nbsp;Pi is ready to use.
 
 
+#### Testing on Raspberry Pi
+
+If you want to execute the board test on the Raspberry Pi, you have to install gcc9. Today, the default Version of gcc on Raspberry Pi ist the version 8. So you have to follow a few steps listed in the following gist: [Install_GCC9](https://gist.github.com/sol-prog/95e4e7e3674ac819179acf33172de8a9)
+
+
 #### Compiling the Project
 
 The easiest was to compile the project is, to copy all sources to the Raspberry&nbsp;Pi, and compile the project on the Raspberry&nbsp;Pi itself.

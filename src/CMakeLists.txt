@@ -36,6 +36,11 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
         target_link_libraries(openiolink ${WIRINGPI_LIB})
         target_link_libraries(openiolink pthread rt) # TODO clean-up
     else()
+        add_library(dummyhw board/HardwareDummy.hpp
+                            board/HardwareDummy.cpp
+                            board/HardwareDummyChip.hpp
+                            board/HardwareDummyChip.cpp)
+        target_link_libraries(openiolink dummyhw)
     endif()
                             
 endif()

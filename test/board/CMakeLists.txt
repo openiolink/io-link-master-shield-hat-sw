@@ -1,15 +1,13 @@
-set(CATCH_INCLUDE_DIR .)
-add_library(Catch INTERFACE)
-target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
-
 # Check hardwarespecific Files
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
+    add_executable(test_board    test_board_arduino.cpp)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
+        add_executable(test_board    test_board_raspi.cpp)
     else()
-        add_subdirectory(protocol) #test on pc only
+        add_executable(test_board    test_board_dummy.cpp)
     endif()
                             
 endif()
 
-add_subdirectory(board)
+target_link_libraries(test_board Catch openiolink)
