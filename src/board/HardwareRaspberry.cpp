@@ -139,21 +139,6 @@ void HardwareRaspberry::IO_Setup(void)
 
 }
 
-//!*****************************************************************************
-//!function :      begin
-//!*****************************************************************************
-//!  \brief        Initialices the Class after generation
-//!
-//!  \type         local
-//!
-//!  \param[in]	   void
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
-void HardwareRaspberry::begin(){
-
-}
 
 //!*****************************************************************************
 //!function :      IO_Write
@@ -336,7 +321,7 @@ uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
 // 	io_pinmode(pinname, mode);
 // }
 
-HardwareRaspberry::LED_raspi::LED_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode) : pinname(name), raspiref(raspi) { //TODO move hardwarebase to raspberry
+HardwareRaspberry::PIN_raspi::PIN_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode) : pinname(name), raspiref(raspi) { //TODO move hardwarebase to raspberry
 	raspiref.IO_PinMode(name, mode);
 	// HardwareRaspberry::IO_PinMode(name, mode);
 }

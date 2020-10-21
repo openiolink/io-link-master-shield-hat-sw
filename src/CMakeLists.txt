@@ -1,5 +1,7 @@
 
 add_library(openiolink  OpenIOLink.hpp
+                        protocol/IOLMasterPort.hpp
+                        protocol/IOLMasterPort.cpp
                         protocol/HardwareBase.hpp
                         protocol/IOLink.hpp
                         protocol/HardwareBase.cpp)

@@ -45,12 +45,17 @@
 
 class HardwareRaspberry : public HardwareBase
 {
+private:
+	enum PinNames {port01CS, port23CS, port01IRQ, port23IRQ, port0DI, port1DI, port2DI, port3DI,	
+	port0LedGreen, port0LedRed, port0LedRxErr, port0LedRxRdy,
+	port1LedGreen, port1LedRed, port1LedRxErr, port1LedRxRdy,
+	port2LedGreen, port2LedRed, port2LedRxErr, port2LedRxRdy,
+	port3LedGreen, port3LedRed, port3LedRxErr, port3LedRxRdy
+	};
 
 public:
 	HardwareRaspberry();
 	~HardwareRaspberry();
-
-	void begin();
 
 	void IO_Write(PinNames pinnumber, uint8_t state);
 	void IO_PinMode(PinNames pinnumber, PinMode mode); //pinMode
@@ -65,31 +70,19 @@ public:
 	uint8_t get_pinnumber(PinNames pinname);
 	void IO_Setup(void);
 
-	class LED_raspi : public max14819::Max14819::LED
+	class PIN_raspi : public max14819::Max14819::PIN
 	{
 	private:
-		HardwareBase::PinNames pinname;
+		PinNames pinname;
 		HardwareRaspberry &raspiref;
-		// void (*io_pinmode)(PinNames pinnumber, PinMode mode);
-		// void (*io_write)(PinNames pinnumber, uint8_t state);
-		// std::shared_ptr<HardwareRaspberry> hw;
 
 	public:
-		// LED_raspi() : raspiref(nullptr){};
-		// LED(PinNames name, PinMode mode,
-		// 	void (*func_mode)(PinNames pinnumber, PinMode mode), 
-		// 	void (*func_write)(PinNames pinnumber, uint8_t state));
-		LED_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode);
+		PIN_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode);
 		// LED(PinNames name, PinMode mode, std::shared_ptr<HardwareRaspberry> hw);
-		~LED_raspi(){};
+		~PIN_raspi(){};
 		void on(){};
 		void off(){};
 	};
-
-	// LED redLED0;
-	// LED redLED1;
-	// LED redLED2;
-	// LED redLED3;
 	
 };
 
