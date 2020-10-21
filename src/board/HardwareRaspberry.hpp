@@ -76,6 +76,8 @@ public:
 	private:
 		PinNames pinname;
 		HardwareRaspberry &raspiref;
+		constexpr static int LOW=0;
+		constexpr static int HIGH=1;
 
 	public:
 		PIN_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode);
