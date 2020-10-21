@@ -64,8 +64,8 @@ HardwareRaspberry::HardwareRaspberry()
 
 	// Init SPI
 	Serial_Write("Init_SPI starts");
-	wiringPiSPISetup(0, 500000);
-	wiringPiSPISetup(1, 500000);
+	wiringPiSPISetup(0, 500000); //chip 1
+	wiringPiSPISetup(1, 500000); //chip 2
 
 	Serial_Write("Init_SPI finished");
 	wait_for(1*1000);
@@ -82,26 +82,27 @@ HardwareRaspberry::~HardwareRaspberry()
 void HardwareRaspberry::IO_Setup(void)
 {
 	// DRIVER01
-	IO_PinMode(port01CS, out);
-	IO_PinMode(port01IRQ, in_pullup);
-	IO_PinMode(port0DI, in_pullup);
-	IO_PinMode(port1DI, in_pullup);
-	IO_PinMode(port0LedGreen, out);
-	// LED redLED0 = LED(port0LedRed, out, &HardwareRaspberry::IO_PinMode, &HardwareRaspberry::IO_Write);
-	// LED redLED0 = LED(port0LedRed, out, std::make_shared<HardwareRaspberry>(this));
-	// redLED0.on(); /TODONOW
-	// IO_PinMode(port0LedRed, out);
-	IO_PinMode(port0LedRxErr, in_pullup);
-	IO_PinMode(port0LedRxRdy, in_pullup);
-	IO_PinMode(port1LedGreen, out);
-	IO_PinMode(port1LedRed, out);
-	IO_PinMode(port1LedRxErr, in_pullup);
-	IO_PinMode(port1LedRxRdy, in_pullup);
+	IO_PinMode(PinNames::port01CS, out);
+	IO_PinMode(PinNames::port01IRQ, in_pullup);
+	IO_PinMode(PinNames::port0DI, in_pullup);
+	IO_PinMode(PinNames::port1DI, in_pullup);
+	IO_PinMode(PinNames::port0LedGreen, out);
 	
-	IO_Write(port0LedGreen, HIGH);
-	IO_Write(port0LedRed, HIGH);
-	IO_Write(port1LedGreen, HIGH);
-	IO_Write(port1LedRed, HIGH);
+	// IO_PinMode(PinNames::port0LedRed, out);
+	// IO_Write(PinNames::port0LedRed, LOW);
+	PIN_raspi redLED0 = PIN_raspi(PinNames::port0LedRed, PinMode::out);
+	redLED0.on();
+	IO_PinMode(PinNames::port0LedRxErr, in_pullup);
+	IO_PinMode(PinNames::port0LedRxRdy, in_pullup);
+	IO_PinMode(PinNames::port1LedGreen, out);
+	IO_PinMode(PinNames::port1LedRed, out);
+	IO_PinMode(PinNames::port1LedRxErr, in_pullup);
+	IO_PinMode(PinNames::port1LedRxRdy, in_pullup);
+	
+	// IO_Write(PinNames::port0LedGreen, HIGH);
+	// IO_Write(PinNames::port0LedRed, HIGH);
+	// IO_Write(PinNames::port1LedGreen, HIGH);
+	// IO_Write(PinNames::port1LedRed, HIGH);
 	
     //TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ClkOEn | XtalEn)); // Frequency is 14.745 MHz
 
@@ -117,23 +118,23 @@ void HardwareRaspberry::IO_Setup(void)
 
 	// DRIVER23
 
-	IO_PinMode(port23CS, out);
-	IO_PinMode(port23IRQ, in_pullup);
-	IO_PinMode(port2DI, in_pullup);
-	IO_PinMode(port3DI, in_pullup);
-	IO_PinMode(port2LedGreen, out);
-	IO_PinMode(port2LedRed, out);
-	IO_PinMode(port2LedRxErr, in_pullup);
-	IO_PinMode(port2LedRxRdy, in_pullup);
-	IO_PinMode(port3LedGreen, out);
-	IO_PinMode(port3LedRed, out);
-	IO_PinMode(port3LedRxErr, in_pullup);
-	IO_PinMode(port3LedRxRdy, in_pullup);
+	IO_PinMode(PinNames::port23CS, out);
+	IO_PinMode(PinNames::port23IRQ, in_pullup);
+	IO_PinMode(PinNames::port2DI, in_pullup);
+	IO_PinMode(PinNames::port3DI, in_pullup);
+	IO_PinMode(PinNames::port2LedGreen, out);
+	IO_PinMode(PinNames::port2LedRed, out);
+	IO_PinMode(PinNames::port2LedRxErr, in_pullup);
+	IO_PinMode(PinNames::port2LedRxRdy, in_pullup);
+	IO_PinMode(PinNames::port3LedGreen, out);
+	IO_PinMode(PinNames::port3LedRed, out);
+	IO_PinMode(PinNames::port3LedRxErr, in_pullup);
+	IO_PinMode(PinNames::port3LedRxRdy, in_pullup);
 
-	IO_Write(port2LedGreen, HIGH);
-	IO_Write(port2LedRed, HIGH);
-	IO_Write(port3LedGreen, HIGH);
-	IO_Write(port3LedRed, HIGH);
+	IO_Write(PinNames::port2LedGreen, HIGH);
+	IO_Write(PinNames::port2LedRed, HIGH);
+	IO_Write(PinNames::port3LedGreen, HIGH);
+	IO_Write(PinNames::port3LedRed, HIGH);
 
 }
 
@@ -281,34 +282,34 @@ void HardwareRaspberry::wait_for(uint32_t delay_ms)
 uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
 {
 	switch (pinname) {
-		case port01CS:		return 31u;			//SPI_CS0	(Pin24, output)
-		case port23CS:		return 31u;			//SPI_CS1	(Pin26, output)
-		case port01IRQ:		return 0u;			//P01_IRQ	(Pin11, input)
-		case port23IRQ:		return 4u;			//P23_IRQ	(Pin16, input)
-		case port0DI:		return 7u;			//P0_DI     (Pin 7, input)
-		case port1DI:		return 15u;			//P1_DI     (Pin 8, input)
-		case port2DI:		return 16u;			//P2_DI     (Pin 10, input)
-		case port3DI:		return 30u;			//P3_DI     (Not avaiable)
+		case PinNames::port01CS:		return 31u;			//SPI_CS0	(Pin24, output)
+		case PinNames::port23CS:		return 31u;			//SPI_CS1	(Pin26, output)
+		case PinNames::port01IRQ:		return 0u;			//P01_IRQ	(Pin11, input)
+		case PinNames::port23IRQ:		return 4u;			//P23_IRQ	(Pin16, input)
+		case PinNames::port0DI:		return 7u;			//P0_DI     (Pin 7, input)
+		case PinNames::port1DI:		return 15u;			//P1_DI     (Pin 8, input)
+		case PinNames::port2DI:		return 16u;			//P2_DI     (Pin 10, input)
+		case PinNames::port3DI:		return 30u;			//P3_DI     (Not avaiable)
 
-		case port0LedGreen: return 9u;			//P1_LED_GN	(Pin 5, output)
-		case port0LedRed:	return 8u;			//P1_LED_RD	(Pin 3, output)
-		case port0LedRxErr:	return 23u;			//P0_RX_ERR	(Pin33, input, pullup)
-		case port0LedRxRdy:	return 24u;			//P0_RX_RDY (Pin35, input, pullup)	
+		case PinNames::port0LedGreen: return 9u;			//P1_LED_GN	(Pin 5, output)
+		case PinNames::port0LedRed:	return 8u;			//P1_LED_RD	(Pin 3, output)
+		case PinNames::port0LedRxErr:	return 23u;			//P0_RX_ERR	(Pin33, input, pullup)
+		case PinNames::port0LedRxRdy:	return 24u;			//P0_RX_RDY (Pin35, input, pullup)	
 
-		case port1LedGreen: return 21u;			//P0_LED_GN	(Pin29, output)
-		case port1LedRed:	return 22u;			//P0_LED_RD	(Pin31, output)
-		case port1LedRxErr:	return 2u;			//P1_RX_ERR	(Pin13, input, pullup)
-		case port1LedRxRdy:	return 3u;			//P1_RX_RDY (Pin15, input, pullup)	
+		case PinNames::port1LedGreen: return 21u;			//P0_LED_GN	(Pin29, output)
+		case PinNames::port1LedRed:	return 22u;			//P0_LED_RD	(Pin31, output)
+		case PinNames::port1LedRxErr:	return 2u;			//P1_RX_ERR	(Pin13, input, pullup)
+		case PinNames::port1LedRxRdy:	return 3u;			//P1_RX_RDY (Pin15, input, pullup)	
 
-		case port2LedGreen: return 25u;			//P3_LED_GN	(Pin37, output)
-		case port2LedRed:	return 1u;			//P3_LED_RD	(Pin12, output)
-		case port2LedRxErr:	return 27u;			//P2_RX_ERR	(Pin36, input, pullup)
-		case port2LedRxRdy:	return 26u;			//P2_RX_RDY (Pin32, input, pullup)	
+		case PinNames::port2LedGreen: return 25u;			//P3_LED_GN	(Pin37, output)
+		case PinNames::port2LedRed:	return 1u;			//P3_LED_RD	(Pin12, output)
+		case PinNames::port2LedRxErr:	return 27u;			//P2_RX_ERR	(Pin36, input, pullup)
+		case PinNames::port2LedRxRdy:	return 26u;			//P2_RX_RDY (Pin32, input, pullup)	
  
-		case port3LedGreen: return 29u;			//P2_LED_GN	(Pin40, output)
-		case port3LedRed:	return 5u;			//P2_LED_RD	(Pin18, output)
-		case port3LedRxErr:	return 6u;			//P3_RX_ERR	(Pin22, input, pullup)
-		case port3LedRxRdy:	return 28u;			//P3_RX_RDY (Pin38, input, pullup)	
+		case PinNames::port3LedGreen: return 29u;			//P2_LED_GN	(Pin40, output)
+		case PinNames::port3LedRed:	return 5u;			//P2_LED_RD	(Pin18, output)
+		case PinNames::port3LedRxErr:	return 6u;			//P3_RX_ERR	(Pin22, input, pullup)
+		case PinNames::port3LedRxRdy:	return 28u;			//P3_RX_RDY (Pin38, input, pullup)	
 	}
 	return uint8_t();
 }
@@ -319,19 +320,18 @@ uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
 // 	io_pinmode(pinname, mode);
 // }
 
-HardwareRaspberry::PIN_raspi::PIN_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode) : pinname(name), raspiref(raspi) { //TODO move hardwarebase to raspberry
-	raspiref.IO_PinMode(name, mode);
-	// HardwareRaspberry::IO_PinMode(name, mode);
+HardwareRaspberry::PIN_raspi::PIN_raspi(PinNames name, PinMode mode) : pinname(name) {
+	raspiref->IO_PinMode(name, mode);
 }
 
-// HardwareRaspberry::LED::~LED(){
-// 	io_pinmode(pinname, out);
-// }
+HardwareRaspberry::PIN_raspi::~PIN_raspi(){
+	raspiref->IO_PinMode(pinname, in);
+}
 
-// void HardwareRaspberry::LED::on(){
-// 	io_write(pinname, LOW);
-// }
+void HardwareRaspberry::PIN_raspi::on(){
+	raspiref->IO_Write(pinname, LOW);
+}
 
-// void HardwareRaspberry::LED::off(){
-// 	io_write(pinname, HIGH);
-// }
+void HardwareRaspberry::PIN_raspi::off(){
+	raspiref->IO_Write(pinname, HIGH);
+}

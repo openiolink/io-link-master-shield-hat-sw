@@ -46,17 +46,17 @@
 class HardwareRaspberry : public HardwareBase
 {
 private:
-	enum PinNames {port01CS, port23CS, port01IRQ, port23IRQ, port0DI, port1DI, port2DI, port3DI,	
-	port0LedGreen, port0LedRed, port0LedRxErr, port0LedRxRdy,
-	port1LedGreen, port1LedRed, port1LedRxErr, port1LedRxRdy,
-	port2LedGreen, port2LedRed, port2LedRxErr, port2LedRxRdy,
-	port3LedGreen, port3LedRed, port3LedRxErr, port3LedRxRdy
-	};
 
 public:
 	HardwareRaspberry();
 	~HardwareRaspberry();
 
+	enum class PinNames {port01CS, port23CS, port01IRQ, port23IRQ, port0DI, port1DI, port2DI, port3DI,	
+	port0LedGreen, port0LedRed, port0LedRxErr, port0LedRxRdy,
+	port1LedGreen, port1LedRed, port1LedRxErr, port1LedRxRdy,
+	port2LedGreen, port2LedRed, port2LedRxErr, port2LedRxRdy,
+	port3LedGreen, port3LedRed, port3LedRxErr, port3LedRxRdy
+	};
 	enum PinMode { out, in_pullup, in };
 	void IO_Write(PinNames pinnumber, uint8_t state);
 	void IO_PinMode(PinNames pinnumber, PinMode mode); //pinMode
@@ -75,17 +75,23 @@ public:
 	{
 	private:
 		PinNames pinname;
-		HardwareRaspberry &raspiref;
+		HardwareRaspberry* raspiref = nullptr;
 		constexpr static int LOW=0;
 		constexpr static int HIGH=1;
 
 	public:
-		PIN_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode);
-		// LED(PinNames name, PinMode mode, std::shared_ptr<HardwareRaspberry> hw);
-		~PIN_raspi(){};
-		void on(){};
-		void off(){};
+		PIN_raspi(){};
+		PIN_raspi(PinNames name, PinMode mode);
+		~PIN_raspi();
+		void on();
+		void off();
 	};
+
+	PIN_raspi redLED0;
+	// PIN_raspi redLED0;
+	// PIN_raspi redLED1;
+	// PIN_raspi redLED2;
+	// PIN_raspi redLED3;
 	
 };
 
