@@ -31,6 +31,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
                             board/HardwareDummyChip.hpp
                             board/HardwareDummyChip.cpp)
         target_link_libraries(openiolink dummyhw)
+        target_link_libraries(dummyhw openiolink)
     endif()
                             
 endif()

@@ -34,6 +34,17 @@ namespace openiolinklibrary
     class IOLinkDummyChip
     {
     public:
+        class PIN
+        {
+        private:
+            /* data */
+        public:
+            PIN(/* args */){};
+            virtual ~PIN(){};
+            virtual void on(){};
+            virtual void off(){};
+        };
+        
         enum class State
         {
             powerDown,

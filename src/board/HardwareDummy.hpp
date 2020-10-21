@@ -1,0 +1,43 @@
+#ifndef HARDWAREDUMMY_HPP_INCLUDED
+#define HARDWAREDUMMY_HPP_INCLUDED
+
+#include "protocol/HardwareBase.hpp"
+#include "board/HardwareDummyChip.hpp"
+#include <iostream>
+namespace openiolinklibrary
+{
+
+    class HardwareDummy : public HardwareBase
+    {
+    private:
+        /* data */
+    public:
+        HardwareDummy(/* args */);
+        ~HardwareDummy();
+        void IO_PinMode(std::string name, std::string mode);
+        void IO_Write(std::string name, std::string output);
+
+        void wait_for(uint32_t delay_ms);
+
+        class PIN_Dummy : public IOLinkDummyChip::PIN
+        {
+        private:
+            std::string pinname = "undef";
+            HardwareDummy* dummyref = nullptr;
+            std::string LOW = "LOW";
+            std::string HIGH = "HIGH";
+
+        public:
+            PIN_Dummy(){};
+            PIN_Dummy(std::string name, std::string mode);
+            ~PIN_Dummy();
+            void on();
+            void off();
+        };
+
+        PIN_Dummy testpin;
+    };
+
+} // namespace openiolinklibrary
+
+#endif // HARDWAREDUMMY_HPP_INCLUDED
