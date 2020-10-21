@@ -50,8 +50,6 @@ public:
 	HardwareBase();
 	~HardwareBase();
 
-	enum PinMode { out, in_pullup, in };
-
 	// virtual void IO_Write(PinNames pinnumber, uint8_t state) = 0;
 	// virtual void IO_PinMode(PinNames pinnumber, PinMode mode) = 0; //pinMode
 

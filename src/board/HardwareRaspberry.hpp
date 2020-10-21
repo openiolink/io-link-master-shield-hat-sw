@@ -57,6 +57,7 @@ public:
 	HardwareRaspberry();
 	~HardwareRaspberry();
 
+	enum PinMode { out, in_pullup, in };
 	void IO_Write(PinNames pinnumber, uint8_t state);
 	void IO_PinMode(PinNames pinnumber, PinMode mode); //pinMode
 
