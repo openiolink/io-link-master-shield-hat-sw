@@ -32,7 +32,6 @@
 
 
 //!**** Header-Files **********************************************************
-#include <memory>
 #include "protocol/HardwareBase.hpp"
 //!**** Macros ****************************************************************
 // Error define
@@ -278,39 +277,6 @@ namespace max14819 {
 
 //!**** Implementation ********************************************************
     class Max14819 {
-	public:
-		class PIN
-		{
-		private:
-			/* data */
-		public:
-			PIN(/* args */){};
-			virtual ~PIN(){};
-			virtual void on(){};
-			virtual void off(){};
-		};
-		class LED : public PIN
-		{
-		private:
-			/* data */
-		public:
-			LED(/* args */){};
-			virtual ~LED(){};
-			virtual void on(){};
-			virtual void off(){};
-		};
-
-		// class CS : public PIN
-		// {
-		// private:
-		// 	/* data */
-		// public:
-		// 	CS(/* args */){};
-		// 	virtual ~CS();
-		// 	virtual void on();
-		// 	virtual void off();
-		// };
-		
     private:
 		DriverSelect driver_;
         uint8_t isInitPortA_;
@@ -318,9 +284,6 @@ namespace max14819 {
         uint8_t isLedCtrlPortAEn_;
         uint8_t isLedCtrlPortBEn_;
 		HardwareBase* Hardware;
-
-		std::shared_ptr<LED> ErrLED;
-		std::shared_ptr<LED> StatLED;
 
     public:
         uint8_t comSpeedRegA;
@@ -371,7 +334,6 @@ namespace max14819 {
 		void Serial_Write(char const * buf);
 		void wait_for(uint32_t delay_ms);
     };// class max14819
-	
 } // namespace max14819
 
 #endif //MAX14819_HPP_INCLUDED

@@ -24,13 +24,14 @@
 //!	 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //!	 See the License for the specific language governing permissions and
 //!	 limitations under the License.
-//!	
+//!
 //!*****************************************************************************
 #ifndef HARDWARRASPBERRY_HPP_INCLUDED
 #define HARDWARRASPBERRY_HPP_INCLUDED
 
 //!**** Header-Files ************************************************************
 #include "protocol/HardwareBase.hpp"
+#include "board/Max14819.hpp"
 #include <cstdint>
 //!**** Macros ******************************************************************
 
@@ -42,32 +43,54 @@
 
 //!**** Implementation **********************************************************
 
-
-class HardwareRaspberry:
-	public HardwareBase
+class HardwareRaspberry : public HardwareBase
 {
-	
 
 public:
 	HardwareRaspberry();
 	~HardwareRaspberry();
 
-	virtual void begin();	
+	void begin();
 
-	virtual void IO_Write(PinNames pinnumber, uint8_t state);
-	virtual void IO_PinMode(PinNames pinnumber, PinMode mode); //pinMode
+	void IO_Write(PinNames pinnumber, uint8_t state);
+	void IO_PinMode(PinNames pinnumber, PinMode mode); //pinMode
 
-	virtual void Serial_Write(char const * buf);
-	virtual void Serial_Write(int number);
+	void Serial_Write(char const *buf);
+	void Serial_Write(int number);
 
-	virtual void SPI_Write(uint8_t channel, uint8_t * data, uint8_t length);
+	void SPI_Write(uint8_t channel, uint8_t *data, uint8_t length);
 
-	virtual void wait_for(uint32_t delay_ms);
-
-private:
+	void wait_for(uint32_t delay_ms);
 
 	uint8_t get_pinnumber(PinNames pinname);
+	void IO_Setup(void);
 
+	class LED_raspi : public max14819::Max14819::LED
+	{
+	private:
+		HardwareBase::PinNames pinname;
+		HardwareRaspberry &raspiref;
+		// void (*io_pinmode)(PinNames pinnumber, PinMode mode);
+		// void (*io_write)(PinNames pinnumber, uint8_t state);
+		// std::shared_ptr<HardwareRaspberry> hw;
+
+	public:
+		// LED_raspi() : raspiref(nullptr){};
+		// LED(PinNames name, PinMode mode,
+		// 	void (*func_mode)(PinNames pinnumber, PinMode mode), 
+		// 	void (*func_write)(PinNames pinnumber, uint8_t state));
+		LED_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode);
+		// LED(PinNames name, PinMode mode, std::shared_ptr<HardwareRaspberry> hw);
+		~LED_raspi(){};
+		void on(){};
+		void off(){};
+	};
+
+	// LED redLED0;
+	// LED redLED1;
+	// LED redLED2;
+	// LED redLED3;
+	
 };
 
 #endif //HARDWARRASPBERRY_HPP_INCLUDED

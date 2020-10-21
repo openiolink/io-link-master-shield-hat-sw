@@ -71,6 +71,7 @@ HardwareRaspberry::HardwareRaspberry()
 
 	Serial_Write("Init_SPI finished");
 	wait_for(1*1000);
+	IO_Setup();
 }
 
 
@@ -78,6 +79,64 @@ HardwareRaspberry::~HardwareRaspberry()
 {
 	//Deinit SPI
 	// TODO
+}
+
+void HardwareRaspberry::IO_Setup(void)
+{
+	// DRIVER01
+	IO_PinMode(port01CS, out);
+	IO_PinMode(port01IRQ, in_pullup);
+	IO_PinMode(port0DI, in_pullup);
+	IO_PinMode(port1DI, in_pullup);
+	IO_PinMode(port0LedGreen, out);
+	// LED redLED0 = LED(port0LedRed, out, &HardwareRaspberry::IO_PinMode, &HardwareRaspberry::IO_Write);
+	// LED redLED0 = LED(port0LedRed, out, std::make_shared<HardwareRaspberry>(this));
+	// redLED0.on(); /TODONOW
+	// IO_PinMode(port0LedRed, out);
+	IO_PinMode(port0LedRxErr, in_pullup);
+	IO_PinMode(port0LedRxRdy, in_pullup);
+	IO_PinMode(port1LedGreen, out);
+	IO_PinMode(port1LedRed, out);
+	IO_PinMode(port1LedRxErr, in_pullup);
+	IO_PinMode(port1LedRxRdy, in_pullup);
+	
+	IO_Write(port0LedGreen, HIGH);
+	IO_Write(port0LedRed, HIGH);
+	IO_Write(port1LedGreen, HIGH);
+	IO_Write(port1LedRed, HIGH);
+	
+    //TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ClkOEn | XtalEn)); // Frequency is 14.745 MHz
+
+    // TODO Reset max14819 register
+    // retValue = uint8_t(retValue | reset(port));
+
+    // TODO Wait 1 s for turning on the powersupply for sensor
+	// Hardware->wait_for(INIT_POWER_OFF_DELAY);
+
+	
+    // TODO Initialize global registers
+    // retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
+
+	// DRIVER23
+
+	IO_PinMode(port23CS, out);
+	IO_PinMode(port23IRQ, in_pullup);
+	IO_PinMode(port2DI, in_pullup);
+	IO_PinMode(port3DI, in_pullup);
+	IO_PinMode(port2LedGreen, out);
+	IO_PinMode(port2LedRed, out);
+	IO_PinMode(port2LedRxErr, in_pullup);
+	IO_PinMode(port2LedRxRdy, in_pullup);
+	IO_PinMode(port3LedGreen, out);
+	IO_PinMode(port3LedRed, out);
+	IO_PinMode(port3LedRxErr, in_pullup);
+	IO_PinMode(port3LedRxRdy, in_pullup);
+
+	IO_Write(port2LedGreen, HIGH);
+	IO_Write(port2LedRed, HIGH);
+	IO_Write(port3LedGreen, HIGH);
+	IO_Write(port3LedRed, HIGH);
+
 }
 
 //!*****************************************************************************
@@ -270,3 +329,26 @@ uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
 	}
 	return uint8_t();
 }
+
+// HardwareRaspberry::LED::LED(HardwareRaspberry::PinNames name, HardwareRaspberry::PinMode mode, 
+// 			void (*func_mode)(PinNames pinnumber, PinMode mode), void (*func_write)(PinNames pinnumber, uint8_t state)) : pinname(name), io_pinmode(func_mode), io_write(func_write){
+// 	// max14819::Max14819::LED();
+// 	io_pinmode(pinname, mode);
+// }
+
+HardwareRaspberry::LED_raspi::LED_raspi(HardwareRaspberry &raspi, PinNames name, PinMode mode) : pinname(name), raspiref(raspi) { //TODO move hardwarebase to raspberry
+	raspiref.IO_PinMode(name, mode);
+	// HardwareRaspberry::IO_PinMode(name, mode);
+}
+
+// HardwareRaspberry::LED::~LED(){
+// 	io_pinmode(pinname, out);
+// }
+
+// void HardwareRaspberry::LED::on(){
+// 	io_write(pinname, LOW);
+// }
+
+// void HardwareRaspberry::LED::off(){
+// 	io_write(pinname, HIGH);
+// }

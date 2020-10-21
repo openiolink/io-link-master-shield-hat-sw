@@ -32,7 +32,7 @@
 
 //!***** Header-Files ***********************************************************
 #include "protocol/IOLMasterPort_old.hpp"
-#include "Max14819.hpp"
+#include "Max14819_old.hpp"
 
 #include <stdint.h>
 //!***** Macros *****************************************************************

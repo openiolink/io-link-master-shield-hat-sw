@@ -72,8 +72,13 @@ using namespace max14819;
 //!******************************************************************************
 Max14819::Max14819(){
 	driver_ = DRIVER01;
+	isInitPortA_ = 0;
+	isInitPortB_ = 0;
+	isLedCtrlPortAEn_ = 0;
+	isLedCtrlPortBEn_ = 0;
 	comSpeedRegA = 0;
 	comSpeedRegB = 0;
+	Hardware = nullptr;
 }
 
 //!******************************************************************************
@@ -88,7 +93,6 @@ Max14819::Max14819(){
 //!  \return        void
 //!
 //!******************************************************************************
-
 Max14819::Max14819(DriverSelect driver, HardwareBase * hardware){
 	driver_ = driver;
 	isInitPortA_ = 0;
@@ -98,18 +102,6 @@ Max14819::Max14819(DriverSelect driver, HardwareBase * hardware){
 	comSpeedRegA = 0;
 	comSpeedRegB = 0;
 	Hardware = hardware;
-
-    //TODO init
-	
-    // TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ExtClkEn | ClkDiv0 | ClkDiv1)); // external OSC enable, 3.686 MHz input frequency
-    // TODO Reset max14819 register
-    // retValue = uint8_t(retValue | reset(port));
-    
-    // TODO Wait 1 s for turning on the powersupply for sensor
-	// Hardware->wait_for(INIT_POWER_OFF_DELAY);
-    
-    // TODO Initialize global registers
-    // TODO retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
 
 }
 //!******************************************************************************
@@ -146,7 +138,141 @@ uint8_t Max14819::begin(PortSelect port) {
     uint8_t retValue = SUCCESS;
     uint8_t shadowReg = 0;
 
+    switch (driver_) {
+    case DRIVER01:
+        // Initialize IOs and clock for driver 01
+        // only initialize IOs and clock once for both
+        if ((isInitPortA_ == 0) && (isInitPortB_ == 0)) {
+            // Initialize IOs
+            Hardware->IO_PinMode(Hardware->port01CS, Hardware->out);
+			Hardware->IO_PinMode(Hardware->port01IRQ, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port0DI, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port1DI, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port0LedGreen, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port0LedRed, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port0LedRxErr, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port0LedRxRdy, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port1LedGreen, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port1LedRed, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port1LedRxErr, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port1LedRxRdy, Hardware->in_pullup);
 
+            // Define all SPI signals for the Geckoboard as inputs. if not, MOSI cant be thrown to 0V
+            /*Hardware->IO_PinMode(50, Hardware->in);
+            Hardware->IO_PinMode(52, Hardware->in);
+            Hardware->IO_PinMode(53, Hardware->in);*/
+
+            // Enable extern crystal
+            retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ClkOEn | XtalEn)); // Frequency is 14.745 MHz
+
+            switch (port) {
+            case PORTA:
+                // Set outputs high for Port A (low-active)
+                Hardware->IO_Write(Hardware->port0LedGreen, HIGH);
+                Hardware->IO_Write(Hardware->port0LedRed, HIGH);
+
+                // Initialize LEDs for other port if not allready initialized
+                if (isInitPortB_ == 0) {
+                    Hardware->IO_Write(Hardware->port1LedGreen, HIGH);
+                    Hardware->IO_Write(Hardware->port1LedRed, HIGH);
+                }
+
+                // Port A successfully initialized
+                isInitPortA_ = 1;
+                break;
+            case PORTB:
+                // Set outputs high for Port B (low-active)
+                Hardware->IO_Write(Hardware->port1LedGreen, HIGH);
+                Hardware->IO_Write(Hardware->port1LedRed, HIGH);
+
+                // Initialize LEDs for other port if not allready initialized
+                if (isInitPortA_ == 0) {
+                    Hardware->IO_Write(Hardware->port0LedGreen, HIGH);
+                    Hardware->IO_Write(Hardware->port0LedRed, HIGH);
+                }
+
+                // Port B successfully initialized
+                isInitPortB_ = 1;
+                break;
+            default:
+                retValue = ERROR;
+                break;
+            } // switch(port
+        } // switch
+
+        break;
+    case DRIVER23:
+        // Initialize IOs and clock for driver 23
+        // only initialize IOs and clock once for both ports
+        if ((isInitPortA_ == 0) && (isInitPortB_ == 0)) {
+            // Initialize IOs
+            Hardware->IO_PinMode(Hardware->port23CS, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port23IRQ, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port2DI, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port3DI, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port2LedGreen, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port2LedRed, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port2LedRxErr, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port2LedRxRdy, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port3LedGreen, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port3LedRed, Hardware->out);
+            Hardware->IO_PinMode(Hardware->port3LedRxErr, Hardware->in_pullup);
+            Hardware->IO_PinMode(Hardware->port3LedRxRdy, Hardware->in_pullup);
+
+            // Set chipselect output high (low-active)
+            Hardware->IO_Write(Hardware->port23CS, HIGH);
+
+            // Enable clocking from another max14819
+            retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ExtClkEn | ClkDiv0 | ClkDiv1)); // external OSC enable, 3.686 MHz input frequency
+        }
+        switch (port) {
+        case PORTA:
+            // Set outputs high for Port A (low-active)
+            Hardware->IO_Write(Hardware->port2LedGreen, HIGH);
+            Hardware->IO_Write(Hardware->port2LedRed, HIGH);
+
+            // Initialize LEDs for other port if not allready initialized
+            if (isInitPortA_ == 0) {
+                Hardware->IO_Write(Hardware->port3LedGreen, HIGH);
+                Hardware->IO_Write(Hardware->port3LedRed, HIGH);
+            }
+
+            // Port A successfully initialized
+            isInitPortA_ = 1;
+
+            break;
+        case PORTB:
+            // Set outputs high for Port B (low-active)
+            Hardware->IO_Write(Hardware->port3LedGreen, HIGH);
+            Hardware->IO_Write(Hardware->port3LedRed, HIGH);
+
+            // Initialize LEDs for other port if not allready initialized
+            if (isInitPortB_ == 0) {
+                Hardware->IO_Write(Hardware->port2LedGreen, HIGH);
+                Hardware->IO_Write(Hardware->port2LedRed, HIGH);
+            }
+            // Port B successfully initialized
+            isInitPortB_ = 1;
+            break;
+        default:
+            retValue = ERROR;
+            break;
+        } // switch(port)
+
+        break;
+    default:
+        retValue = ERROR;
+        break;
+    } // switch(driver)
+
+    // Reset max14819 register
+    retValue = uint8_t(retValue | reset(port));
+
+    // Wait 1 s for turning on the powersupply for sensor
+	Hardware->wait_for(INIT_POWER_OFF_DELAY);
+
+    // Initialize global registers
+    retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
 
     // Initialize the port sepcific registers
     switch (port) {
@@ -205,12 +331,12 @@ uint8_t Max14819::end(PortSelect port) {
     // turn off all LEDs
     switch(port) {
         case PORTA:
-            // Hardware->IO_Write(Hardware->port1LedGreen, HIGH);
-            // Hardware->IO_Write(Hardware->port1LedRed, HIGH);
+            Hardware->IO_Write(Hardware->port1LedGreen, HIGH);
+            Hardware->IO_Write(Hardware->port1LedRed, HIGH);
             break;
         case PORTB:
-            // Hardware->IO_Write(Hardware->port0LedGreen, HIGH);
-            // Hardware->IO_Write(Hardware->port0LedRed, HIGH);
+            Hardware->IO_Write(Hardware->port0LedGreen, HIGH);
+            Hardware->IO_Write(Hardware->port0LedRed, HIGH);
             break;
         default:
         retValue = ERROR;
