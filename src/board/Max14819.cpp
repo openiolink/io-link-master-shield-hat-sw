@@ -28,7 +28,7 @@
 //!*****************************************************************************
 
 //!**** Header-Files ************************************************************
-#include "protocol/IOLMasterPort_old.hpp"
+#include "protocol/IOLMasterPort.hpp"
 
 #include "Max14819.hpp"
 

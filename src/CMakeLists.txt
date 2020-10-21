@@ -1,31 +1,19 @@
 
 add_library(openiolink  OpenIOLink.hpp
-                        protocol/IOLMasterPort_old.cpp
-                        protocol/IOLMasterPort_old.hpp
-                        protocol/IOLMasterPort.cpp
-                        protocol/IOLMasterPort.hpp
                         protocol/HardwareBase.hpp
                         protocol/IOLink.hpp
-                        protocol/HardwareBase.cpp
-                        protocol/IOLGenericDevice.cpp
-                        protocol/IOLGenericDevice.hpp
-                        sensors/BalluffBus0023.cpp
-                        sensors/BalluffBni0088.cpp
-                        sensors/BalluffBus0023.hpp
-                        sensors/BalluffBni0088.hpp)
+                        protocol/HardwareBase.cpp)
 
 # Check hardwarespecific Files
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
-    add_library(arduionohw  board/IOLMasterPortMax14819.hpp
-                            board/IOLMasterPortMax14819.cpp
+    add_library(arduionohw  
                             board/Max14819.hpp
                             board/Max14819.cpp
                             board/HardwareArduino.hpp
                             board/HardwareArduino.cpp)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
-        add_library(raspberrypihw  board/IOLMasterPortMax14819.hpp
-                                board/IOLMasterPortMax14819.cpp
+        add_library(raspberrypihw
                                 board/Max14819.hpp
                                 board/Max14819.cpp
                                 board/HardwareRaspberry.hpp
