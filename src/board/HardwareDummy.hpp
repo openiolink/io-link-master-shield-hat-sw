@@ -14,8 +14,6 @@ namespace openiolinklibrary
     public:
         HardwareDummy(/* args */);
         ~HardwareDummy();
-        void IO_PinMode(std::string name, std::string mode);
-        void IO_Write(std::string name, std::string output);
 
         void wait_for(uint32_t delay_ms);
 
@@ -23,7 +21,6 @@ namespace openiolinklibrary
         {
         private:
             std::string pinname = "undef";
-            HardwareDummy* dummyref = nullptr;
             std::string LOW = "LOW";
             std::string HIGH = "HIGH";
 
@@ -33,6 +30,8 @@ namespace openiolinklibrary
             ~PIN_Dummy();
             void on();
             void off();
+            void IO_PinMode(std::string mode);
+            void IO_Write(std::string output);
         };
 
         PIN_Dummy testpin;

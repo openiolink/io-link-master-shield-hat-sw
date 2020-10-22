@@ -18,16 +18,6 @@ namespace openiolinklibrary
         std::cout << "Deinit HardwareDummy\n";
     }
 
-    void HardwareDummy::IO_PinMode(std::string name, std::string mode)
-    {
-        std::cout << "Pinmode: " << name << "=" << mode << "\n";
-    }
-
-    void HardwareDummy::IO_Write(std::string name, std::string output)
-    {
-        std::cout << "Pin set: " << name << "=" << output << "\n";
-    }
-
     void HardwareDummy::wait_for(uint32_t delay_ms)
     {
         //printf("Sleep_in\n");
@@ -37,22 +27,32 @@ namespace openiolinklibrary
 
     HardwareDummy::PIN_Dummy::PIN_Dummy(std::string name, std::string mode) : pinname(name)
     {
-        dummyref->IO_PinMode(name, mode);
+        IO_PinMode(mode);
     }
 
     HardwareDummy::PIN_Dummy::~PIN_Dummy()
     {
-        dummyref->IO_PinMode(pinname, "in");
+        IO_PinMode("in");
     }
 
     void HardwareDummy::PIN_Dummy::on()
     {
-        dummyref->IO_Write(pinname, LOW);
+        IO_Write(LOW);
     }
 
     void HardwareDummy::PIN_Dummy::off()
     {
-        dummyref->IO_Write(pinname, HIGH);
+        IO_Write(HIGH);
+    }
+
+    void HardwareDummy::PIN_Dummy::IO_PinMode(std::string mode)
+    {
+        std::cout << "Pinmode: " << pinname << "=" << mode << "\n";
+    }
+
+    void HardwareDummy::PIN_Dummy::IO_Write(std::string output)
+    {
+        std::cout << "Pin set: " << pinname << "=" << output << "\n";
     }
 
 } // namespace openiolinklibrary
