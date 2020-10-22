@@ -89,6 +89,16 @@ public:
 		void off();
 	};
 
+	class SerialOut : public max14819::Max14819::DebugOut
+	{
+	private:
+		/* data */
+	public:
+		SerialOut(/* args */){};
+		~SerialOut(){};
+		void print(char const * buf);
+	};
+
 
 	PIN_raspi CS_chip0;
 	PIN_raspi IRQ_chip0;
@@ -115,6 +125,9 @@ public:
 	PIN_raspi greenLED3;
 	PIN_raspi RxErrLED3;
 	PIN_raspi RxRdyLED3;
+
+	SerialOut serialout;
+	// max14819::Max14819 IOLChip1(std::shared_ptr<SerialOut>);
 	
 };
 

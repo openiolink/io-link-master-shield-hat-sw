@@ -63,13 +63,14 @@ HardwareRaspberry::HardwareRaspberry()
 	wiringPiSetup();
 
 	// Init SPI
-	Serial_Write("Init_SPI starts");
+	printf("Init_SPI starts\n");
 	wiringPiSPISetup(0, 500000); //chip 1
 	wiringPiSPISetup(1, 500000); //chip 2
 
-	Serial_Write("Init_SPI finished");
+	printf("Init_SPI finished\n");
 	wait_for(1*1000);
 	IO_Setup();
+	max14819::Max14819 IOLChip1(std::make_shared<SerialOut>(serialout));
 }
 
 
@@ -135,22 +136,6 @@ void HardwareRaspberry::IO_Setup(void)
 
 
 
-//!*****************************************************************************
-//!function :      Serial_Write
-//!*****************************************************************************
-//!  \brief        Writes a c-string to the serial connection
-//!
-//!  \type         local
-//!
-//!  \param[in]	   char const * pointer to the data, which gets print out
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
-void HardwareRaspberry::Serial_Write(char const * buf)
-{
-	printf("%s\n", buf);
-}
 
 //!*****************************************************************************
 //!function :      Serial_Write
@@ -339,3 +324,20 @@ void HardwareRaspberry::PIN_raspi::IO_PinMode(PinNames pinname, PinMode mode)
 // 	}
 // 	wiringPiSPISetup(channel, 500000);
 // }
+
+//!*****************************************************************************
+//!function :      Print
+//!*****************************************************************************
+//!  \brief        Writes a c-string to the serial connection
+//!
+//!  \type         local
+//!
+//!  \param[in]	   char const * pointer to the data, which gets print out
+//!
+//!  \return       void
+//!
+//!*****************************************************************************
+void HardwareRaspberry::SerialOut::print(char const * buf)
+{
+	printf("%s\n", buf);
+}

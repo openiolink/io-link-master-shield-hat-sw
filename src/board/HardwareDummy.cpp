@@ -19,9 +19,7 @@ namespace openiolinklibrary
 
     void HardwareDummy::wait_for(uint32_t delay_ms)
     {
-        //printf("Sleep_in\n");
         usleep(delay_ms * 1000);
-        //printf("Sleep_out\n");
     }
 
     HardwareDummy::PIN_Dummy::PIN_Dummy(std::string name, std::string mode) : pinname(name)

@@ -66,8 +66,9 @@ using namespace max14819;
 //!  \return        void
 //!
 //!******************************************************************************
-Max14819::Max14819(){
+Max14819::Max14819(std::shared_ptr<DebugOut> debugout_) : debug_interface(debugout_){
 	driver_ = DRIVER01;
+    debug_interface->print("Initialize Max");
 }
 
 //!******************************************************************************
@@ -83,22 +84,22 @@ Max14819::Max14819(){
 //!
 //!******************************************************************************
 
-Max14819::Max14819(DriverSelect driver){
-	driver_ = driver;
+// Max14819::Max14819(DriverSelect driver){
+// 	driver_ = driver;
 
-    //TODO init
+//     //TODO init
 	
-    // TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ExtClkEn | ClkDiv0 | ClkDiv1)); // external OSC enable, 3.686 MHz input frequency
-    // TODO Reset max14819 register
-    // retValue = uint8_t(retValue | reset(port));
+//     // TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ExtClkEn | ClkDiv0 | ClkDiv1)); // external OSC enable, 3.686 MHz input frequency
+//     // TODO Reset max14819 register
+//     // retValue = uint8_t(retValue | reset(port));
     
-    // TODO Wait 1 s for turning on the powersupply for sensor
-	// Hardware->wait_for(INIT_POWER_OFF_DELAY);
+//     // TODO Wait 1 s for turning on the powersupply for sensor
+// 	// Hardware->wait_for(INIT_POWER_OFF_DELAY);
     
-    // TODO Initialize global registers
-    // TODO retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
+//     // TODO Initialize global registers
+//     // TODO retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
 
-}
+// }
 //!******************************************************************************
 //!  function :    	~max14819() destructor
 //!******************************************************************************

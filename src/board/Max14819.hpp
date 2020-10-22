@@ -289,6 +289,27 @@ namespace max14819 {
             virtual void on(){};
             virtual void off(){};
         };
+
+        class SPI
+        {
+        private:
+            /* data */
+        public:
+            SPI(/* args */){};
+            virtual ~SPI(){};
+            virtual void DataRW(uint8_t* data, uint8_t length);
+        };
+
+        class DebugOut
+        {
+        private:
+            /* data */
+        public:
+            DebugOut(/* args */){};
+            virtual ~DebugOut(){};
+            virtual void print(char const * buf){};
+        };
+        
         
     private:
         DriverSelect driver_;
@@ -300,10 +321,16 @@ namespace max14819 {
 
         std::shared_ptr<PIN> ErrLED;
         std::shared_ptr<PIN> StatLED;
+        std::shared_ptr<SPI> spi_interface;
+        std::shared_ptr<DebugOut> debug_interface;
 
     public:
-        Max14819();
-        Max14819(DriverSelect driver);
+        // Max14819(); // TODO remove
+        Max14819(std::shared_ptr<DebugOut> debugout_);
+        // Max14819(DriverSelect driver, SPI spi_interface);
+        // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_);
+        // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_, PIN ledgreen_);
+        // Max14819(DriverSelect driver, SPI spi_interface, PIN ledgreen_);
         ~Max14819();
         uint8_t reset(void);
 
