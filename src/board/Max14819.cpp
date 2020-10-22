@@ -387,6 +387,7 @@ void max14819::Max14819::Serial_Write(char const * buf)
 {
 	// Hardware->Serial_Write(buf);
 }
+
 void max14819::Max14819::wait_for(uint32_t delay_ms)
 {
 	// Hardware->wait_for(delay_ms);

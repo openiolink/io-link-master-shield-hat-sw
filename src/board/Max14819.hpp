@@ -286,8 +286,7 @@ namespace max14819 {
         public:
             PIN(/* args */){};
             virtual ~PIN(){};
-            virtual void on(){};
-            virtual void off(){};
+            virtual void set(bool){};
         };
 
         class SPI

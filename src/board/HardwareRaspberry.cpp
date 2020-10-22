@@ -96,10 +96,10 @@ void HardwareRaspberry::IO_Setup(void)
 	RxErrLED1.init(PIN_raspi::PinNames::port1LedRxErr, PIN_raspi::PinMode::in_pullup);
 	RxRdyLED1.init(PIN_raspi::PinNames::port1LedRxRdy, PIN_raspi::PinMode::in_pullup);
 	
-	redLED0.off();
-	greenLED0.off();
-	redLED1.off();
-	greenLED1.off();
+	redLED0.set(false);
+	greenLED0.set(false);
+	redLED1.set(false);
+	greenLED1.set(false);
 	
 	// DRIVER1
 	CS_chip1.init(PIN_raspi::PinNames::port23CS, PIN_raspi::PinMode::out);
@@ -115,10 +115,10 @@ void HardwareRaspberry::IO_Setup(void)
 	RxErrLED3.init(PIN_raspi::PinNames::port3LedRxErr, PIN_raspi::PinMode::in_pullup);
 	RxRdyLED3.init(PIN_raspi::PinNames::port3LedRxRdy, PIN_raspi::PinMode::in_pullup);
 	
-	redLED2.on();
-	greenLED2.on();
-	redLED3.on();
-	greenLED3.on();
+	redLED2.set(false);
+	greenLED2.set(false);
+	redLED3.set(false);
+	greenLED3.set(false);
 	
     //TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ClkOEn | XtalEn)); // Frequency is 14.745 MHz
 
@@ -208,12 +208,15 @@ void HardwareRaspberry::PIN_raspi::init(PinNames name, PinMode mode){
 	IO_PinMode(name, mode);
 }
 
-void HardwareRaspberry::PIN_raspi::on(){
-	IO_Write(pinname, LOW);
-}
-
-void HardwareRaspberry::PIN_raspi::off(){
-	IO_Write(pinname, HIGH);
+void HardwareRaspberry::PIN_raspi::set(bool state){
+	if (state)
+	{
+		IO_Write(pinname, LOW);
+	}
+	else
+	{
+		IO_Write(pinname, HIGH);
+	}
 }
 
 //!*****************************************************************************

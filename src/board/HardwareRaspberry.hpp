@@ -85,8 +85,7 @@ public:
 		PIN_raspi(PinNames name, PinMode mode);
 		~PIN_raspi();
 		void init(PinNames name, PinMode mode);
-		void on();
-		void off();
+		void set(bool state);
 	};
 
 	class SerialOut : public max14819::Max14819::DebugOut
