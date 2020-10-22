@@ -1,11 +1,11 @@
 # Driver Library for IO-Link Master Shield/Hat for Arduino and Raspberry&nbsp;Pi
 
+> :warning: **Under development**:  The library *openiolink* is a work in progress, and we expect it to change rapidly, including breaking API changes. Feedback is highly appreciated.
 
 ## Authors
 
 - Pascal Frei
 - Markus Gafner, BFH
-
 
 ## How to build the application for [Arduino Due](https://store.arduino.cc/arduino-due)
 
