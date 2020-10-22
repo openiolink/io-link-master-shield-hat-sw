@@ -51,15 +51,6 @@ public:
 	HardwareRaspberry();
 	~HardwareRaspberry();
 
-	enum class PinNames {port01CS, port23CS, port01IRQ, port23IRQ, port0DI, port1DI, port2DI, port3DI,	
-	port0LedGreen, port0LedRed, port0LedRxErr, port0LedRxRdy,
-	port1LedGreen, port1LedRed, port1LedRxErr, port1LedRxRdy,
-	port2LedGreen, port2LedRed, port2LedRxErr, port2LedRxRdy,
-	port3LedGreen, port3LedRed, port3LedRxErr, port3LedRxRdy
-	};
-	enum PinMode { out, in_pullup, in };
-	void IO_Write(PinNames pinnumber, uint8_t state);
-	void IO_PinMode(PinNames pinnumber, PinMode mode); //pinMode
 
 	void Serial_Write(char const *buf);
 	void Serial_Write(int number);
@@ -68,21 +59,32 @@ public:
 
 	void wait_for(uint32_t delay_ms);
 
-	uint8_t get_pinnumber(PinNames pinname);
 	void IO_Setup(void);
 
 	class PIN_raspi : public max14819::Max14819::PIN
 	{
+	public:
+		enum class PinNames {port01CS, port23CS, port01IRQ, port23IRQ, port0DI, port1DI, port2DI, port3DI,	
+		port0LedGreen, port0LedRed, port0LedRxErr, port0LedRxRdy,
+		port1LedGreen, port1LedRed, port1LedRxErr, port1LedRxRdy,
+		port2LedGreen, port2LedRed, port2LedRxErr, port2LedRxRdy,
+		port3LedGreen, port3LedRed, port3LedRxErr, port3LedRxRdy
+		};
+		enum PinMode { out, in_pullup, in };
 	private:
 		PinNames pinname;
-		HardwareRaspberry* raspiref = nullptr;
 		constexpr static int LOW=0;
 		constexpr static int HIGH=1;
+		void IO_Write(PinNames pinnumber, uint8_t state);
+		void IO_PinMode(PinNames pinnumber, PinMode mode); //pinMode
+		uint8_t get_pinnumber(PinNames pinname);
 
 	public:
+
 		PIN_raspi(){};
 		PIN_raspi(PinNames name, PinMode mode);
 		~PIN_raspi();
+		void init(PinNames name, PinMode mode);
 		void on();
 		void off();
 	};

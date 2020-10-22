@@ -139,59 +139,6 @@ void HardwareRaspberry::IO_Setup(void)
 }
 
 
-//!*****************************************************************************
-//!function :      IO_Write
-//!*****************************************************************************
-//!  \brief        Sets a pin to the specified logical value
-//!
-//!  \type         local
-//!
-//!  \param[in]	   PinNames   name of the Pin
-//!  			   uint8_t    state of the logical signal
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
-
-void HardwareRaspberry::IO_Write(PinNames pinname, uint8_t state)
-{
-	uint8_t pinnumber = get_pinnumber(pinname);
-	switch (state) {
-		case HIGH	: digitalWrite(pinnumber, HIGH); break;
-		case LOW	: digitalWrite(pinnumber, LOW); break;
-	}
-}
-
-//!*****************************************************************************
-//!function :      IO_PinMode
-//!*****************************************************************************
-//!  \brief        Sets a pin to the specified mode
-//!
-//!  \type         local
-//!
-//!  \param[in]	   PinNames   name of the Pin
-//!  			   PinMode    mode of the pin
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
-void HardwareRaspberry::IO_PinMode(PinNames pinname, PinMode mode)
-{
-	uint8_t pinnumber = get_pinnumber(pinname);
-	switch (mode) {
-	case out: 
-		pinMode(pinnumber, OUTPUT);
-		break;
-	case in_pullup: 
-		pinMode(pinnumber, INPUT);
-		pullUpDnControl(pinnumber, PUD_UP);
-		break;
-	case in:
-		pinMode(pinnumber, INPUT);
-		pullUpDnControl(pinnumber, PUD_OFF);
-		break;
-	}
-}
 
 //!*****************************************************************************
 //!function :      Serial_Write
@@ -267,6 +214,28 @@ void HardwareRaspberry::wait_for(uint32_t delay_ms)
 	//printf("Sleep_out\n");
 }
 
+
+HardwareRaspberry::PIN_raspi::PIN_raspi(PinNames name, PinMode mode){
+	this->init(name, mode);
+}
+
+HardwareRaspberry::PIN_raspi::~PIN_raspi(){
+	IO_PinMode(pinname, in);
+}
+
+void HardwareRaspberry::PIN_raspi::init(PinNames name, PinMode mode){
+	pinname = name;
+	IO_PinMode(name, mode);
+}
+
+void HardwareRaspberry::PIN_raspi::on(){
+	IO_Write(pinname, LOW);
+}
+
+void HardwareRaspberry::PIN_raspi::off(){
+	IO_Write(pinname, HIGH);
+}
+
 //!*****************************************************************************
 //!function :      get_pinnumber
 //!*****************************************************************************
@@ -279,7 +248,7 @@ void HardwareRaspberry::wait_for(uint32_t delay_ms)
 //!  \return       the hardware-pinnumber
 //!
 //!*****************************************************************************
-uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
+uint8_t HardwareRaspberry::PIN_raspi::get_pinnumber(PinNames pinname)
 {
 	switch (pinname) {
 		case PinNames::port01CS:		return 31u;			//SPI_CS0	(Pin24, output)
@@ -314,22 +283,58 @@ uint8_t HardwareRaspberry::get_pinnumber(PinNames pinname)
 	return uint8_t();
 }
 
-// HardwareRaspberry::LED::LED(HardwareRaspberry::PinNames name, HardwareRaspberry::PinMode mode, 
-// 			void (*func_mode)(PinNames pinnumber, PinMode mode), void (*func_write)(PinNames pinnumber, uint8_t state)) : pinname(name), io_pinmode(func_mode), io_write(func_write){
-// 	// max14819::Max14819::LED();
-// 	io_pinmode(pinname, mode);
-// }
+//!*****************************************************************************
+//!function :      IO_Write
+//!*****************************************************************************
+//!  \brief        Sets a pin to the specified logical value
+//!
+//!  \type         local
+//!
+//!  \param[in]	   PinNames   name of the Pin
+//!  			   uint8_t    state of the logical signal
+//!
+//!  \return       void
+//!
+//!*****************************************************************************
 
-HardwareRaspberry::PIN_raspi::PIN_raspi(PinNames name, PinMode mode) : pinname(name) {
-	raspiref->IO_PinMode(name, mode);
+void HardwareRaspberry::PIN_raspi::IO_Write(PinNames pinname, uint8_t state)
+{
+	uint8_t pinnumber = get_pinnumber(pinname);
+	switch (state) {
+		case HIGH	: digitalWrite(pinnumber, HIGH); break;
+		case LOW	: digitalWrite(pinnumber, LOW); break;
+	}
 }
 
-HardwareRaspberry::PIN_raspi::~PIN_raspi(){
-	raspiref->IO_PinMode(pinname, in);
+//!*****************************************************************************
+//!function :      IO_PinMode
+//!*****************************************************************************
+//!  \brief        Sets a pin to the specified mode
+//!
+//!  \type         local
+//!
+//!  \param[in]	   PinNames   name of the Pin
+//!  			   PinMode    mode of the pin
+//!
+//!  \return       void
+//!
+//!*****************************************************************************
+void HardwareRaspberry::PIN_raspi::IO_PinMode(PinNames pinname, PinMode mode)
+{
+	uint8_t pinnumber = get_pinnumber(pinname);
+	switch (mode) {
+	case out: 
+		pinMode(pinnumber, OUTPUT);
+		break;
+	case in_pullup: 
+		pinMode(pinnumber, INPUT);
+		pullUpDnControl(pinnumber, PUD_UP);
+		break;
+	case in:
+		pinMode(pinnumber, INPUT);
+		pullUpDnControl(pinnumber, PUD_OFF);
+		break;
 }
-
-void HardwareRaspberry::PIN_raspi::on(){
-	raspiref->IO_Write(pinname, LOW);
 }
 
 void HardwareRaspberry::PIN_raspi::off(){
