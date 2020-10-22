@@ -89,11 +89,32 @@ public:
 		void off();
 	};
 
+
+	PIN_raspi CS_chip0;
+	PIN_raspi IRQ_chip0;
+	PIN_raspi DI0;
+	PIN_raspi DI1;
 	PIN_raspi redLED0;
-	// PIN_raspi redLED0;
-	// PIN_raspi redLED1;
-	// PIN_raspi redLED2;
-	// PIN_raspi redLED3;
+	PIN_raspi greenLED0;
+	PIN_raspi RxErrLED0;
+	PIN_raspi RxRdyLED0;
+	PIN_raspi redLED1;
+	PIN_raspi greenLED1;
+	PIN_raspi RxErrLED1;
+	PIN_raspi RxRdyLED1;
+	
+	PIN_raspi CS_chip1;
+	PIN_raspi IRQ_chip1;
+	PIN_raspi DI2;
+	PIN_raspi DI3;
+	PIN_raspi redLED2;
+	PIN_raspi greenLED2;
+	PIN_raspi RxErrLED2;
+	PIN_raspi RxRdyLED2;
+	PIN_raspi redLED3;
+	PIN_raspi greenLED3;
+	PIN_raspi RxErrLED3;
+	PIN_raspi RxRdyLED3;
 	
 };
 

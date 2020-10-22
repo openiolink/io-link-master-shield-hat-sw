@@ -81,28 +81,43 @@ HardwareRaspberry::~HardwareRaspberry()
 
 void HardwareRaspberry::IO_Setup(void)
 {
-	// DRIVER01
-	IO_PinMode(PinNames::port01CS, out);
-	IO_PinMode(PinNames::port01IRQ, in_pullup);
-	IO_PinMode(PinNames::port0DI, in_pullup);
-	IO_PinMode(PinNames::port1DI, in_pullup);
-	IO_PinMode(PinNames::port0LedGreen, out);
+	// DRIVER0
+	CS_chip0.init(PIN_raspi::PinNames::port01CS, PIN_raspi::PinMode::out);
+	IRQ_chip0.init(PIN_raspi::PinNames::port01IRQ, PIN_raspi::PinMode::in_pullup);
+	DI0.init(PIN_raspi::PinNames::port0DI, PIN_raspi::PinMode::in_pullup);
+	DI1.init(PIN_raspi::PinNames::port1DI, PIN_raspi::PinMode::in_pullup);
+	redLED0.init(PIN_raspi::PinNames::port0LedRed, PIN_raspi::PinMode::out);
+	greenLED0.init(PIN_raspi::PinNames::port0LedGreen, PIN_raspi::PinMode::out);
+	RxErrLED0.init(PIN_raspi::PinNames::port0LedRxErr, PIN_raspi::PinMode::in_pullup);
+	RxRdyLED0.init(PIN_raspi::PinNames::port0LedRxRdy, PIN_raspi::PinMode::in_pullup);
+	redLED1.init(PIN_raspi::PinNames::port1LedRed, PIN_raspi::PinMode::out);
+	greenLED1.init(PIN_raspi::PinNames::port1LedGreen, PIN_raspi::PinMode::out);
+	RxErrLED1.init(PIN_raspi::PinNames::port1LedRxErr, PIN_raspi::PinMode::in_pullup);
+	RxRdyLED1.init(PIN_raspi::PinNames::port1LedRxRdy, PIN_raspi::PinMode::in_pullup);
 	
-	// IO_PinMode(PinNames::port0LedRed, out);
-	// IO_Write(PinNames::port0LedRed, LOW);
-	PIN_raspi redLED0 = PIN_raspi(PinNames::port0LedRed, PinMode::out);
-	redLED0.on();
-	IO_PinMode(PinNames::port0LedRxErr, in_pullup);
-	IO_PinMode(PinNames::port0LedRxRdy, in_pullup);
-	IO_PinMode(PinNames::port1LedGreen, out);
-	IO_PinMode(PinNames::port1LedRed, out);
-	IO_PinMode(PinNames::port1LedRxErr, in_pullup);
-	IO_PinMode(PinNames::port1LedRxRdy, in_pullup);
+	redLED0.off();
+	greenLED0.off();
+	redLED1.off();
+	greenLED1.off();
 	
-	// IO_Write(PinNames::port0LedGreen, HIGH);
-	// IO_Write(PinNames::port0LedRed, HIGH);
-	// IO_Write(PinNames::port1LedGreen, HIGH);
-	// IO_Write(PinNames::port1LedRed, HIGH);
+	// DRIVER1
+	CS_chip1.init(PIN_raspi::PinNames::port23CS, PIN_raspi::PinMode::out);
+	IRQ_chip1.init(PIN_raspi::PinNames::port23IRQ, PIN_raspi::PinMode::in_pullup);
+	DI2.init(PIN_raspi::PinNames::port2DI, PIN_raspi::PinMode::in_pullup);
+	DI3.init(PIN_raspi::PinNames::port3DI, PIN_raspi::PinMode::in_pullup);
+	redLED2.init(PIN_raspi::PinNames::port2LedRed, PIN_raspi::PinMode::out);
+	greenLED2.init(PIN_raspi::PinNames::port2LedGreen, PIN_raspi::PinMode::out);
+	RxErrLED2.init(PIN_raspi::PinNames::port2LedRxErr, PIN_raspi::PinMode::in_pullup);
+	RxRdyLED2.init(PIN_raspi::PinNames::port2LedRxRdy, PIN_raspi::PinMode::in_pullup);
+	redLED3.init(PIN_raspi::PinNames::port3LedRed, PIN_raspi::PinMode::out);
+	greenLED3.init(PIN_raspi::PinNames::port3LedGreen, PIN_raspi::PinMode::out);
+	RxErrLED3.init(PIN_raspi::PinNames::port3LedRxErr, PIN_raspi::PinMode::in_pullup);
+	RxRdyLED3.init(PIN_raspi::PinNames::port3LedRxRdy, PIN_raspi::PinMode::in_pullup);
+	
+	redLED2.on();
+	greenLED2.on();
+	redLED3.on();
+	greenLED3.on();
 	
     //TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ClkOEn | XtalEn)); // Frequency is 14.745 MHz
 
@@ -115,26 +130,6 @@ void HardwareRaspberry::IO_Setup(void)
 	
     // TODO Initialize global registers
     // retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
-
-	// DRIVER23
-
-	IO_PinMode(PinNames::port23CS, out);
-	IO_PinMode(PinNames::port23IRQ, in_pullup);
-	IO_PinMode(PinNames::port2DI, in_pullup);
-	IO_PinMode(PinNames::port3DI, in_pullup);
-	IO_PinMode(PinNames::port2LedGreen, out);
-	IO_PinMode(PinNames::port2LedRed, out);
-	IO_PinMode(PinNames::port2LedRxErr, in_pullup);
-	IO_PinMode(PinNames::port2LedRxRdy, in_pullup);
-	IO_PinMode(PinNames::port3LedGreen, out);
-	IO_PinMode(PinNames::port3LedRed, out);
-	IO_PinMode(PinNames::port3LedRxErr, in_pullup);
-	IO_PinMode(PinNames::port3LedRxRdy, in_pullup);
-
-	IO_Write(PinNames::port2LedGreen, HIGH);
-	IO_Write(PinNames::port2LedRed, HIGH);
-	IO_Write(PinNames::port3LedGreen, HIGH);
-	IO_Write(PinNames::port3LedRed, HIGH);
 
 }
 
@@ -337,6 +332,10 @@ void HardwareRaspberry::PIN_raspi::IO_PinMode(PinNames pinname, PinMode mode)
 }
 }
 
-void HardwareRaspberry::PIN_raspi::off(){
-	raspiref->IO_Write(pinname, HIGH);
-}
+// HardwareRaspberry::SPI_raspi::SPI_raspi(uint8_t channel_) : channel(channel_) {
+// 	if (channel > 1)
+// 	{
+// 		channel = 1;
+// 	}
+// 	wiringPiSPISetup(channel, 500000);
+// }
