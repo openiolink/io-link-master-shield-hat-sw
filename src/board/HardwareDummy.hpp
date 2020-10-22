@@ -34,7 +34,7 @@ namespace openiolinklibrary
             void IO_Write(std::string output);
         };
 
-        PIN_Dummy testpin;
+        PIN_Dummy testpin = PIN_Dummy("testpin", "output");
     };
 
 } // namespace openiolinklibrary

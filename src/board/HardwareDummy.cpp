@@ -8,7 +8,6 @@ namespace openiolinklibrary
     HardwareDummy::HardwareDummy(/* args */)
     {
         std::cout << "Init HardwareDummy\n";
-        PIN_Dummy testpin = PIN_Dummy("testpin", "output");
         testpin.off();
         testpin.on();
     }
