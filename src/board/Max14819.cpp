@@ -404,6 +404,23 @@ void max14819::Max14819::wait_for(uint32_t delay_ms)
 {
 	// Hardware->wait_for(delay_ms);
 }
+
+max14819::Max14819::Max14819_Port::Max14819_Port()
+{
+    // TODO init of Port
+}
+
+max14819::Max14819::Max14819_Port::~Max14819_Port()
+{
+    // TODO deinit of Port
+}
+
+void max14819::Max14819::Max14819_Port::setMode(Mode mode)
+{
+    // TODO set mode
+}
+
+
 //!******************************************************************************
 //!  function :    	calculate_CKT
 //!******************************************************************************

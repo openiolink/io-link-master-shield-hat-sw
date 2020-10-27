@@ -33,7 +33,7 @@
 
 //!**** Header-Files **********************************************************
 #include <memory>
-#include "protocol/HardwareBase.hpp"
+#include "protocol/IOLMasterPort.hpp"
 //!**** Macros ****************************************************************
 // Error define
 constexpr uint8_t ERROR             = 1u;
@@ -308,6 +308,16 @@ namespace max14819 {
             virtual ~DebugOut(){};
             void print(char const * buf){}; //not virtual to prevent segmentation fault, when not set
         };
+
+        class Max14819_Port : public openiolinklibrary::IOLMasterPort
+        {
+        private:
+            /* data */
+        public:
+            Max14819_Port(/* args */);
+            ~Max14819_Port();
+            void setMode(Mode);
+        };
         
         
     private:
@@ -316,7 +326,6 @@ namespace max14819 {
         uint8_t isInitPortB_;
         uint8_t isLedCtrlPortAEn_;
         uint8_t isLedCtrlPortBEn_;
-        HardwareBase* Hardware;
 
         std::shared_ptr<PIN> ErrLED=nullptr;
         std::shared_ptr<PIN> StatLED=nullptr;
