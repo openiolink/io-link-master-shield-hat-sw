@@ -67,6 +67,10 @@ using namespace max14819;
 //!
 //!******************************************************************************
 Max14819::Max14819(std::shared_ptr<DebugOut> debugout_) : debug_interface(debugout_){
+    Max14819();
+}
+
+Max14819::Max14819(){
 	driver_ = DRIVER01;
     debug_interface->print("Initialize Max");
 }
@@ -382,6 +386,14 @@ uint8_t Max14819::reset(void) {
 //!
 //!******************************************************************************
 // TODO writeDI
+
+// void max14819::Max14819::print(char const * buf)
+// {
+//     if (debug_interface != nullptr)
+//     {
+//         debug_interface->print(buf);
+//     }
+// }
 
 void max14819::Max14819::Serial_Write(char const * buf)
 {

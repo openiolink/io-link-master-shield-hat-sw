@@ -286,7 +286,7 @@ namespace max14819 {
         public:
             PIN(/* args */){};
             virtual ~PIN(){};
-            virtual void set(bool){};
+            void set(bool){}; //not virtual to prevent segmentation fault, when not set
         };
 
         class SPI
@@ -306,7 +306,7 @@ namespace max14819 {
         public:
             DebugOut(/* args */){};
             virtual ~DebugOut(){};
-            virtual void print(char const * buf){};
+            void print(char const * buf){}; //not virtual to prevent segmentation fault, when not set
         };
         
         
@@ -318,13 +318,15 @@ namespace max14819 {
         uint8_t isLedCtrlPortBEn_;
         HardwareBase* Hardware;
 
-        std::shared_ptr<PIN> ErrLED;
-        std::shared_ptr<PIN> StatLED;
-        std::shared_ptr<SPI> spi_interface;
-        std::shared_ptr<DebugOut> debug_interface;
+        std::shared_ptr<PIN> ErrLED=nullptr;
+        std::shared_ptr<PIN> StatLED=nullptr;
+        std::shared_ptr<SPI> spi_interface=nullptr;
+        std::shared_ptr<DebugOut> debug_interface=nullptr;
+
+        void print(char const * buf);
 
     public:
-        // Max14819(); // TODO remove
+        Max14819(); // TODO remove
         Max14819(std::shared_ptr<DebugOut> debugout_);
         // Max14819(DriverSelect driver, SPI spi_interface);
         // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_);
