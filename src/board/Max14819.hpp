@@ -317,12 +317,6 @@ namespace max14819 {
         
         
     private:
-        DriverSelect driver_;
-        uint8_t isInitPortA_;
-        uint8_t isInitPortB_;
-        uint8_t isLedCtrlPortAEn_;
-        uint8_t isLedCtrlPortBEn_;
-
         std::shared_ptr<PIN> ErrLED=nullptr;
         std::shared_ptr<PIN> StatLED=nullptr;
         std::shared_ptr<SPI> spi_interface=nullptr;

@@ -71,7 +71,6 @@ Max14819::Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi
 }
 
 Max14819::Max14819(){
-	driver_ = DRIVER01;
     debug_interface->print("Initialize Max");
 }
 
