@@ -98,6 +98,20 @@ public:
 		void print(char const * buf);
 	};
 
+	class SPI_raspi : public max14819::Max14819::SPI
+	{
+	private:
+		constexpr static int spi_speed=500000;
+		uint8_t channel;
+	public:
+		SPI_raspi(){};
+		SPI_raspi(uint8_t channel_);
+		~SPI_raspi(){};
+		void init(uint8_t channel_);
+        void DataRW(uint8_t* data, uint8_t length);
+	};
+	
+
 
 	PIN_raspi CS_chip0;
 	PIN_raspi IRQ_chip0;
@@ -126,6 +140,8 @@ public:
 	PIN_raspi RxRdyLED3;
 
 	SerialOut serialout;
+	SPI_raspi spi0;
+	SPI_raspi spi1;
 	// max14819::Max14819 IOLChip1(std::shared_ptr<SerialOut>);
 	
 };

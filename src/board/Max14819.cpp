@@ -66,7 +66,7 @@ using namespace max14819;
 //!  \return        void
 //!
 //!******************************************************************************
-Max14819::Max14819(std::shared_ptr<DebugOut> debugout_) : debug_interface(debugout_){
+Max14819::Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_) : debug_interface(debugout_), spi_interface(spi_interface_){
     Max14819();
 }
 

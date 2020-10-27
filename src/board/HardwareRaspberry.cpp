@@ -64,20 +64,19 @@ HardwareRaspberry::HardwareRaspberry()
 
 	// Init SPI
 	printf("Init_SPI starts\n");
-	wiringPiSPISetup(0, 500000); //chip 1
-	wiringPiSPISetup(1, 500000); //chip 2
-
+	spi0.init(0);
+	spi1.init(1);
 	printf("Init_SPI finished\n");
 	wait_for(1*1000);
 	IO_Setup();
-	max14819::Max14819 IOLChip1(std::make_shared<SerialOut>(serialout));
+	max14819::Max14819 IOLChip0(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0));
+	max14819::Max14819 IOLChip1(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1));
 }
 
 
 HardwareRaspberry::~HardwareRaspberry()
 {
-	//Deinit SPI
-	// TODO
+
 }
 
 void HardwareRaspberry::IO_Setup(void)
@@ -320,13 +319,28 @@ void HardwareRaspberry::PIN_raspi::IO_PinMode(PinNames pinname, PinMode mode)
 }
 }
 
-// HardwareRaspberry::SPI_raspi::SPI_raspi(uint8_t channel_) : channel(channel_) {
-// 	if (channel > 1)
-// 	{
-// 		channel = 1;
-// 	}
-// 	wiringPiSPISetup(channel, 500000);
-// }
+void HardwareRaspberry::SPI_raspi::init(uint8_t channel_)
+{	
+	if (channel_ > 1)
+	{
+		channel = 1;
+	}
+	else
+	{
+		channel = channel_;
+	}
+	wiringPiSPISetup(channel, spi_speed);
+}
+
+HardwareRaspberry::SPI_raspi::SPI_raspi(uint8_t channel_)
+{
+	this->init(channel_);
+}
+
+void HardwareRaspberry::SPI_raspi::DataRW(uint8_t * data, uint8_t length)
+{
+	wiringPiSPIDataRW(channel, data, length);
+}
 
 //!*****************************************************************************
 //!function :      Print

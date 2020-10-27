@@ -296,7 +296,7 @@ namespace max14819 {
         public:
             SPI(/* args */){};
             virtual ~SPI(){};
-            virtual void DataRW(uint8_t* data, uint8_t length);
+            void DataRW(uint8_t* data, uint8_t length);
         };
 
         class DebugOut
@@ -336,7 +336,7 @@ namespace max14819 {
 
     public:
         Max14819(); // TODO remove
-        Max14819(std::shared_ptr<DebugOut> debugout_);
+        Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_);
         // Max14819(DriverSelect driver, SPI spi_interface);
         // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_);
         // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_, PIN ledgreen_);
