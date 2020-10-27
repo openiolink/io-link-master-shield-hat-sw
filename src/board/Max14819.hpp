@@ -76,10 +76,6 @@ namespace max14819 {
     constexpr uint32_t INIT_BOOTUP_DELAY    = 300u;	// Delay after switch-to-operational-command
     constexpr uint32_t INIT_WURQ_TIMEOUT    = 80u;   // Timeout in ms for abort WURQ request (2x retry after 10ms, 3x tries a 20ms)
 
-    // IO-Link Master Shield Max14819 Address
-    constexpr uint8_t port01Address  = 0;
-    constexpr uint8_t port23Address  = 2;
-
     // Max14819 Register defines
     constexpr uint8_t TxRxDataA     = 0x00u;
     constexpr uint8_t TxRxDataB     = 0x01u;
@@ -332,11 +328,11 @@ namespace max14819 {
         std::shared_ptr<SPI> spi_interface=nullptr;
         std::shared_ptr<DebugOut> debug_interface=nullptr;
 
-        void print(char const * buf);
+        uint8_t spi_address;
 
     public:
         Max14819(); // TODO remove
-        Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_);
+        Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_, uint8_t spi_address_);
         // Max14819(DriverSelect driver, SPI spi_interface);
         // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_);
         // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_, PIN ledgreen_);

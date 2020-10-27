@@ -35,6 +35,9 @@
 #include <cstdint>
 //!**** Macros ******************************************************************
 
+    // IO-Link Master Shield Max14819 Address
+    constexpr uint8_t chip0Adresse_spi  = 0;
+    constexpr uint8_t chip1Adresse_spi  = 2;
 //!**** Data types **************************************************************
 
 //!**** Function prototypes *****************************************************
