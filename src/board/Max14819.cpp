@@ -185,7 +185,27 @@ uint8_t Max14819::reset(void) {
 //!  \return        0 if successful
 //!
 //!******************************************************************************
-// TODO writeRegister
+uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data) {
+    uint8_t retValue = SUCCESS;
+    uint8_t buf[2];
+
+    // Check if register address is in the correct range
+    if (reg > MAX_REG) {
+        debug_interface->print("Registeraddress out of range");
+        return ERROR;
+    }
+    // Set write bit in register command
+    reg &= write;
+    reg |= (spi_address << 5);
+
+    // Send SPI telegram
+    buf[0] = reg;
+    buf[1] = data;
+    spi_interface->DataRW(buf, 2);
+
+    // Return Error state
+    return retValue;;
+}
 
 //!******************************************************************************
 //!  function :    	writeData

@@ -292,7 +292,7 @@ namespace max14819 {
         public:
             SPI(/* args */){};
             virtual ~SPI(){};
-            void DataRW(uint8_t* data, uint8_t length);
+            virtual void DataRW(uint8_t* data, uint8_t length) = 0;
         };
 
         class DebugOut
@@ -323,6 +323,7 @@ namespace max14819 {
         std::shared_ptr<DebugOut> debug_interface=nullptr;
 
         uint8_t spi_address;
+        uint8_t writeRegister(uint8_t reg, uint8_t data);
 
     public:
         Max14819(); // TODO remove
