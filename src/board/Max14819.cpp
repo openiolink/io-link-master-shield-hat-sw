@@ -169,7 +169,28 @@ uint8_t Max14819::reset(void) {
 //!  \return        registervalue
 //!
 //!******************************************************************************
-// TODO readRegister
+uint8_t Max14819::readRegister(uint8_t reg) {
+    uint8_t channel = 0;
+    uint8_t buf[2];
+
+    // Check if register address is in the correct range
+    if (reg > MAX_REG) {
+        debug_interface->print("Registeraddress out of range");
+        return ERROR;
+    }
+    // Mask read register with the read cmd and set spi address of the max14819
+    reg = reg | (read << 7) | (spi_address << 5);
+
+    // Predefine buffer
+    buf[0] = reg;
+    buf[1] = 0x00;
+
+    // Send the device the register you want to read:
+    spi_interface->DataRW(buf, 2);
+
+    // Return Registervalue
+    return buf[1];
+}
 
 //!******************************************************************************
 //!  function :    	writeRegister

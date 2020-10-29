@@ -313,6 +313,7 @@ public:
     ~Max14819();
     uint8_t reset(void);
     uint8_t writeRegister(uint8_t reg, uint8_t data);
+    uint8_t readRegister(uint8_t reg);
 
 
 
