@@ -134,12 +134,12 @@ Max14819::~Max14819() {
 uint8_t Max14819::reset(void) {
     uint8_t retValue = SUCCESS;
     // Reset all max14819 registers
-    // retValue = writeRegister(ChanStatA, Rst); // TODO writeRegister can be included, when writeRegister is done
-    // retValue = uint8_t(retValue | writeRegister(ChanStatB, Rst));
-    // retValue = uint8_t(retValue | writeRegister(InterruptEn, 0));
-    // retValue = uint8_t(retValue | writeRegister(LEDCtrl, 0));
-    // retValue = uint8_t(retValue | writeRegister(Trigger, 0));
-    // retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, 0));
+    retValue = writeRegister(ChanStatA, Rst);
+    retValue = uint8_t(retValue | writeRegister(ChanStatB, Rst));
+    retValue = uint8_t(retValue | writeRegister(InterruptEn, 0));
+    retValue = uint8_t(retValue | writeRegister(LEDCtrl, 0));
+    retValue = uint8_t(retValue | writeRegister(Trigger, 0));
+    retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, 0));
     // Return Error state
     return retValue;
 }
