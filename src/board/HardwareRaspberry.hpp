@@ -64,7 +64,7 @@ public:
 
 	void IO_Setup(void);
 
-	class PIN_raspi : public max14819::Max14819::PIN
+	class PIN_raspi : public Max14819::PIN
 	{
 	public:
 		enum class PinNames {port01CS, port23CS, port01IRQ, port23IRQ, port0DI, port1DI, port2DI, port3DI,	
@@ -91,7 +91,7 @@ public:
 		void set(bool state);
 	};
 
-	class SerialOut : public max14819::Max14819::DebugOut
+	class SerialOut : public Max14819::DebugOut
 	{
 	private:
 		/* data */
@@ -101,7 +101,7 @@ public:
 		void print(char const * buf);
 	};
 
-	class SPI_raspi : public max14819::Max14819::SPI
+	class SPI_raspi : public Max14819::SPI
 	{
 	private:
 		constexpr static int spi_speed=500000;

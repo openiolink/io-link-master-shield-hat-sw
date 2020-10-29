@@ -69,8 +69,8 @@ HardwareRaspberry::HardwareRaspberry()
 	printf("Init_SPI finished\n");
 	wait_for(1*1000);
 	IO_Setup();
-	max14819::Max14819 IOLChip0(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi);
-	max14819::Max14819 IOLChip1(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi);
+	Max14819 IOLChip0(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi);
+	Max14819 IOLChip1(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi);
 }
 
 
