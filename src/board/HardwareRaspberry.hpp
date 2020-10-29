@@ -49,6 +49,8 @@
 class HardwareRaspberry : public HardwareBase
 {
 private:
+	void IO_Setup(void);
+	void configure_Max14819(void);
 
 public:
 	HardwareRaspberry();
@@ -62,7 +64,6 @@ public:
 
 	void wait_for(uint32_t delay_ms);
 
-	void IO_Setup(void);
 
 	class PIN_raspi : public Max14819::PIN
 	{
@@ -84,7 +85,7 @@ public:
 
 	public:
 
-		PIN_raspi(){};
+		PIN_raspi(){}; // TODO remove to prevent uninitialised hw
 		PIN_raspi(PinNames name, PinMode mode);
 		~PIN_raspi();
 		void init(PinNames name, PinMode mode);
@@ -108,7 +109,7 @@ public:
 		uint8_t channel;
 		std::shared_ptr<PIN_raspi> cs_pin;
 	public:
-		SPI_raspi(){};
+		SPI_raspi(){}; // TODO remove to prevent uninitialised hw
 		SPI_raspi(uint8_t channel_, std::shared_ptr<PIN_raspi> cs_pin_);
 		~SPI_raspi(){};
 		void init(uint8_t channel_, std::shared_ptr<PIN_raspi> cs_pin_);
@@ -146,6 +147,8 @@ public:
 	SerialOut serialout;
 	SPI_raspi spi0;
 	SPI_raspi spi1;
+	std::shared_ptr<Max14819> IOLChip0;
+	std::shared_ptr<Max14819> IOLChip1;
 	// max14819::Max14819 IOLChip1(std::shared_ptr<SerialOut>);
 	
 };

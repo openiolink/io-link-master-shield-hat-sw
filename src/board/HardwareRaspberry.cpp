@@ -59,6 +59,7 @@
 
 HardwareRaspberry::HardwareRaspberry()
 {
+	// TODO Fehlerabfrage
 	// Init Wiring Pi
 	wiringPiSetup();
 
@@ -69,14 +70,10 @@ HardwareRaspberry::HardwareRaspberry()
 	printf("Init_SPI finished\n");
 	wait_for(1*1000);
 	IO_Setup();
+	IOLChip0 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi));
+	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi));
 
-	Max14819 IOLChip0(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi);
-	// Enable extern crystal
-	IOLChip0.writeRegister(Max14819::Clock, Max14819::TXTXENDis | Max14819::ClkOEn | Max14819::XtalEn); // Frequency is 14.745 MHz
-
-	Max14819 IOLChip1(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi);
-	// Enable clocking from another max14819
-	IOLChip1.writeRegister(Max14819::Clock, Max14819::TXTXENDis | Max14819::ExtClkEn | Max14819::ClkDiv0 | Max14819::ClkDiv1); // external OSC enable, 3.686 MHz input frequency
+	configure_Max14819();
 }
 
 
@@ -85,7 +82,7 @@ HardwareRaspberry::~HardwareRaspberry()
 
 }
 
-void HardwareRaspberry::IO_Setup(void)
+void HardwareRaspberry::IO_Setup()
 {
 	// DRIVER0
 	CS_chip0.init(PIN_raspi::PinNames::port01CS, PIN_raspi::PinMode::out);
@@ -124,19 +121,70 @@ void HardwareRaspberry::IO_Setup(void)
 	greenLED2.set(false);
 	redLED3.set(false);
 	greenLED3.set(false);
+}
+
+void HardwareRaspberry::configure_Max14819()
+{
+    uint8_t shadowReg = 0;
+	// Enable extern crystal
+	IOLChip0->writeRegister(Max14819::Clock, Max14819::TXTXENDis | Max14819::ClkOEn | Max14819::XtalEn); // Frequency is 14.745 MHz
+
+	// Enable clocking from another max14819
+	IOLChip1->writeRegister(Max14819::Clock, Max14819::TXTXENDis | Max14819::ExtClkEn | Max14819::ClkDiv0 | Max14819::ClkDiv1); // external OSC enable, 3.686 MHz input frequency
 	
-    //TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ClkOEn | XtalEn)); // Frequency is 14.745 MHz
-
-    // TODO Reset max14819 register
-    // retValue = uint8_t(retValue | reset(port));
-
-    // TODO Wait 1 s for turning on the powersupply for sensor
-	// Hardware->wait_for(INIT_POWER_OFF_DELAY);
-
+	IOLChip0->reset();
+	IOLChip1->reset();
 	
-    // TODO Initialize global registers
-    // retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
+    // Wait 1 s for turning on the powersupply for sensor
+	wait_for(Max14819::INIT_POWER_OFF_DELAY);
 
+    IOLChip0->writeRegister(Max14819::DrvrCurrLim, Max14819::CL1 | Max14819::CL0 | Max14819::CLBL1 | Max14819::CLBL0 | Max14819::ArEn); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
+    IOLChip1->writeRegister(Max14819::DrvrCurrLim, Max14819::CL1 | Max14819::CL0 | Max14819::CLBL1 | Max14819::CLBL0 | Max14819::ArEn); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
+
+    // Initialize the port sepcific registers
+	// PortA
+    shadowReg = IOLChip0->readRegister(Max14819::InterruptEn);
+    IOLChip0->writeRegister(Max14819::InterruptEn, Max14819::StatusIntEn | Max14819::WURQIntEn | Max14819::TxErrIntEnA | Max14819::RxErrIntEnA | Max14819::RxDaRdyIntEnA | shadowReg);
+
+    shadowReg = IOLChip1->readRegister(Max14819::InterruptEn);
+    IOLChip1->writeRegister(Max14819::InterruptEn, Max14819::StatusIntEn | Max14819::WURQIntEn | Max14819::TxErrIntEnA | Max14819::RxErrIntEnA | Max14819::RxDaRdyIntEnA | shadowReg);
+
+	// Enable LedRxRdy and RyError LED
+	shadowReg = IOLChip0->readRegister(Max14819::LEDCtrl);
+	IOLChip0->writeRegister(Max14819::LEDCtrl, Max14819::RxRdyEnA | Max14819::RxErrEnA | shadowReg);
+	// Initialize the Port A register
+	IOLChip0->writeRegister(Max14819::LCnfgA, Max14819::LRT0 | Max14819::LBL0 | Max14819::LBL1 | Max14819::LClimDis | Max14819::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+	IOLChip0->writeRegister(Max14819::CQCfgA, Max14819::SinkSel0 | Max14819::PushPul); // Int Current Sink, 5 mA, PushPull, Channel Enable
+
+	shadowReg = IOLChip1->readRegister(Max14819::LEDCtrl);
+	IOLChip1->writeRegister(Max14819::LEDCtrl, Max14819::RxRdyEnA | Max14819::RxErrEnA | shadowReg);
+	// Initialize the Port A register
+	IOLChip1->writeRegister(Max14819::LCnfgA, Max14819::LRT0 | Max14819::LBL0 | Max14819::LBL1 | Max14819::LClimDis | Max14819::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+	IOLChip1->writeRegister(Max14819::CQCfgA, Max14819::SinkSel0 | Max14819::PushPul); // Int Current Sink, 5 mA, PushPull, Channel Enable
+    
+	// PortB
+	// Set all Interrupts
+	shadowReg = IOLChip0->readRegister(Max14819::InterruptEn);
+	IOLChip0->writeRegister(Max14819::InterruptEn, Max14819::StatusIntEn | Max14819::WURQIntEn | Max14819::TxErrIntEnB | Max14819::RxErrIntEnB | Max14819::RxDaRdyIntEnB | shadowReg);
+
+	shadowReg = IOLChip1->readRegister(Max14819::InterruptEn);
+	IOLChip1->writeRegister(Max14819::InterruptEn, Max14819::StatusIntEn | Max14819::WURQIntEn | Max14819::TxErrIntEnB | Max14819::RxErrIntEnB | Max14819::RxDaRdyIntEnB | shadowReg);
+
+	// Enable LedRxRdy and RyError LED
+	shadowReg = IOLChip0->readRegister(Max14819::LEDCtrl);
+	IOLChip0->writeRegister(Max14819::LEDCtrl, Max14819::RxRdyEnB | Max14819::RxErrEnB | shadowReg);
+	// Initialize the Channel A register
+	IOLChip0->writeRegister(Max14819::LCnfgB, Max14819::LRT0 | Max14819::LBL0 | Max14819::LBL1 | Max14819::LClimDis | Max14819::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+	IOLChip0->writeRegister(Max14819::CQCfgB, Max14819::SinkSel0 | Max14819::PushPul); // Int Current Sink, 5 mA, PushPull, Channel Enable
+
+	shadowReg = IOLChip1->readRegister(Max14819::LEDCtrl);
+	IOLChip1->writeRegister(Max14819::LEDCtrl, Max14819::RxRdyEnB | Max14819::RxErrEnB | shadowReg);
+	// Initialize the Channel A register
+	IOLChip1->writeRegister(Max14819::LCnfgB, Max14819::LRT0 | Max14819::LBL0 | Max14819::LBL1 | Max14819::LClimDis | Max14819::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+	IOLChip1->writeRegister(Max14819::CQCfgB, Max14819::SinkSel0 | Max14819::PushPul); // Int Current Sink, 5 mA, PushPull, Channel Enable
+
+    // Wait 0.2s for bootup of the device
+	wait_for(Max14819::INIT_BOOTUP_DELAY);
 }
 
 
