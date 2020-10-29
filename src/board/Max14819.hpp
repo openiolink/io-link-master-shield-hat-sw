@@ -304,7 +304,6 @@ namespace max14819 {
         std::shared_ptr<DebugOut> debug_interface=nullptr;
 
         uint8_t spi_address;
-        uint8_t writeRegister(uint8_t reg, uint8_t data);
 
     public:
         Max14819(); // TODO remove
@@ -315,6 +314,7 @@ namespace max14819 {
         // Max14819(DriverSelect driver, SPI spi_interface, PIN ledgreen_);
         ~Max14819();
         uint8_t reset(void);
+        uint8_t writeRegister(uint8_t reg, uint8_t data);
 
 
    
