@@ -69,8 +69,14 @@ HardwareRaspberry::HardwareRaspberry()
 	printf("Init_SPI finished\n");
 	wait_for(1*1000);
 	IO_Setup();
+
 	Max14819 IOLChip0(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi);
+	// Enable extern crystal
+	IOLChip0.writeRegister(Max14819::Clock, Max14819::TXTXENDis | Max14819::ClkOEn | Max14819::XtalEn); // Frequency is 14.745 MHz
+
 	Max14819 IOLChip1(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi);
+	// Enable clocking from another max14819
+	IOLChip1.writeRegister(Max14819::Clock, Max14819::TXTXENDis | Max14819::ExtClkEn | Max14819::ClkDiv0 | Max14819::ClkDiv1); // external OSC enable, 3.686 MHz input frequency
 }
 
 
