@@ -253,7 +253,7 @@ HardwareRaspberry::PIN_raspi::PIN_raspi(PinNames name, PinMode mode){
 }
 
 HardwareRaspberry::PIN_raspi::~PIN_raspi(){
-	IO_PinMode(pinname, in);
+	IO_PinMode(pinname, PinMode::in);
 }
 
 void HardwareRaspberry::PIN_raspi::init(PinNames name, PinMode mode){
@@ -360,14 +360,14 @@ void HardwareRaspberry::PIN_raspi::IO_PinMode(PinNames pinname, PinMode mode)
 {
 	uint8_t pinnumber = get_pinnumber(pinname);
 	switch (mode) {
-	case out: 
+	case PinMode::out: 
 		pinMode(pinnumber, OUTPUT);
 		break;
-	case in_pullup: 
+	case PinMode::in_pullup: 
 		pinMode(pinnumber, INPUT);
 		pullUpDnControl(pinnumber, PUD_UP);
 		break;
-	case in:
+	case PinMode::in:
 		pinMode(pinnumber, INPUT);
 		pullUpDnControl(pinnumber, PUD_OFF);
 		break;

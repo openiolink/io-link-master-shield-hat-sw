@@ -74,7 +74,7 @@ public:
 		port2LedGreen, port2LedRed, port2LedRxErr, port2LedRxRdy,
 		port3LedGreen, port3LedRed, port3LedRxErr, port3LedRxRdy
 		};
-		enum PinMode { out, in_pullup, in };
+		enum class PinMode { out, in_pullup, in };
 	private:
 		PinNames pinname;
 		constexpr static int LOW=0;
