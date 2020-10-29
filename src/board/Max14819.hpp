@@ -314,11 +314,6 @@ public:
     uint8_t reset(void);
     uint8_t writeRegister(uint8_t reg, uint8_t data);
     uint8_t readRegister(uint8_t reg);
-
-
-
-    void Serial_Write(char const * buf);
-    void wait_for(uint32_t delay_ms);
 };// class max14819
 
 #endif //MAX14819_HPP_INCLUDED

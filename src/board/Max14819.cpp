@@ -73,34 +73,6 @@ Max14819::Max14819(){
     debug_interface->print("Initialize Max");
 }
 
-//!******************************************************************************
-//!  function :    	max14819() constructor
-//!******************************************************************************
-//!  \brief        	Initialize the communication interface for the max14819.
-//!
-//!  \type         	local
-//!
-//!  \param[in]     driver          DRIVER01 or DRIVER23
-//!
-//!  \return        void
-//!
-//!******************************************************************************
-
-// Max14819::Max14819(DriverSelect driver){
-// 	driver_ = driver;
-
-//     //TODO init
-	
-//     // TODO retValue = uint8_t(retValue | writeRegister(Clock, TXTXENDis | ExtClkEn | ClkDiv0 | ClkDiv1)); // external OSC enable, 3.686 MHz input frequency
-//     // TODO Reset max14819 register
-//     // retValue = uint8_t(retValue | reset(port));
-    
-//     // TODO Wait 1 s for turning on the powersupply for sensor
-// 	// Hardware->wait_for(INIT_POWER_OFF_DELAY);
-    
-//     // TODO Initialize global registers
-//     // TODO retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, CL1 | CL0 | CLBL1 | CLBL0 | ArEn)); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
-
 // }
 //!******************************************************************************
 //!  function :    	~max14819() destructor
@@ -425,24 +397,6 @@ uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data) {
 //!
 //!******************************************************************************
 // TODO writeDI
-
-// void max14819::Max14819::print(char const * buf)
-// {
-//     if (debug_interface != nullptr)
-//     {
-//         debug_interface->print(buf);
-//     }
-// }
-
-void Max14819::Serial_Write(char const * buf)
-{
-	// Hardware->Serial_Write(buf);
-}
-
-void Max14819::wait_for(uint32_t delay_ms)
-{
-	// Hardware->wait_for(delay_ms);
-}
 
 Max14819::Max14819_Port::Max14819_Port()
 {
