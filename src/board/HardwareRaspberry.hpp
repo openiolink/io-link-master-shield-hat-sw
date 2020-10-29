@@ -106,11 +106,12 @@ public:
 	private:
 		constexpr static int spi_speed=500000;
 		uint8_t channel;
+		std::shared_ptr<PIN_raspi> cs_pin;
 	public:
 		SPI_raspi(){};
-		SPI_raspi(uint8_t channel_);
+		SPI_raspi(uint8_t channel_, std::shared_ptr<PIN_raspi> cs_pin_);
 		~SPI_raspi(){};
-		void init(uint8_t channel_);
+		void init(uint8_t channel_, std::shared_ptr<PIN_raspi> cs_pin_);
         void DataRW(uint8_t* data, uint8_t length);
 	};
 	

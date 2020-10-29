@@ -64,8 +64,8 @@ HardwareRaspberry::HardwareRaspberry()
 
 	// Init SPI
 	printf("Init_SPI starts\n");
-	spi0.init(0);
-	spi1.init(1);
+	spi0.init(0, std::make_shared<PIN_raspi>(CS_chip0));
+	spi1.init(1, std::make_shared<PIN_raspi>(CS_chip0));
 	printf("Init_SPI finished\n");
 	wait_for(1*1000);
 	IO_Setup();
@@ -208,6 +208,7 @@ void HardwareRaspberry::PIN_raspi::init(PinNames name, PinMode mode){
 }
 
 void HardwareRaspberry::PIN_raspi::set(bool state){
+	// High active
 	if (state)
 	{
 		IO_Write(pinname, LOW);
@@ -319,8 +320,9 @@ void HardwareRaspberry::PIN_raspi::IO_PinMode(PinNames pinname, PinMode mode)
 }
 }
 
-void HardwareRaspberry::SPI_raspi::init(uint8_t channel_)
+void HardwareRaspberry::SPI_raspi::init(uint8_t channel_, std::shared_ptr<PIN_raspi> cs_pin_)
 {	
+	cs_pin=cs_pin_;
 	if (channel_ > 1)
 	{
 		channel = 1;
@@ -332,14 +334,16 @@ void HardwareRaspberry::SPI_raspi::init(uint8_t channel_)
 	wiringPiSPISetup(channel, spi_speed);
 }
 
-HardwareRaspberry::SPI_raspi::SPI_raspi(uint8_t channel_)
+HardwareRaspberry::SPI_raspi::SPI_raspi(uint8_t channel_, std::shared_ptr<PIN_raspi> cs_pin_)
 {
-	this->init(channel_);
+	this->init(channel_, cs_pin_);
 }
 
 void HardwareRaspberry::SPI_raspi::DataRW(uint8_t * data, uint8_t length)
 {
+	cs_pin->set(true);
 	wiringPiSPIDataRW(channel, data, length);
+	cs_pin->set(false);
 }
 
 //!*****************************************************************************
