@@ -70,8 +70,8 @@ HardwareRaspberry::HardwareRaspberry()
 	printf("Init_SPI finished\n");
 	wait_for(1*1000);
 	IO_Setup();
-	IOLChip0 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi));
-	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi));
+	IOLChip0 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi, std::make_shared<Wait_raspi>(wait_raspi)));
+	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi, std::make_shared<Wait_raspi>(wait_raspi)));
 
 	configure_Max14819();
 }
@@ -415,4 +415,9 @@ void HardwareRaspberry::SPI_raspi::DataRW(uint8_t * data, uint8_t length)
 void HardwareRaspberry::SerialOut::print(char const * buf)
 {
 	printf("%s\n", buf);
+}
+
+void HardwareRaspberry::Wait_raspi::ms(uint32_t time_ms) 
+{
+	usleep(time_ms*1000);
 }

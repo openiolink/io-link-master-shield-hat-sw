@@ -283,7 +283,16 @@ public:
         virtual void print(char const * buf){};
     };
 
-    // TODO change to an communication interface, which is used by IOLMasterPort
+    class Wait
+    {
+    private:
+        /* data */
+    public:
+        Wait(){};
+        virtual ~Wait(){};
+        virtual void ms(uint32_t ms){};
+    };
+
     class Max14819_Port : public openiolinklibrary::IOLMasterPort
     {
     private:
@@ -300,12 +309,12 @@ private:
     std::shared_ptr<PIN> StatLED=nullptr;
     std::shared_ptr<SPI> spi_interface;
     std::shared_ptr<DebugOut> debug_interface;
+    std::shared_ptr<Wait> wait;
 
     uint8_t spi_address;
 
 public:
-    Max14819(); // TODO remove
-    Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_, uint8_t spi_address_);
+    Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_);
     // Max14819(DriverSelect driver, SPI spi_interface);
     // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_);
     // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_, PIN ledgreen_);

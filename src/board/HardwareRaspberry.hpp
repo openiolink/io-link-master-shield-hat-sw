@@ -115,6 +115,17 @@ public:
 		void init(uint8_t channel_, std::shared_ptr<PIN_raspi> cs_pin_);
         void DataRW(uint8_t* data, uint8_t length);
 	};
+
+	class Wait_raspi : public Max14819::Wait // awo make abstract
+	{
+	private:
+		/* data */
+	public:
+		Wait_raspi(/* args */){};
+		~Wait_raspi(){};
+		void ms(uint32_t time_ms);
+	};
+	
 	
 
 
@@ -147,6 +158,7 @@ public:
 	SerialOut serialout;
 	SPI_raspi spi0;
 	SPI_raspi spi1;
+	Wait_raspi wait_raspi;
 	std::shared_ptr<Max14819> IOLChip0;
 	std::shared_ptr<Max14819> IOLChip1;
 	// max14819::Max14819 IOLChip1(std::shared_ptr<SerialOut>);
