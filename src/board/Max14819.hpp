@@ -311,7 +311,7 @@ public:
         Max14819_Port(PortNr portnr_, std::shared_ptr<Max14819> chip_): portnr(portnr_), chip(chip_){};
         ~Max14819_Port(){};
         void setMode(Mode);
-        uint8_t wakeUpRequest();
+        void wakeUpRequest();
 
         CommunicationInfo getCommunicationInfo(){return communicationInfo;};
     };
@@ -342,6 +342,7 @@ public:
     uint8_t reset(void);
     uint8_t writeRegister(uint8_t reg, uint8_t data);
     uint8_t readRegister(uint8_t reg);
+    std::shared_ptr<Max14819_Port> getPort(Max14819_Port::PortNr port);
 };// class max14819
 
 #endif //MAX14819_HPP_INCLUDED

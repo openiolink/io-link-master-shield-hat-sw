@@ -119,19 +119,6 @@ uint8_t Max14819::reset(void) {
     return retValue;
 }
 
-//!******************************************************************************
-//!  function :    	wakeUpRequest
-//!******************************************************************************
-//! \brief        	Generates wakeup impuls and handles communication speed
-//!
-//!  \type         	local
-//!
-//!  \param[in]     port            PORTA or PORTB
-//!
-//!  \return        communication speed. 1 if Error
-//!
-//!******************************************************************************
-// TODO wakeUpRequest
 
 //!******************************************************************************
 //!  function :    	readRegister
@@ -407,7 +394,7 @@ void Max14819::Max14819_Port::setMode(Mode mode)
     // TODO set mode
 }
 
-uint8_t Max14819::Max14819_Port::wakeUpRequest() // awo
+void Max14819::Max14819_Port::wakeUpRequest()
 {
     uint8_t retValue = 0;
     uint8_t comReqRunning = 0;
@@ -464,13 +451,28 @@ uint8_t Max14819::Max14819_Port::wakeUpRequest() // awo
         communicationInfo.comSpeed = 230400;
         break;
     default:
-		return ERROR;
+		// return ERROR;
         break;
     }
-    return SUCCESS;
-
+    // return SUCCESS;
 }
 
+std::shared_ptr<Max14819::Max14819_Port> Max14819::getPort(Max14819_Port::PortNr port)
+{
+    switch (port)
+    {
+    case Max14819_Port::PortNr::PORTA:
+        return PORTA;
+        break;
+    case Max14819_Port::PortNr::PORTB:
+        return PORTB;
+        break;
+    
+    default:
+        return nullptr;
+        break;
+    }
+}
 
 //!******************************************************************************
 //!  function :    	calculate_CKT

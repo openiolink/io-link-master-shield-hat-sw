@@ -76,6 +76,13 @@ HardwareRaspberry::HardwareRaspberry()
 	configure_Max14819();
 	IOLChip0->initPorts();
 	IOLChip1->initPorts();
+
+	PORT0 = IOLChip0->getPort(Max14819::Max14819_Port::PortNr::PORTA);
+	PORT1 = IOLChip0->getPort(Max14819::Max14819_Port::PortNr::PORTB);
+	PORT2 = IOLChip1->getPort(Max14819::Max14819_Port::PortNr::PORTA);
+	PORT3 = IOLChip1->getPort(Max14819::Max14819_Port::PortNr::PORTB);
+
+	PORT0->wakeUpRequest();
 }
 
 

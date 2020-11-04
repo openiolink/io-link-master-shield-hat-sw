@@ -161,7 +161,11 @@ public:
 	Wait_raspi wait_raspi;
 	std::shared_ptr<Max14819> IOLChip0;
 	std::shared_ptr<Max14819> IOLChip1;
-	// max14819::Max14819 IOLChip1(std::shared_ptr<SerialOut>);
+	
+	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT0;
+	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT1;
+	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT2;
+	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT3;
 	
 };
 

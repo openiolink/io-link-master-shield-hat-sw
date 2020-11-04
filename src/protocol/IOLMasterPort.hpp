@@ -29,6 +29,8 @@
 //!*****************************************************************************
 #ifndef IOLMASTERPORT_H_INCLUDED
 #define IOLMASTERPORT_H_INCLUDED
+
+#include <cstdint>
 namespace openiolinklibrary
 {
     class IOLMasterPort
@@ -55,7 +57,7 @@ namespace openiolinklibrary
     public:
         IOLMasterPort();
         ~IOLMasterPort();
-        void wakeUpRequest(); // todo move to private
+        virtual void wakeUpRequest(){}; // todo move to private
         State getState();
         void setMode(Mode);
         Mode getMode();
