@@ -66,11 +66,10 @@ uint8_t calculateCKT(uint8_t mc, uint8_t *data, uint8_t dataSize, uint8_t type);
 //!
 //!******************************************************************************
 Max14819::Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_, uint8_t spi_address_) : debug_interface(debugout_), spi_interface(spi_interface_), spi_address(spi_address_){
-    Max14819();
+    debug_interface->print("Initialize Max");
 }
 
 Max14819::Max14819(){
-    debug_interface->print("Initialize Max");
 }
 
 // }

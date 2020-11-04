@@ -260,7 +260,7 @@ public:
     public:
         PIN(/* args */){};
         virtual ~PIN(){};
-        void set(bool){}; //not virtual to prevent segmentation fault, when not set
+        virtual void set(bool){};
     };
 
     class SPI
@@ -280,7 +280,7 @@ public:
     public:
         DebugOut(/* args */){};
         virtual ~DebugOut(){};
-        void print(char const * buf){}; //not virtual to prevent segmentation fault, when not set
+        virtual void print(char const * buf){};
     };
 
     // TODO change to an communication interface, which is used by IOLMasterPort
@@ -298,8 +298,8 @@ public:
 private:
     std::shared_ptr<PIN> ErrLED=nullptr;
     std::shared_ptr<PIN> StatLED=nullptr;
-    std::shared_ptr<SPI> spi_interface=nullptr;
-    std::shared_ptr<DebugOut> debug_interface=nullptr;
+    std::shared_ptr<SPI> spi_interface;
+    std::shared_ptr<DebugOut> debug_interface;
 
     uint8_t spi_address;
 
