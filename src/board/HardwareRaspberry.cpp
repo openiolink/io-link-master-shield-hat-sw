@@ -74,6 +74,8 @@ HardwareRaspberry::HardwareRaspberry()
 	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi, std::make_shared<Wait_raspi>(wait_raspi)));
 
 	configure_Max14819();
+	IOLChip0->initPorts();
+	IOLChip1->initPorts();
 }
 
 

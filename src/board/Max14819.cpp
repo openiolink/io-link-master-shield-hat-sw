@@ -87,6 +87,13 @@ Max14819::~Max14819() {
 
 }
 
+void Max14819::initPorts(void) // todo transform this to get ports
+{
+    char buffer[30];
+    PORTA = std::make_shared<Max14819_Port>(Max14819_Port(Max14819_Port::PortNr::PORTA, shared_from_this()));
+    PORTB = std::make_shared<Max14819_Port>(Max14819_Port(Max14819_Port::PortNr::PORTB, shared_from_this()));
+}
+
 //!******************************************************************************
 //!  function :    	reset
 //!******************************************************************************
@@ -395,19 +402,73 @@ uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data) {
 //!******************************************************************************
 // TODO writeDI
 
-Max14819::Max14819_Port::Max14819_Port()
-{
-    // TODO init of Port
-}
-
-Max14819::Max14819_Port::~Max14819_Port()
-{
-    // TODO deinit of Port
-    }
-
 void Max14819::Max14819_Port::setMode(Mode mode)
 {
     // TODO set mode
+}
+
+uint8_t Max14819::Max14819_Port::wakeUpRequest() // awo
+{
+    uint8_t retValue = 0;
+    uint8_t comReqRunning = 0;
+    uint8_t timeOutCounter = 0;
+    uint16_t length = 0;
+    uint8_t offset = 0;
+
+    if (portnr == PortNr::PORTB)
+    {
+        offset = 1; // PORTB Registers are 1 address higher than PORTA Register
+    }
+    
+
+    // Start wakeup and communcation
+    retValue = uint8_t(retValue | chip->writeRegister(IOStCfgA + offset, 0)); // Disable tx needed for wake up
+    retValue = uint8_t(retValue | chip->writeRegister(ChanStatA + offset, FramerEn)); // Enable ChanA Framer
+    retValue = uint8_t(retValue | chip->writeRegister(MsgCtrlA + offset, 0)); // Dont use InsChks when transmit OD Data, max14819 doesnt calculate it right
+    retValue = uint8_t(retValue | chip->writeRegister(CQCtrlA + offset, EstCom));     // Start communication
+
+    // Wait till establish communication sequence is over or timeout is reached
+    do {
+        comReqRunning = chip->readRegister(CQCtrlA + offset);
+        comReqRunning &= EstCom;
+        timeOutCounter++;
+        chip->wait->ms(1);
+    } while (comReqRunning || (timeOutCounter < INIT_WURQ_TIMEOUT));
+
+    chip->wait->ms(10);
+    // Clear buffer
+    length = chip->readRegister(RxFIFOLvlA + offset);
+    for (uint8_t i = 0; i < length; i++) {
+        chip->readRegister(TxRxDataA + offset);
+    }
+
+    // read communication speed
+    communicationInfo.comSpeed = chip->readRegister(CQCtrlA + offset) & (ComRt0 | ComRt1);
+
+    // Set correct communication speed in kBaud/s
+    switch (communicationInfo.comSpeed) {
+    case 0:
+        // No communication established
+        communicationInfo.comSpeed = 0;
+        break;
+    case ComRt0:
+        // Communication established at 4.8 kBaud/s
+        communicationInfo.comSpeed = 4800;
+        break;
+    case ComRt1:
+        // Communication established at 38.4 kBaud/s
+        communicationInfo.comSpeed = 38400;
+        break;
+    case (ComRt0 | ComRt1):
+        // Communication established at 230.4 kBaud/s
+        communicationInfo.comSpeed = 230400;
+        break;
+    default:
+		return ERROR;
+        break;
+    }
+    return SUCCESS;
+
 }
 
 

@@ -54,11 +54,13 @@ namespace openiolinklibrary
         // TODO: Processdata Handler
     public:
         IOLMasterPort();
-        // TODO: ADD Chip IOLMasterPort(chip)
         ~IOLMasterPort();
+        void wakeUpRequest(); // todo move to private
         State getState();
         void setMode(Mode);
         Mode getMode();
+        // virtual void readDeviceParameter();
+
     };
 } // namespace openiolinklibrary
 

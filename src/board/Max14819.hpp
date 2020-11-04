@@ -44,7 +44,7 @@
 //!**** Data ******************************************************************
 
 //!**** Implementation ********************************************************
-class Max14819 {
+class Max14819 : public std::enable_shared_from_this<Max14819>{
 public:
     // Error define
     static constexpr uint8_t ERROR             = 1u;
@@ -282,7 +282,7 @@ public:
         virtual ~DebugOut(){};
         virtual void print(char const * buf){};
     };
-
+    
     class Wait
     {
     private:
@@ -295,12 +295,25 @@ public:
 
     class Max14819_Port : public openiolinklibrary::IOLMasterPort
     {
-    private:
-        /* data */
     public:
-        Max14819_Port(/* args */);
-        ~Max14819_Port();
+        struct CommunicationInfo
+        {
+            uint32_t comSpeed;
+        };
+        enum class PortNr {PORTA, PORTB};
+
+    private:
+        PortNr portnr;
+        std::shared_ptr<Max14819> chip;
+        CommunicationInfo communicationInfo;
+        
+    public:
+        Max14819_Port(PortNr portnr_, std::shared_ptr<Max14819> chip_): portnr(portnr_), chip(chip_){};
+        ~Max14819_Port(){};
         void setMode(Mode);
+        uint8_t wakeUpRequest();
+
+        CommunicationInfo getCommunicationInfo(){return communicationInfo;};
     };
     
     
@@ -313,6 +326,11 @@ private:
 
     uint8_t spi_address;
 
+    std::shared_ptr<Max14819_Port> PORTA;
+    std::shared_ptr<Max14819_Port> PORTB;
+
+
+
 public:
     Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_);
     // Max14819(DriverSelect driver, SPI spi_interface);
@@ -320,6 +338,7 @@ public:
     // Max14819(DriverSelect driver, SPI spi_interface, PIN ledred_, PIN ledgreen_);
     // Max14819(DriverSelect driver, SPI spi_interface, PIN ledgreen_);
     ~Max14819();
+    void initPorts (void);
     uint8_t reset(void);
     uint8_t writeRegister(uint8_t reg, uint8_t data);
     uint8_t readRegister(uint8_t reg);
