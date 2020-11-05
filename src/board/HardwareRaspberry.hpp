@@ -64,6 +64,8 @@ public:
 
 	void wait_for(uint32_t delay_ms);
 
+	std::shared_ptr<openiolinklibrary::IOLMasterPort> getPort(uint8_t portnr);
+
 
 	class PIN_raspi : public Max14819::PIN
 	{

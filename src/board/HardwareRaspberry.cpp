@@ -81,8 +81,6 @@ HardwareRaspberry::HardwareRaspberry()
 	PORT1 = IOLChip0->getPort(Max14819::Max14819_Port::PortNr::PORTB);
 	PORT2 = IOLChip1->getPort(Max14819::Max14819_Port::PortNr::PORTA);
 	PORT3 = IOLChip1->getPort(Max14819::Max14819_Port::PortNr::PORTB);
-
-	PORT0->wakeUpRequest();
 }
 
 
@@ -254,6 +252,29 @@ void HardwareRaspberry::wait_for(uint32_t delay_ms)
 	//printf("Sleep_in\n");
 	usleep(delay_ms*1000);
 	//printf("Sleep_out\n");
+}
+
+std::shared_ptr<openiolinklibrary::IOLMasterPort> HardwareRaspberry::getPort(uint8_t portnr)
+{
+	switch (portnr)
+	{
+	case 0:
+		return PORT0;
+		break;
+	case 1:
+		return PORT1;
+		break;
+	case 2:
+		return PORT2;
+		break;
+	case 3:
+		return PORT3;
+		break;
+	
+	default:
+		return nullptr;
+		break;
+	}
 }
 
 
