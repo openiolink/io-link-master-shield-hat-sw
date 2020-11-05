@@ -30,7 +30,9 @@
 #ifndef IOLMASTERPORT_H_INCLUDED
 #define IOLMASTERPORT_H_INCLUDED
 
+#include "protocol/IOLMessage.hpp"
 #include <cstdint>
+#include <memory>
 namespace openiolinklibrary
 {
     class IOLMasterPort
@@ -54,6 +56,8 @@ namespace openiolinklibrary
         State state;
         Mode mode;
         // TODO: Processdata Handler
+    protected:
+        virtual uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
     public:
         IOLMasterPort();
         ~IOLMasterPort();
@@ -61,6 +65,7 @@ namespace openiolinklibrary
         State getState();
         void setMode(Mode);
         Mode getMode();
+        uint8_t sendIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg);
         // virtual void readDeviceParameter();
 
     };

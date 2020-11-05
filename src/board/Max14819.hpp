@@ -34,6 +34,8 @@
 //!**** Header-Files **********************************************************
 #include <memory>
 #include "protocol/IOLMasterPort.hpp"
+#include "protocol/IOLMessage.hpp"
+#include "protocol/IOLinkConfig.hpp"
 //!**** Macros ****************************************************************
 
 
@@ -298,14 +300,18 @@ public:
     public:
         struct CommunicationInfo
         {
-            uint32_t comSpeed;
+            uint8_t comSpeed;
+            uint32_t comSpeedBaud;
         };
-        enum class PortNr {PORTA, PORTB};
+        enum class PortNr {PORTA=0, PORTB=1};
 
     private:
         PortNr portnr;
         std::shared_ptr<Max14819> chip;
         CommunicationInfo communicationInfo;
+    
+    protected:
+        uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer);
         
     public:
         Max14819_Port(PortNr portnr_, std::shared_ptr<Max14819> chip_): portnr(portnr_), chip(chip_){};

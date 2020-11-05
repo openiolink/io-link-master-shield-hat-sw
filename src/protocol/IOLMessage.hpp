@@ -21,6 +21,9 @@
 //!  
 //!*****************************************************************************
 
+#ifndef IOLMESSAGE_HPP_INCLUDED
+#define IOLMESSAGE_HPP_INCLUDED
+
 #include "IOLinkConfig.hpp"
 #include <cstdlib>
 
@@ -59,6 +62,7 @@ namespace openiolinklibrary
             };
         };
         u_int8_t message_length = 2;
+        u_int8_t answer_length=1;
 
         void calculateChecksum();
         static u_int8_t compressTo6Checksum(u_int8_t checksum8);
@@ -70,6 +74,10 @@ namespace openiolinklibrary
         void setMSequenceType(M_Sequence_Type type);
         u_int8_t getData(u_int8_t *data);
         void setOctets(u_int8_t *data, u_int8_t length);
+        void setanswer_length(u_int8_t length);
+        u_int8_t getanswer_length(void){return answer_length;};
     };
 
 } // namespace openiolinklibrary
+
+#endif // IOLMESSAGE_HPP_INCLUDED

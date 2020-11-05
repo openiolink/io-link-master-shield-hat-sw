@@ -63,4 +63,10 @@ namespace openiolinklibrary
     {
         this->CKT_data = static_cast<u_int8_t>(type) << 6;
     }
+
+    void IOLMessage::setanswer_length(u_int8_t length)
+    {
+        // todo check if length is too big
+        this->answer_length = length + 1; // CKS uses size 1
+    }
 } // namespace openiolinklibrary

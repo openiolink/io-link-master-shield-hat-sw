@@ -1,3 +1,6 @@
+#ifndef IOLINK_CONFIG_HPP_INCLUDED
+#define IOLINK_CONFIG_HPP_INCLUDED
+
 namespace openiolinklibrary
 {
     namespace libraryconfig
@@ -6,3 +9,5 @@ namespace openiolinklibrary
     } // namespace libraryconfig
     
 } // namespace openiolinklibrary
+
+#endif // IOLINK_CONFIG_HPP_INCLUDED

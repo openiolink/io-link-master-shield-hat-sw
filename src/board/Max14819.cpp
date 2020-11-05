@@ -207,7 +207,26 @@ uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data) {
 //!  \return        0 if success
 //!
 //!******************************************************************************
-// TODO writeData
+uint8_t Max14819::Max14819_Port::sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer)
+{
+    uint8_t retValue = SUCCESS;
+    uint8_t offset=0;
+    // Todo remove offset and replace with enum
+    if (portnr == PortNr::PORTB)
+    {
+        offset = 1; // PORTB Registers are 1 address higher than PORTA Register
+    }
+
+    retValue = uint8_t(retValue | chip->writeRegister(TxRxDataA + offset, sizeofanswer)); // number of bytes for answer
+    retValue = uint8_t(retValue | chip->writeRegister(TxRxDataA + offset, sizeofdata)); // number of bytes for answer
+    // send data
+    for (uint8_t i = 0; i < sizeofdata; i++)
+    {
+        retValue = uint8_t(retValue | chip->writeRegister(TxRxDataA + offset, data[i]));
+    }
+    retValue = uint8_t(retValue | chip->writeRegister(CQCtrlA + offset, CQSend |communicationInfo.comSpeed));
+    return retValue;
+}
 
 //!******************************************************************************
 //!  function :    	writeData
@@ -434,24 +453,21 @@ void Max14819::Max14819_Port::wakeUpRequest()
 
     // Set correct communication speed in kBaud/s
     switch (communicationInfo.comSpeed) {
-    case 0:
-        // No communication established
-        communicationInfo.comSpeed = 0;
-        break;
     case ComRt0:
         // Communication established at 4.8 kBaud/s
-        communicationInfo.comSpeed = 4800;
+        communicationInfo.comSpeedBaud = 4800;
         break;
     case ComRt1:
         // Communication established at 38.4 kBaud/s
-        communicationInfo.comSpeed = 38400;
+        communicationInfo.comSpeedBaud = 38400;
         break;
     case (ComRt0 | ComRt1):
         // Communication established at 230.4 kBaud/s
-        communicationInfo.comSpeed = 230400;
+        communicationInfo.comSpeedBaud = 230400;
         break;
     default:
-		// return ERROR;
+        // No communication established or other error occured
+        communicationInfo.comSpeedBaud = 0;
         break;
     }
     // return SUCCESS;
