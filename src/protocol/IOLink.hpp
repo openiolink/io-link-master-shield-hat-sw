@@ -32,17 +32,10 @@
 //!***** Header-Files ***********************************************************
 #include <cstdint>
 
-namespace IOL{
-    // IO-Link M-Sequence Types
-    constexpr uint8_t M_TYPE_0          = 0u;
-    constexpr uint8_t M_TYPE_1_X        = 1u;
-    constexpr uint8_t M_TYPE_2_X        = 2u;
+namespace openiolinklibrary{
 
     constexpr uint8_t PD_VALID_BIT      = 0x40u;
     namespace MC{
-        constexpr uint8_t PD_READ       = 0x80u;
-        constexpr uint8_t WRITE         = 0x20u;
-
         constexpr uint8_t DEV_FALLBACK  = 0x5Au;
         constexpr uint8_t MAS_IDENT     = 0x95u;
         constexpr uint8_t DEV_IDENT     = 0x96u;

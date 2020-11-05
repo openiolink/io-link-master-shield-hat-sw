@@ -1,5 +1,8 @@
 
 add_library(openiolink  OpenIOLink.hpp
+                        protocol/IOLinkConfig.hpp
+                        protocol/IOLMessage.hpp
+                        protocol/IOLMessage.cpp
                         protocol/IOLMasterPort.hpp
                         protocol/IOLMasterPort.cpp
                         protocol/HardwareBase.hpp
