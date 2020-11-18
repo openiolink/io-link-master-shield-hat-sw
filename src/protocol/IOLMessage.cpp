@@ -69,4 +69,21 @@ namespace openiolinklibrary
         // todo check if length is too big
         this->answer_length = length + 1; // CKS uses size 1
     }
+
+    u_int8_t IOLMessage::setCKS(u_int8_t data)
+    {
+        this->CKT_data = data;
+        this->calculateChecksum();
+        if (data == this->CKT_data) // checksum is correct
+        {
+            return 0;
+        }
+        else // checksum is not correct
+        {
+            this->CKT_data = data;
+            return 1;
+        }
+        
+        
+    }
 } // namespace openiolinklibrary

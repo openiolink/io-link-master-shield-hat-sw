@@ -73,4 +73,26 @@ namespace openiolinklibrary
         return sendIOLData(buffer, msglength, msg->getanswer_length());
     }
 
+    uint8_t IOLMasterPort::readIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg)
+    {
+        uint8_t buffer[openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH];
+        readIOLData(buffer, msg->getanswer_length());
+                // msg->setMC(buffer[0]);
+                // msg->setOctets(*buffer[1])
+        for (uint8_t i = 0; i < msg->getanswer_length(); i++)
+        {
+            switch (i)
+            {
+            case 0:
+                break;
+            
+            default:
+                // msg->setOctets()
+                break;
+            }
+        }
+        
+        return 0; // TODO check checksum
+    }
+
 } // namespace openiolinklibrary

@@ -27,8 +27,8 @@
 //!	 limitations under the License.
 //!
 //!*****************************************************************************
-#ifndef IOLMASTERPORT_H_INCLUDED
-#define IOLMASTERPORT_H_INCLUDED
+#ifndef IOLMASTERPORT_HPP_INCLUDED
+#define IOLMASTERPORT_HPP_INCLUDED
 
 #include "protocol/IOLMessage.hpp"
 #include <cstdint>
@@ -66,9 +66,11 @@ namespace openiolinklibrary
         void setMode(Mode);
         Mode getMode();
         uint8_t sendIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg);
+        uint8_t readIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg);
+        virtual uint8_t readIOLData(uint8_t* data, uint8_t sizeofdata){return 1;};
         // virtual void readDeviceParameter();
 
     };
 } // namespace openiolinklibrary
 
-#endif // IOLMASTERPORT_H_INCLUDED
+#endif // IOLMASTERPORT_HPP_INCLUDED

@@ -312,6 +312,7 @@ public:
     
     protected:
         uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer);
+        uint8_t readIOLData(uint8_t* data, uint8_t sizeofdata);
         
     public:
         Max14819_Port(PortNr portnr_, std::shared_ptr<Max14819> chip_): portnr(portnr_), chip(chip_){};

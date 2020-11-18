@@ -71,11 +71,13 @@ namespace openiolinklibrary
         IOLMessage(/* args */);
         ~IOLMessage();
         void setMC(Read_Write rw, Communication_Channel cc, u_int8_t address);
+        void setMC(u_int8_t data);
         void setMSequenceType(M_Sequence_Type type);
         u_int8_t getData(u_int8_t *data);
         void setOctets(u_int8_t *data, u_int8_t length);
         void setanswer_length(u_int8_t length);
         u_int8_t getanswer_length(void){return answer_length;};
+        u_int8_t setCKS(u_int8_t data);
     };
 
 } // namespace openiolinklibrary

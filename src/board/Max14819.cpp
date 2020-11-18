@@ -67,7 +67,9 @@ uint8_t calculateCKT(uint8_t mc, uint8_t *data, uint8_t dataSize, uint8_t type);
 //!******************************************************************************
 Max14819::Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_) : debug_interface(debugout_), spi_interface(spi_interface_), spi_address(spi_address_), wait(wait_){
     debug_interface->print("Initialize Max");
+    
 }
+
 
 
 // }
@@ -261,7 +263,32 @@ uint8_t Max14819::Max14819_Port::sendIOLData(uint8_t* data, uint8_t sizeofdata, 
 //!  \return       	0 if success
 //!
 //!******************************************************************************
-// TODO readData
+uint8_t Max14819::Max14819_Port::readIOLData(uint8_t* data, uint8_t sizeofdata) {
+    uint8_t bufferRegister;
+    uint8_t retValue = SUCCESS;
+    // Use corresponding transmit FIFO address
+    uint8_t offset=0;
+    // Todo remove offset and replace with enum
+    if (portnr == PortNr::PORTB)
+    {
+        offset = 1; // PORTB Registers are 1 address higher than PORTA Register
+    }
+
+    chip->wait->ms(10); // TODO another solution to wait for an iol answer should be implemented
+
+    // Controll if the aswer has the expected length (first byte in the FIFO is the messagelength)
+    if (sizeofdata != chip->readRegister(bufferRegister)) {
+        // TODO Error Handling if Buffer is corrupted
+        retValue = ERROR;
+    }
+
+    // Read data from FIFO
+    for (uint8_t i = 0; i < sizeofdata; i++) {
+        *data++ = chip->readRegister(bufferRegister);
+    }
+    // Return Error state
+    return retValue;
+}
 
 //!******************************************************************************
 //!  function :    	enableCyclicSend
@@ -470,6 +497,7 @@ void Max14819::Max14819_Port::wakeUpRequest()
         communicationInfo.comSpeedBaud = 0;
         break;
     }
+    chip->debug_interface->print("wurq done");
     // return SUCCESS;
 }
 

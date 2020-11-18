@@ -11,3 +11,6 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 endif()
 
 target_link_libraries(test_board Catch openiolink)
+
+
+add_custom_command(TARGET test_board POST_BUILD COMMAND cp -v test_board ~/rpi/)
