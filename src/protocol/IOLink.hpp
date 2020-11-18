@@ -29,7 +29,6 @@
 #ifndef IOLINK_HPP_INCLUDED
 #define IOLINK_HPP_INCLUDED
 
-//!***** Header-Files ***********************************************************
 #include <cstdint>
 
 namespace openiolinklibrary{
