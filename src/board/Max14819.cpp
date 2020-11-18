@@ -43,8 +43,8 @@
 
 //! \name Commands to read or write registers
 //!\{
-constexpr uint8_t read = 0b00000001;
-constexpr uint8_t write = 0b01111111;
+constexpr uint8_t read = 0b00000001; //!< read command
+constexpr uint8_t write = 0b01111111; //!< write command
 //!\}
 
 Max14819::Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_) : debug_interface(debugout_), spi_interface(spi_interface_), spi_address(spi_address_), wait(wait_){
