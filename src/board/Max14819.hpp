@@ -264,6 +264,8 @@ public:
     //!         This is an abstract class which is needed to set pins from the
     //!         max14819 class itself.
     //!
+    //!  \note  This abstract class must be implemented for the used hardware.
+    //!
     //!*****************************************************************************
     class PIN
     {
@@ -272,7 +274,15 @@ public:
     public:
         PIN(/* args */){};
         virtual ~PIN(){};
-        virtual void set(bool){};
+
+        //!*****************************************************************************
+        //!  \brief Sets the state of an IO-Pin
+        //!  
+        //!  
+        //!  \param state set to this
+        //!  
+        //!*****************************************************************************
+        virtual void set(bool state){};
     };
 
     //!*****************************************************************************
