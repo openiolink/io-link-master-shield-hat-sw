@@ -7,7 +7,7 @@
 namespace openiolinklibrary
 {
 
-    class HardwareDummy : public HardwareBase
+    class HardwareDummy
     {
     private:
         /* data */

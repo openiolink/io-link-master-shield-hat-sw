@@ -30,7 +30,6 @@
 #define HARDWARRASPBERRY_HPP_INCLUDED
 
 //!**** Header-Files ************************************************************
-#include "protocol/HardwareBase.hpp"
 #include "board/Max14819.hpp"
 #include <cstdint>
 //!**** Macros ******************************************************************
@@ -46,7 +45,7 @@
 
 //!**** Implementation **********************************************************
 
-class HardwareRaspberry : public HardwareBase
+class HardwareRaspberry
 {
 private:
 	void IO_Setup(void);

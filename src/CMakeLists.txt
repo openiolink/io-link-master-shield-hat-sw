@@ -7,9 +7,7 @@ add_library(openiolink  OpenIOLink.hpp
                         protocol/IOLMasterPort.cpp
                         protocol/IOLGenericDevice.hpp
                         protocol/IOLGenericDevice.cpp
-                        protocol/HardwareBase.hpp
-                        protocol/IOLink.hpp
-                        protocol/HardwareBase.cpp)
+                        protocol/IOLink.hpp)
 
 # Check hardwarespecific Files
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
