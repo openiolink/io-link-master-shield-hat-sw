@@ -1,18 +1,24 @@
 //!*****************************************************************************
 //!  \file IOLMessage.hpp
+//!  
 //!  \author Janik Lehmann (CrazyGecko) (xxthegeckoxx@gmail.com)
-//!  \brief 
-//!  \version 0.1
-//!  \date 05-11-2020
 //!  
-//!  \copyright 2019 Bern University of Applied Sciences and Balluff AG
+//!  \brief Contains the IOLMessage class which describes an IO-Link message
 //!  
+//!  \date 2020-11-05
+//!  
+//!  
+//!  *****************************************************************************
+//!  
+//!  \copyright
+//!  Copyright 2020 Bern University of Applied Sciences and Balluff AG
+//!  \n\n
 //!  Licensed under the Apache License, Version 2.0 (the "License");
 //!  you may not use this file except in compliance with the License.
 //!  You may obtain a copy of the License at
-//!  
+//!  \n\n
 //!      http://www.apache.org/licenses/LICENSE-2.0
-//!  
+//!  \n\n
 //!  Unless required by applicable law or agreed to in writing, software
 //!  distributed under the License is distributed on an "AS IS" BASIS,
 //!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,20 +35,47 @@
 
 namespace openiolinklibrary
 {
+    //!*****************************************************************************
+    //!  \brief This class describes an IO-Link message
+    //!  
+    //!         This class is used to generate an IO-Link message. It handles the
+    //!         checksum automatically.
+    //!  
+    //!*****************************************************************************
     class IOLMessage
     {
     public:
+        //!*****************************************************************************
+        //!  \brief Used for bit 7 of the M-sequence control (MC)
+        //!  
+        //!         IO-Link Interface and System Specification V1.1.2 Table A.2 
+        //!  
+        //!*****************************************************************************
         enum class Read_Write
         {
             Write_access = 0,
             Read_access = 1
         };
+        
+        //!*****************************************************************************
+        //!  \brief Used for bit 5 to 6 of the M-sequence control (MC)
+        //!  
+        //!         IO-Link Interface and System Specification V1.1.2 Table A.1 
+        //!  
+        //!*****************************************************************************
         enum class Communication_Channel
         {
             Process = 0,
             Page = 1,
             Diagnosis = 2
         };
+        
+        //!*****************************************************************************
+        //!  \brief Used for bit 6 to 7 of the Checksum / M-sequence type (CKT)
+        //!  
+        //!         IO-Link Interface and System Specification V1.1.2 Chapter A.2
+        //!  
+        //!*****************************************************************************
         enum class M_Sequence_Type
         {
             Type0 = 0,
@@ -61,23 +94,114 @@ namespace openiolinklibrary
                 u_int8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
             };
         };
-        u_int8_t message_length = 2;
-        u_int8_t answer_length=1;
+        u_int8_t message_length = 2;    ///< Length of the IO-Link message
+        // TODO set answer length automaticly with the M-sequence type
+        u_int8_t answer_length=1;       ///< expected answer length
 
+        //!*****************************************************************************
+        //!  \brief calculates the checksum of the CKT
+        //!  
+        //!         IO-Link Interface and System Specification V1.1.2 Chapter A.1.6
+        //!  
+        //!*****************************************************************************
         void calculateChecksum();
+        
+        //!*****************************************************************************
+        //!  \brief Compresses 8-bit checksum to an 6 bit checksum
+        //!  
+        //!         IO-Link Interface and System Specification V1.1.2 Chapter A.1.6
+        //!  
+        //!*****************************************************************************
         static u_int8_t compressTo6Checksum(u_int8_t checksum8);
 
     public:
-        IOLMessage(/* args */);
+        //!*****************************************************************************
+        //!  \brief Construct a new IOLMessage object
+        //!  
+        //!  
+        //!*****************************************************************************
+        IOLMessage();
+
+        //!*****************************************************************************
+        //!  \brief Destroy the IOLMessage object
+        //!  
+        //!  
+        //!*****************************************************************************
         ~IOLMessage();
+
+        //!*****************************************************************************
+        //!  \brief Sets the M-sequence control (MC)
+        //!  
+        //!         IO-Link Interface and System Specification V1.1.2 Chapter A.1.6
+        //!  
+        //!  \param rw  R/W (Bit 7)
+        //!  
+        //!  \param cc  Communication channel (Bit 5 to 6)
+        //!  
+        //!  \param address Address (Bit 0 to 4)
+        //!  
+        //!*****************************************************************************
         void setMC(Read_Write rw, Communication_Channel cc, u_int8_t address);
+
+        //!*****************************************************************************
+        //!  \brief Sets the M-sequence control (MC) manually
+        //!  
+        //!  
+        //!  \param data MC as an u_int8_t
+        //!  
+        //!*****************************************************************************
         void setMC(u_int8_t data);
+
+        //!*****************************************************************************
+        //!  \brief Sets the M-sequence type (Bit 6 to 7 of CKT)
+        //!  
+        //!         IO-Link Interface and System Specification V1.1.2 Chapter A.2
+        //!  
+        //!  \param type M-sequence type
+        //!  
+        //!*****************************************************************************
         void setMSequenceType(M_Sequence_Type type);
+
+        //!*****************************************************************************
+        //!  \brief Get the raw data of the IO-Link message
+        //!  
+        //!         It calculates the checksum automatically before returning the data.
+        //!  
+        //!  \param data pointer to the location, where the data should be written
+        //!  
+        //!  \return length of the message data
+        //!  
+        //!*****************************************************************************
         u_int8_t getData(u_int8_t *data);
+
+        //!*****************************************************************************
+        //!  \brief Sets the payload of the message
+        //!  
+        //!  
+        //!  \param data pointer to the payload
+        //!  
+        //!  \param length of the payload
+        //!  
+        //!*****************************************************************************
         void setOctets(u_int8_t *data, u_int8_t length);
+
+        //!*****************************************************************************
+        //!  \brief Set the expected answer length
+        //!  
+        //!  
+        //!  \param length of the expected answer
+        //!  
+        //!*****************************************************************************
         void setanswer_length(u_int8_t length);
+
+        //!*****************************************************************************
+        //!  \brief Get the answer length
+        //!  
+        //!  
+        //!  \return expected length of the answer
+        //!  
+        //!*****************************************************************************
         u_int8_t getanswer_length(void){return answer_length;};
-        u_int8_t setCKS(u_int8_t data);
     };
 
 } // namespace openiolinklibrary
