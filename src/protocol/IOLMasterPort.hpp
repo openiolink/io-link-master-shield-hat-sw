@@ -75,9 +75,9 @@ namespace openiolinklibrary
         // TODO: Processdata Handler
     protected:
         //!*****************************************************************************
-        //!  \brief Abstract methode to send data over IO-Link
+        //!  \brief Abstract function to send data over IO-Link
         //!
-        //!  \note This abstract methode must be implemented for the used hardware      
+        //!  \note This abstract function must be implemented for the used hardware      
         //!  
         //!  
         //!  \param data pointer to the data to send 
@@ -86,7 +86,7 @@ namespace openiolinklibrary
         //!  
         //!  \param sizeofanswer length of the expected answer
         //!  
-        //!  \return uint8_t 1 for error because the methode is not implemented
+        //!  \return uint8_t 1 for error because the function is not implemented
         //!  
         //!*****************************************************************************
         virtual uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
@@ -106,9 +106,9 @@ namespace openiolinklibrary
         ~IOLMasterPort();
 
         //!*****************************************************************************
-        //!  \brief Abstract methode to create an WURQ
+        //!  \brief Abstract function to create an WURQ
         //!  
-        //!  \note This abstract methode must be implemented for the used hardware
+        //!  \note This abstract function must be implemented for the used hardware
         //!  
         //!*****************************************************************************
         virtual void wakeUpRequest(){}; // todo move to private
@@ -163,16 +163,16 @@ namespace openiolinklibrary
         uint8_t readIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg);
 
         //!*****************************************************************************
-        //!  \brief Abstract methode te read data from IO-Link
+        //!  \brief Abstract function te read data from IO-Link
         //!
-        //!  \note This abstract methode must be implemented for the used hardware  
+        //!  \note This abstract function must be implemented for the used hardware  
         //!  
         //!  
         //!  \param data pointer to the data destination
         //!  
         //!  \param sizeofdata size of the data to read
         //!  
-        //!  \return uint8_t 1 for error because the methode is not implemented
+        //!  \return uint8_t 1 for error because the function is not implemented
         //!  
         //!*****************************************************************************
         virtual uint8_t readIOLData(uint8_t* data, uint8_t sizeofdata){return 1;}; // todo move to protected
