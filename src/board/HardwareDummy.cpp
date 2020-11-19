@@ -8,8 +8,8 @@ namespace openiolinklibrary
     HardwareDummy::HardwareDummy(/* args */)
     {
         std::cout << "Init HardwareDummy\n";
-        testpin.off();
-        testpin.on();
+        testpin.set(false);
+        testpin.set(true);
     }
 
     HardwareDummy::~HardwareDummy()
@@ -32,14 +32,16 @@ namespace openiolinklibrary
         IO_PinMode("in");
     }
 
-    void HardwareDummy::PIN_Dummy::on()
+    void HardwareDummy::PIN_Dummy::set(bool setto)
     {
-        IO_Write(LOW);
-    }
-
-    void HardwareDummy::PIN_Dummy::off()
-    {
-        IO_Write(HIGH);
+        if (setto)
+        {
+            IO_Write(HIGH);
+        }
+        else
+        {
+            IO_Write(LOW);
+        }
     }
 
     void HardwareDummy::PIN_Dummy::IO_PinMode(std::string mode)

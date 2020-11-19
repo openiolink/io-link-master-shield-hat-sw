@@ -1,7 +1,6 @@
 #ifndef HARDWAREDUMMY_HPP_INCLUDED
 #define HARDWAREDUMMY_HPP_INCLUDED
 
-#include "protocol/HardwareBase.hpp"
 #include "board/HardwareDummyChip.hpp"
 #include <iostream>
 namespace openiolinklibrary
@@ -23,15 +22,14 @@ namespace openiolinklibrary
             std::string pinname = "undef";
             std::string LOW = "LOW";
             std::string HIGH = "HIGH";
+            void IO_PinMode(std::string mode);
+            void IO_Write(std::string output);
 
         public:
             PIN_Dummy(){};
             PIN_Dummy(std::string name, std::string mode);
             ~PIN_Dummy();
-            void on();
-            void off();
-            void IO_PinMode(std::string mode);
-            void IO_Write(std::string output);
+            void set(bool setto);
         };
 
         PIN_Dummy testpin = PIN_Dummy("testpin", "output");
