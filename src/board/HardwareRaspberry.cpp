@@ -1,32 +1,33 @@
 //!*****************************************************************************
-//!  \file      HardwareRaspberry.cpp
-//!*****************************************************************************
-//!
-//!  \brief		Generic Hardware Layer abstraction of a physical layer
-//!
-//!  \author    Markus Gafner (gnm7)
-//!
-//!  \date      2019-09-13
-//!
-//!*****************************************************************************
-//!
-//!	 Copyright 2019 Bern University of Applied Sciences and Balluff AG
-//!
-//!	 Licensed under the Apache License, Version 2.0 (the "License");
+//!  \file HardwareRaspberry.cpp
+//!  
+//!  \author 	Janik Lehmann (CrazyGecko) (xxthegeckoxx@gmail.com)
+//!			  	based on the work of Markus Gafner (gnm7)
+//!  
+//!  \brief Generic Hardware Layer abstraction of a physical layer
+//!  
+//!  \date 2020-10-22
+//!  
+//!  
+//!  *****************************************************************************
+//!  
+//!  \copyright
+//!  Copyright 2020 Bern University of Applied Sciences and Balluff AG
+//!  \n\n
+//!  Licensed under the Apache License, Version 2.0 (the "License");
 //!  you may not use this file except in compliance with the License.
 //!  You may obtain a copy of the License at
-//!
-//!	     http://www.apache.org/licenses/LICENSE-2.0
-//!
-//!	 Unless required by applicable law or agreed to in writing, software
-//!	 distributed under the License is distributed on an "AS IS" BASIS,
-//!	 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//!	 See the License for the specific language governing permissions and
-//!	 limitations under the License.
-//!	
+//!  \n\n
+//!      http://www.apache.org/licenses/LICENSE-2.0
+//!  \n\n
+//!  Unless required by applicable law or agreed to in writing, software
+//!  distributed under the License is distributed on an "AS IS" BASIS,
+//!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//!  See the License for the specific language governing permissions and
+//!  limitations under the License.
+//!  
 //!*****************************************************************************
 
-//!**** Header-Files ************************************************************
 #include "HardwareRaspberry.hpp"
 
 #include <wiringPi.h>
@@ -39,23 +40,6 @@
 #include <fcntl.h>   			// Needed for SPI port
 #include <sys/ioctl.h>			// Needed for SPI port
 #include <linux/spi/spidev.h>	// Needed for SPI port
-//int wiringPiSPIGetFd     (int channel) ;
-//int wiringPiSPIDataRW    (int channel, unsigned char *data, int len) ;
-//int wiringPiSPISetupMode (int channel, int speed, int mode) ;
-//int wiringPiSPISetup     (int channel, int speed) ;
-
-//!**** Macros ******************************************************************
-
-//!**** Data types **************************************************************
-
-//!**** Function prototypes *****************************************************
-
-//!**** Data ********************************************************************
-
-//!**** Implementation **********************************************************
-
-
-
 
 HardwareRaspberry::HardwareRaspberry()
 {
@@ -82,7 +66,6 @@ HardwareRaspberry::HardwareRaspberry()
 	PORT2 = IOLChip1->getPort(Max14819::Max14819_Port::PortNr::PORTA);
 	PORT3 = IOLChip1->getPort(Max14819::Max14819_Port::PortNr::PORTB);
 }
-
 
 HardwareRaspberry::~HardwareRaspberry()
 {
@@ -194,40 +177,11 @@ void HardwareRaspberry::configure_Max14819()
 	wait_for(Max14819::INIT_BOOTUP_DELAY);
 }
 
-
-
-
-//!*****************************************************************************
-//!function :      Serial_Write
-//!*****************************************************************************
-//!  \brief        Writes a number to the serial connection
-//!
-//!  \type         local
-//!
-//!  \param[in]	   int	      the number which should get printed
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
 void HardwareRaspberry::Serial_Write(int number)
 {
 	printf("%d\n", number);
 }
 
-//!*****************************************************************************
-//!function :      SPI_Write
-//!*****************************************************************************
-//!  \brief        Writes some data to the specified SPI-Connection
-//!
-//!  \type         local
-//!
-//!  \param[in]	   uint8_t    channel number
-//!				   uint8_t*   pointer to the data structure
-//!				   uint8_t    length of the data in bytes
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
 void HardwareRaspberry::SPI_Write(uint8_t channel, uint8_t * data, uint8_t length)
 {
 	//printf("SPI sending: %x, %x  ", data[0], data[1]);
@@ -235,18 +189,6 @@ void HardwareRaspberry::SPI_Write(uint8_t channel, uint8_t * data, uint8_t lengt
 	//printf("received %x,%x\n", data[0], data[1]);
 }
 
-//!*****************************************************************************
-//!function :      wait_for
-//!*****************************************************************************
-//!  \brief        delay the thread for the given time
-//!
-//!  \type         local
-//!
-//!  \param[in]	   uint32_t    delay time im miliseconds
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
 void HardwareRaspberry::wait_for(uint32_t delay_ms)
 {
 	//printf("Sleep_in\n");
@@ -277,7 +219,6 @@ std::shared_ptr<openiolinklibrary::IOLMasterPort> HardwareRaspberry::getPort(uin
 	}
 }
 
-
 HardwareRaspberry::PIN_raspi::PIN_raspi(PinNames name, PinMode mode){
 	this->init(name, mode);
 }
@@ -303,18 +244,6 @@ void HardwareRaspberry::PIN_raspi::set(bool state){
 	}
 }
 
-//!*****************************************************************************
-//!function :      get_pinnumber
-//!*****************************************************************************
-//!  \brief        returns the pinnumber for the given pin (see enum PinNames)
-//!
-//!  \type         local
-//!
-//!  \param[in]	   PinNames    the enumerated pinname
-//!
-//!  \return       the hardware-pinnumber
-//!
-//!*****************************************************************************
 uint8_t HardwareRaspberry::PIN_raspi::get_pinnumber(PinNames pinname)
 {
 	switch (pinname) {
@@ -350,20 +279,6 @@ uint8_t HardwareRaspberry::PIN_raspi::get_pinnumber(PinNames pinname)
 	return uint8_t();
 }
 
-//!*****************************************************************************
-//!function :      IO_Write
-//!*****************************************************************************
-//!  \brief        Sets a pin to the specified logical value
-//!
-//!  \type         local
-//!
-//!  \param[in]	   PinNames   name of the Pin
-//!  			   uint8_t    state of the logical signal
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
-
 void HardwareRaspberry::PIN_raspi::IO_Write(PinNames pinname, uint8_t state)
 {
 	uint8_t pinnumber = get_pinnumber(pinname);
@@ -373,19 +288,6 @@ void HardwareRaspberry::PIN_raspi::IO_Write(PinNames pinname, uint8_t state)
 	}
 }
 
-//!*****************************************************************************
-//!function :      IO_PinMode
-//!*****************************************************************************
-//!  \brief        Sets a pin to the specified mode
-//!
-//!  \type         local
-//!
-//!  \param[in]	   PinNames   name of the Pin
-//!  			   PinMode    mode of the pin
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
 void HardwareRaspberry::PIN_raspi::IO_PinMode(PinNames pinname, PinMode mode)
 {
 	uint8_t pinnumber = get_pinnumber(pinname);
@@ -430,18 +332,6 @@ void HardwareRaspberry::SPI_raspi::DataRW(uint8_t * data, uint8_t length)
 	cs_pin->set(false);
 }
 
-//!*****************************************************************************
-//!function :      Print
-//!*****************************************************************************
-//!  \brief        Writes a c-string to the serial connection
-//!
-//!  \type         local
-//!
-//!  \param[in]	   char const * pointer to the data, which gets print out
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
 void HardwareRaspberry::SerialOut::print(char const * buf)
 {
 	printf("%s\n", buf);
