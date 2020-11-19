@@ -108,7 +108,7 @@ namespace openiolinklibrary
         //!*****************************************************************************
         //!  \brief Reads the page 1 data from the device
         //!  
-        //!  \note  Do not use this methode. It will be moved to private. It is public
+        //!  \note  Do not use this function. It will be moved to private. It is public
         //!         for debug only.
         //!  
         //!*****************************************************************************
@@ -117,8 +117,8 @@ namespace openiolinklibrary
         //!*****************************************************************************
         //!  \brief Prints the data contained in page1 to the ostream object
         //!  
-        //!  \note  Do not use this methode. It is for debug only. There will be
-        //!         methodes to read the page1 data
+        //!  \note  Do not use this function. It is for debug only. There will be
+        //!         functions to read the page1 data
         //!  
         //!*****************************************************************************
         void printPage1Data();
