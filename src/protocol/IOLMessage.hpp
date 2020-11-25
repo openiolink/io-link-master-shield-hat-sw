@@ -31,8 +31,11 @@
 #define IOLMESSAGE_HPP_INCLUDED
 
 #include "IOLinkConfig.hpp"
-#include <cstdlib>
+#ifdef ARDUINO
+	#include <stdint.h>
+#else
 	#include <cstdint>
+#endif
 
 namespace openiolinklibrary
 {
