@@ -32,6 +32,7 @@
 
 #include "IOLinkConfig.hpp"
 #include <cstdlib>
+	#include <cstdint>
 
 namespace openiolinklibrary
 {
@@ -86,17 +87,17 @@ namespace openiolinklibrary
     private:
         union
         {
-            u_int8_t data[libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
+            uint8_t data[libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
             struct
             {
-                u_int8_t MC_data;                                           ///< M-sequence control
-                u_int8_t CKT_data;                                          ///< Checksum / M-sequence type
-                u_int8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
+                uint8_t MC_data;                                           ///< M-sequence control
+                uint8_t CKT_data;                                          ///< Checksum / M-sequence type
+                uint8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
             };
         };
-        u_int8_t message_length = 2;    ///< Length of the IO-Link message
+        uint8_t message_length = 2;    ///< Length of the IO-Link message
         // TODO set answer length automaticly with the M-sequence type
-        u_int8_t answer_length=1;       ///< expected answer length
+        uint8_t answer_length=1;       ///< expected answer length
 
         //!*****************************************************************************
         //!  \brief calculates the checksum of the CKT
@@ -112,7 +113,7 @@ namespace openiolinklibrary
         //!         IO-Link Interface and System Specification V1.1.2 Chapter A.1.6
         //!  
         //!*****************************************************************************
-        static u_int8_t compressTo6Checksum(u_int8_t checksum8);
+        static uint8_t compressTo6Checksum(uint8_t checksum8);
 
     public:
         //!*****************************************************************************
@@ -141,16 +142,16 @@ namespace openiolinklibrary
         //!  \param address Address (Bit 0 to 4)
         //!  
         //!*****************************************************************************
-        void setMC(Read_Write rw, Communication_Channel cc, u_int8_t address);
+        void setMC(Read_Write rw, Communication_Channel cc, uint8_t address);
 
         //!*****************************************************************************
         //!  \brief Sets the M-sequence control (MC) manually
         //!  
         //!  
-        //!  \param data MC as an u_int8_t
+        //!  \param data MC as an uint8_t
         //!  
         //!*****************************************************************************
-        void setMC(u_int8_t data);
+        void setMC(uint8_t data);
 
         //!*****************************************************************************
         //!  \brief Sets the M-sequence type (Bit 6 to 7 of CKT)
@@ -172,7 +173,7 @@ namespace openiolinklibrary
         //!  \return length of the message data
         //!  
         //!*****************************************************************************
-        u_int8_t getData(u_int8_t *data);
+        uint8_t getData(uint8_t *data);
 
         //!*****************************************************************************
         //!  \brief Sets the payload of the message
@@ -183,7 +184,7 @@ namespace openiolinklibrary
         //!  \param length of the payload
         //!  
         //!*****************************************************************************
-        void setOctets(u_int8_t *data, u_int8_t length);
+        void setOctets(uint8_t *data, uint8_t length);
 
         //!*****************************************************************************
         //!  \brief Set the expected answer length
@@ -192,7 +193,7 @@ namespace openiolinklibrary
         //!  \param length of the expected answer
         //!  
         //!*****************************************************************************
-        void setanswer_length(u_int8_t length);
+        void setanswer_length(uint8_t length);
 
         //!*****************************************************************************
         //!  \brief Get the answer length
@@ -201,7 +202,7 @@ namespace openiolinklibrary
         //!  \return expected length of the answer
         //!  
         //!*****************************************************************************
-        u_int8_t getanswer_length(void){return answer_length;};
+        uint8_t getanswer_length(void){return answer_length;};
     };
 
 } // namespace openiolinklibrary

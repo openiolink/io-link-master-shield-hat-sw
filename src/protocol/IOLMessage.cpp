@@ -39,15 +39,15 @@ namespace openiolinklibrary
     {
     }
 
-    void IOLMessage::setMC(Read_Write rw, Communication_Channel cc, u_int8_t address)
+    void IOLMessage::setMC(Read_Write rw, Communication_Channel cc, uint8_t address)
     {
-        MC_data = ((static_cast<u_int8_t>(rw) << 7) | (static_cast<u_int8_t>(cc) << 5) | address);
+        MC_data = ((static_cast<uint8_t>(rw) << 7) | (static_cast<uint8_t>(cc) << 5) | address);
     }
 
-    u_int8_t IOLMessage::getData(u_int8_t *data)
+    uint8_t IOLMessage::getData(uint8_t *data)
     {
         this->calculateChecksum();
-        for (u_int8_t i = 0; i < openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2; i++)
+        for (uint8_t i = 0; i < openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2; i++)
         {
             data[i] = this->data[i];
         }
@@ -55,9 +55,9 @@ namespace openiolinklibrary
         return this->message_length;
     }
 
-    void IOLMessage::setOctets(u_int8_t *data, u_int8_t length)
+    void IOLMessage::setOctets(uint8_t *data, uint8_t length)
     {
-        for (size_t i = 0; i < length; i++)
+        for (uint8_t i = 0; i < length; i++)
         {
             this->octet_data[i] = data[i];
         }
@@ -66,19 +66,19 @@ namespace openiolinklibrary
 
     void IOLMessage::calculateChecksum()
     {
-        u_int8_t checksum = 0x52;
+        uint8_t checksum = 0x52;
         this->CKT_data &= 0xC0;
-        for (u_int8_t i = 0; i < (message_length); i++)
+        for (uint8_t i = 0; i < (message_length); i++)
         { // Berechnung inkl MC und CKT
             checksum ^= this->data[i];
         }
         this->CKT_data |= compressTo6Checksum(checksum);
     }
 
-    u_int8_t IOLMessage::compressTo6Checksum(u_int8_t checksum8)
+    uint8_t IOLMessage::compressTo6Checksum(uint8_t checksum8)
     {
-        u_int8_t checksum = 0;
-        for (u_int8_t i = 0; i < 4; i++)
+        uint8_t checksum = 0;
+        for (uint8_t i = 0; i < 4; i++)
         {
             checksum = checksum | ((((checksum8 >> (i * 2)) % 2) ^ (((checksum8 >> (i * 2 + 1)) % 2))) << i);
         }
@@ -90,10 +90,10 @@ namespace openiolinklibrary
 
     void IOLMessage::setMSequenceType(M_Sequence_Type type)
     {
-        this->CKT_data = static_cast<u_int8_t>(type) << 6;
+        this->CKT_data = static_cast<uint8_t>(type) << 6;
     }
 
-    void IOLMessage::setanswer_length(u_int8_t length)
+    void IOLMessage::setanswer_length(uint8_t length)
     {
         // todo check if length is too big
         this->answer_length = length + 1; // CKS uses size 1

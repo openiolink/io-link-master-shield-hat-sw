@@ -40,11 +40,11 @@ namespace openiolinklibrary
     void IOLGenericDevice::readPage1Data()
     {
         IOLMessage msg;
-        u_int8_t buffer[10];
+        uint8_t buffer[10];
         uint8_t page1actualread;
         msg.setMSequenceType(IOLMessage::M_Sequence_Type::Type0);
 
-        for (u_int8_t i = 0; i < 13; i++)
+        for (uint8_t i = 0; i < 13; i++)
         {
             
             msg.setMC(IOLMessage::Read_Write::Read_access, IOLMessage::Communication_Channel::Page, i+1); // 0x00 is MasterCommand

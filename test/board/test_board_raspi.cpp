@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
     namespace iol = openiolinklibrary;
     using iol::IOLMessage;
     HardwareRaspberry hwraspi;
-    u_int8_t buffer[10];
+    uint8_t buffer[10];
     auto port0{hwraspi.getPort(0)};
     auto port1{hwraspi.getPort(1)};
     auto port2{hwraspi.getPort(2)};

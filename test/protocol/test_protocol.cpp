@@ -39,11 +39,11 @@ TEST_CASE("Test the Builds of IOLinkMessages", "[IOLinkMessage]")
         IOLMessage message;
         union 
         {
-            u_int8_t data[libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
+            uint8_t data[libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
             struct {
-                u_int8_t MC_data;                            ///< M-sequence control
-                u_int8_t CKT_data;                           ///< Checksum / M-sequence type
-                u_int8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
+                uint8_t MC_data;                            ///< M-sequence control
+                uint8_t CKT_data;                           ///< Checksum / M-sequence type
+                uint8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
             };
         }message_data;
 
