@@ -7,6 +7,7 @@
 #else
 #include "board/HardwareRaspberry.hpp"
 #endif
+#include "protocol/IOLMasterPort.hpp"
 #include "board/Max14819.hpp"
 
 #include "protocol/HardwareBase.hpp"

@@ -16,6 +16,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
                             board/HardwareArduino.hpp
                             board/HardwareArduino.cpp)
     target_link_arduino_libraries(arduionohw PRIVATE SPI core)
+    target_link_libraries(arduionohw PRIVATE openiolink)
     target_link_libraries(openiolink arduionohw)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")

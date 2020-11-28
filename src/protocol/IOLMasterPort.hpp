@@ -31,8 +31,12 @@
 #define IOLMASTERPORT_HPP_INCLUDED
 
 #include "protocol/IOLMessage.hpp"
-#include <cstdint>
 #include <memory>
+#ifdef ARDUINO
+    #include <stdint.h>
+#else
+    #include <cstdint>
+#endif
 namespace openiolinklibrary
 {
     //!*****************************************************************************

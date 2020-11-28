@@ -280,7 +280,7 @@ public:
     //!  
     //!  
     //!*****************************************************************************
-	class SPI_raspi : public Max14819::SPI
+	class SPI_raspi : public Max14819::SPI_Max14819
 	{
 	private:
 		constexpr static int spi_speed=500000;

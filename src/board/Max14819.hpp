@@ -293,13 +293,13 @@ public:
     //!  \note  This abstract class must be implemented for the used hardware.
     //!
     //!*****************************************************************************
-    class SPI
+    class SPI_Max14819
     {
     private:
         /* data */
     public:
-        SPI(/* args */){};
-        virtual ~SPI(){};
+        SPI_Max14819(/* args */){};
+        virtual ~SPI_Max14819(){};
 
         //!*****************************************************************************
         //!  \brief Reads and writes data
@@ -485,7 +485,7 @@ public:
 private:
     std::shared_ptr<PIN> ErrLED=nullptr;
     std::shared_ptr<PIN> StatLED=nullptr;
-    std::shared_ptr<SPI> spi_interface;
+    std::shared_ptr<SPI_Max14819> spi_interface;
     std::shared_ptr<DebugOut> debug_interface;
     std::shared_ptr<Wait> wait;
 
@@ -510,7 +510,7 @@ public:
     //!  \param wait_ Class to be able to wait some time
     //!
     //!*****************************************************************************
-    Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_);
+    Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI_Max14819> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_);
 
     //!*****************************************************************************
     //!  \brief Destroy the Max14819 object
