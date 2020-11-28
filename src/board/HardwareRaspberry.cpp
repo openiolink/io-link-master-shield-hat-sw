@@ -46,14 +46,14 @@ HardwareRaspberry::HardwareRaspberry()
 	// TODO Fehlerabfrage
 	// Init Wiring Pi
 	wiringPiSetup();
+	IO_Setup();
 
 	// Init SPI
 	printf("Init_SPI starts\n");
 	spi0.init(0, std::make_shared<PIN_raspi>(CS_chip0));
-	spi1.init(1, std::make_shared<PIN_raspi>(CS_chip0));
+	spi1.init(1, std::make_shared<PIN_raspi>(CS_chip1));
 	printf("Init_SPI finished\n");
 	wait_for(1*1000);
-	IO_Setup();
 	IOLChip0 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi, std::make_shared<Wait_raspi>(wait_raspi)));
 	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi, std::make_shared<Wait_raspi>(wait_raspi)));
 
@@ -76,6 +76,7 @@ void HardwareRaspberry::IO_Setup()
 {
 	// DRIVER0
 	CS_chip0.init(PIN_raspi::PinNames::port01CS, PIN_raspi::PinMode::out);
+	CS_chip0.set(false);
 	IRQ_chip0.init(PIN_raspi::PinNames::port01IRQ, PIN_raspi::PinMode::in_pullup);
 	DI0.init(PIN_raspi::PinNames::port0DI, PIN_raspi::PinMode::in_pullup);
 	DI1.init(PIN_raspi::PinNames::port1DI, PIN_raspi::PinMode::in_pullup);
@@ -95,6 +96,7 @@ void HardwareRaspberry::IO_Setup()
 	
 	// DRIVER1
 	CS_chip1.init(PIN_raspi::PinNames::port23CS, PIN_raspi::PinMode::out);
+	CS_chip0.set(false);
 	IRQ_chip1.init(PIN_raspi::PinNames::port23IRQ, PIN_raspi::PinMode::in_pullup);
 	DI2.init(PIN_raspi::PinNames::port2DI, PIN_raspi::PinMode::in_pullup);
 	DI3.init(PIN_raspi::PinNames::port3DI, PIN_raspi::PinMode::in_pullup);
