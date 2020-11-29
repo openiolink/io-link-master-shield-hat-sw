@@ -50,7 +50,7 @@ class HardwareRaspberry
 {
 private:
     //!*****************************************************************************
-    //!  \brief Initializes the IOs of the Raspberry Pi used fot the Shield/Hat
+    //!  \brief Initializes the IOs of the Raspberry Pi used for the Shield/Hat
     //!  
     //!  
     //!*****************************************************************************
