@@ -1,35 +1,35 @@
-
 //!*****************************************************************************
-//!  \file      HardwareArduino.h
-//!*****************************************************************************
-//!
-//!  \brief		Generic Hardware Layer abstraction of a physical layer
-//!
-//!  \author    Markus Gafner (gnm7)
-//!
-//!  \date      2019-09-13
-//!
-//!*****************************************************************************
-//!
-//!	 Copyright 2019 Bern University of Applied Sciences and Balluff AG
-//!
-//!	 Licensed under the Apache License, Version 2.0 (the "License");
+//!  \file HardwareArduino.hpp
+//!  
+//!  \author Janik Lehmann (CrazyGecko) (xxthegeckoxx@gmail.com)
+//!			  	based on the work of Markus Gafner (gnm7)
+//!  
+//!  \brief Generic Hardware Layer abstraction of an Arduino DUE Board
+//!  
+//!  \date 2020-11-25
+//!  
+//!  
+//!  *****************************************************************************
+//!  
+//!  \copyright
+//!  Copyright 2020 Bern University of Applied Sciences and Balluff AG
+//!  \n\n
+//!  Licensed under the Apache License, Version 2.0 (the "License");
 //!  you may not use this file except in compliance with the License.
 //!  You may obtain a copy of the License at
-//!
-//!	     http://www.apache.org/licenses/LICENSE-2.0
-//!
-//!	 Unless required by applicable law or agreed to in writing, software
-//!	 distributed under the License is distributed on an "AS IS" BASIS,
-//!	 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//!	 See the License for the specific language governing permissions and
-//!	 limitations under the License.
-//!	
+//!  \n\n
+//!      http://www.apache.org/licenses/LICENSE-2.0
+//!  \n\n
+//!  Unless required by applicable law or agreed to in writing, software
+//!  distributed under the License is distributed on an "AS IS" BASIS,
+//!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//!  See the License for the specific language governing permissions and
+//!  limitations under the License.
+//!  
 //!*****************************************************************************
 #ifndef HARDWARARDUINO_HPP_INCLUDED
 #define HARDWARARDUINO_HPP_INCLUDED
 
-//!**** Header-Files ************************************************************
 #include "board/Max14819.hpp"
 #include <stdint.h>
 
@@ -39,21 +39,17 @@ constexpr uint8_t chip0Adresse_spi  = 0; //!< Address of chip 0
 constexpr uint8_t chip1Adresse_spi  = 2; //!< Address of chip 1
 //!\}
 
-//!**** Macros ******************************************************************
-
-//!**** Data types **************************************************************
-
-//!**** Function prototypes *****************************************************
-
-//!**** Data ********************************************************************
-
-//!**** Implementation **********************************************************
-
+//!*****************************************************************************
+//!  \brief This class describes the hardware of the Arduino DUE and the
+//!         IO-Link-Master Shield/Hat
+//!  
+//!  
+//!*****************************************************************************
 class HardwareArduino
 {
 private:
     //!*****************************************************************************
-    //!  \brief Initializes the IOs of the Raspberry Pi used fot the Shield/Hat
+    //!  \brief Initializes the IOs of the Arduino DUE used for the Shield/Hat
     //!  
     //!  
     //!*****************************************************************************
@@ -68,14 +64,14 @@ private:
 
 public:
     //!*****************************************************************************
-    //!  \brief Construct a new Hardware Raspberry object
+    //!  \brief Construct a new Hardware Arduino object
     //!  
     //!  
     //!*****************************************************************************
 	HardwareArduino();
 
     //!*****************************************************************************
-    //!  \brief Destroy the Hardware Raspberry object
+    //!  \brief Destroy the Hardware Arduino object
     //!  
     //!  
     //!*****************************************************************************
@@ -184,7 +180,7 @@ public:
 
 	public:
         //!*****************************************************************************
-        //!  \brief Construct a new pin raspi object
+        //!  \brief Construct a new pin arduino object
         //!  
         //!  \note You have to run the function init for correct work of the object.
         //!  
@@ -192,7 +188,7 @@ public:
 		PIN_arduino(){}; // TODO remove to prevent uninitialised hw
 
         //!*****************************************************************************
-        //!  \brief Construct a new pin raspi object
+        //!  \brief Construct a new pin arduino object
         //!  
         //!  
         //!  \param name the enumerated pinname
@@ -203,7 +199,7 @@ public:
 		PIN_arduino(PinNames name, PinMode mode);
 
         //!*****************************************************************************
-        //!  \brief Destroy the pin raspi object
+        //!  \brief Destroy the pin arduino object
         //!  
         //!  
         //!*****************************************************************************
@@ -275,7 +271,7 @@ public:
 		std::shared_ptr<PIN_arduino> cs_pin;
 	public:
         //!*****************************************************************************
-        //!  \brief Construct a new spi raspi object
+        //!  \brief Construct a new spi arduino object
         //!  
         //!  \note You have to run the function init for correct work of the object.
         //!  
@@ -283,7 +279,7 @@ public:
 		SPI_arduino(){}; // TODO remove to prevent uninitialised hw
 
         //!*****************************************************************************
-        //!  \brief Construct a new spi raspi object
+        //!  \brief Construct a new spi arduino object
         //!  
         //!  
         //!  \param cs_pin_ Chip Select Pin of the Max14819 chip
@@ -292,7 +288,7 @@ public:
 		SPI_arduino(std::shared_ptr<PIN_arduino> cs_pin_);
 
         //!*****************************************************************************
-        //!  \brief Destroy the spi raspi object
+        //!  \brief Destroy the spi arduino object
         //!  
         //!  
         //!*****************************************************************************
@@ -353,7 +349,7 @@ public:
 		void ms(uint32_t time_ms);
 	};
 
-    //! \name Pins on the Raspberry Pi of chip 0
+    //! \name Pins on the Arduino DUE of chip 0
     //!\{
     PIN_arduino CS_chip0;  //!< ChipSelect
     PIN_arduino IRQ_chip0; //!< Interrupt Output
@@ -361,7 +357,7 @@ public:
     PIN_arduino DI1;       //!< Digital Input of port B
     //!\}
 
-    //! \name Pins on the Raspberry Pi of chip 1
+    //! \name Pins on the Arduino DUE of chip 1
     //!\{
 	PIN_arduino CS_chip1; //!< ChipSelect 
 	PIN_arduino IRQ_chip1; //!< Interrupt Output 
@@ -409,7 +405,7 @@ public:
     SPI_arduino spi1;     //!< SPI Object used for Max14819 chip 1
     //!\}
 	
-    Wait_arduino wait_raspi;  //!< Object to wait some time used for Max14819
+    Wait_arduino wait_arduino;  //!< Object to wait some time used for Max14819
 	
     //! \name Max14819 chips on the Board
     //!\{

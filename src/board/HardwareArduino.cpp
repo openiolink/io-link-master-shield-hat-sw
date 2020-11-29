@@ -1,47 +1,37 @@
-
 //!*****************************************************************************
-//!  \file      HardwareArduino.cpp
-//!*****************************************************************************
-//!
-//!  \brief		Generic Hardware Layer abstraction of a physical layer
-//!
-//!  \author    Markus Gafner (gnm7)
-//!
-//!  \date      2019-09-13
-//!
-//!*****************************************************************************
-//!
-//!	 Copyright 2019 Bern University of Applied Sciences and Balluff AG
-//!
-//!	 Licensed under the Apache License, Version 2.0 (the "License");
+//!  \file HardwareArduino.cpp
+//!  
+//!  \author Janik Lehmann (CrazyGecko) (xxthegeckoxx@gmail.com)
+//!			  	based on the work of Markus Gafner (gnm7)
+//!  
+//!  \brief Generic Hardware Layer abstraction of an Arduino DUE Board
+//!  
+//!  \date 2020-11-25
+//!  
+//!  
+//!  *****************************************************************************
+//!  
+//!  \copyright
+//!  Copyright 2020 Bern University of Applied Sciences and Balluff AG
+//!  \n\n
+//!  Licensed under the Apache License, Version 2.0 (the "License");
 //!  you may not use this file except in compliance with the License.
 //!  You may obtain a copy of the License at
-//!
-//!	     http://www.apache.org/licenses/LICENSE-2.0
-//!
-//!	 Unless required by applicable law or agreed to in writing, software
-//!	 distributed under the License is distributed on an "AS IS" BASIS,
-//!	 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//!	 See the License for the specific language governing permissions and
-//!	 limitations under the License.
-//!	
+//!  \n\n
+//!      http://www.apache.org/licenses/LICENSE-2.0
+//!  \n\n
+//!  Unless required by applicable law or agreed to in writing, software
+//!  distributed under the License is distributed on an "AS IS" BASIS,
+//!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//!  See the License for the specific language governing permissions and
+//!  limitations under the License.
+//!  
 //!*****************************************************************************
 
-//!**** Header-Files ************************************************************
 #include "HardwareArduino.hpp"
 #include <Arduino.h>
 #include <SPI.h>
 #include <stdio.h>
-
-//!**** Macros ******************************************************************
-
-//!**** Data types **************************************************************
-
-//!**** Function prototypes *****************************************************
-
-//!**** Data ********************************************************************
-
-//!**** Implementation **********************************************************
 
 HardwareArduino::HardwareArduino()
 {	
@@ -56,8 +46,8 @@ HardwareArduino::HardwareArduino()
 	spi1.init(std::make_shared<PIN_arduino>(CS_chip1));
 	Serial.print("Init_SPI finished\n");
 	delay(1*1000);
-	IOLChip0 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_arduino>(spi0), chip0Adresse_spi, std::make_shared<Wait_arduino>(wait_raspi)));
-	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_arduino>(spi1), chip1Adresse_spi, std::make_shared<Wait_arduino>(wait_raspi)));
+	IOLChip0 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_arduino>(spi0), chip0Adresse_spi, std::make_shared<Wait_arduino>(wait_arduino)));
+	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_arduino>(spi1), chip1Adresse_spi, std::make_shared<Wait_arduino>(wait_arduino)));
 
 	configure_Max14819();
 	IOLChip0->initPorts();
@@ -233,38 +223,13 @@ void HardwareArduino::PIN_arduino::set(bool state){
 		IO_Write(pinname, PIN_HIGH);
 	}
 }
-//!*****************************************************************************
-//!function :      IO_Write
-//!*****************************************************************************
-//!  \brief        Sets a pin to the specified logical value
-//!
-//!  \type         local
-//!
-//!  \param[in]	   PinNames   name of the Pin
-//!  			   uint8_t    state of the logical signal
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
+
 void HardwareArduino::PIN_arduino::IO_Write(PinNames pinname, uint8_t state)
 {
     uint8_t pinnumber = get_pinnumber(pinname);
 	digitalWrite(pinnumber, state);
 }
 
-//!*****************************************************************************
-//!function :      IO_PinMode
-//!*****************************************************************************
-//!  \brief        Sets a pin to the specified mode
-//!
-//!  \type         local
-//!
-//!  \param[in]	   PinNames   name of the Pin
-//!  			   PinMode    mode of the pin
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
 void HardwareArduino::PIN_arduino::IO_PinMode(PinNames pinname, PinMode mode)
 {
     uint8_t pinnumber = get_pinnumber(pinname);
@@ -294,52 +259,16 @@ void HardwareArduino::SPI_arduino::DataRW(uint8_t * data, uint8_t length)
 	cs_pin->set(false);
 }
 
-//!*****************************************************************************
-//!function :      Serial_Write
-//!*****************************************************************************
-//!  \brief        Writes a c-string to the serial connection
-//!
-//!  \type         local
-//!
-//!  \param[in]	   char const * pointer to the data, which gets print out
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
 void HardwareArduino::Serial_Write(char const * buf)
 {
 	Serial.println(buf);
 }
 
-//!*****************************************************************************
-//!function :      Serial_Write
-//!*****************************************************************************
-//!  \brief        Writes a number to the serial connection
-//!
-//!  \type         local
-//!
-//!  \param[in]	   int	      the number which should get printed
-//!
-//!  \return       void
-//!
-//!*****************************************************************************
 void HardwareArduino::Serial_Write(int number)
 {
 	Serial.print(number);
 }
 
-//!*****************************************************************************
-//!function :      get_pinnumber
-//!*****************************************************************************
-//!  \brief        returns the pinnumber for the given pin (see enum PinNames)
-//!
-//!  \type         local
-//!
-//!  \param[in]	   PinNames    the enumerated pinname
-//!
-//!  \return       the hardware-pinnumber
-//!
-//!*****************************************************************************
 uint8_t HardwareArduino::PIN_arduino::get_pinnumber(PinNames pinname)
 {
 	switch (pinname) {
