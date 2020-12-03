@@ -1,0 +1,3 @@
+[submodule "toolchains/Arduino-CMake-Toolchain"]
+	path = toolchains/Arduino-CMake-Toolchain
+	url = git@github.com:a9183756-gh/Arduino-CMake-Toolchain.git
