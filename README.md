@@ -4,6 +4,7 @@
 
 ## Authors
 
+- Janik Lehmann
 - Pascal Frei
 - Markus Gafner, BFH
 
