@@ -1,4 +1,4 @@
-set(CATCH_INCLUDE_DIR .)
+set(CATCH_INCLUDE_DIR ./Catch2/single_include/catch2/)
 add_library(Catch INTERFACE)
 target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
 
