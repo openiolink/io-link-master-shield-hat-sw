@@ -13,6 +13,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
         target_link_libraries(test_board Catch openiolink)
     else()
         add_executable(test_board    test_board_dummy.cpp)
+        target_link_libraries(test_board Catch openiolink)
     endif()
                             
 endif()
