@@ -1,6 +1,6 @@
 [submodule "toolchains/Arduino-CMake-Toolchain"]
 	path = toolchains/Arduino-CMake-Toolchain
-	url = git@github.com:a9183756-gh/Arduino-CMake-Toolchain.git
+	url = https://github.com/a9183756-gh/Arduino-CMake-Toolchain.git
 [submodule "test/Catch2"]
 	path = test/Catch2
-	url = git@github.com:catchorg/Catch2.git
+	url = https://github.com/catchorg/Catch2.git
