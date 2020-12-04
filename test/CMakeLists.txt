@@ -7,7 +7,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
     else()
-        add_subdirectory(protocol) #test on pc only
+        add_subdirectory(protocol) #test on host only
     endif()
                             
 endif()
