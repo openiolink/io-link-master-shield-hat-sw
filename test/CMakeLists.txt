@@ -5,9 +5,9 @@ target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
 # Check hardwarespecific Files
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
+    if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
     else()
-        add_subdirectory(protocol) #test on host only
+        add_subdirectory(protocol) #test on Linux PC only
     endif()
                             
 endif()
