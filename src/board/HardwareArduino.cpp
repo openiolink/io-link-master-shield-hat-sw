@@ -37,14 +37,16 @@ HardwareArduino::HardwareArduino()
 {	
 	IO_Setup();
 	Serial.begin(115200);
-	Serial.print("\nBeginne mit der Initialisierung\n");
+	delay(100);
+	Serial.print("\n\rBeginne mit der Initialisierung\n\r");
+	Serial.flush();
 	// Init SPI
-	Serial.print("Init_SPI starts\n");
+	Serial.print("Init_SPI starts\n\r");
 	SPI.begin();
 	SPI.beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE0));
 	spi0.init(std::make_shared<PIN_arduino>(CS_chip0));
 	spi1.init(std::make_shared<PIN_arduino>(CS_chip1));
-	Serial.print("Init_SPI finished\n");
+	Serial.print("Init_SPI finished\n\r");
 	delay(1*1000);
 	IOLChip0 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_arduino>(spi0), chip0Adresse_spi, std::make_shared<Wait_arduino>(wait_arduino)));
 	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_arduino>(spi1), chip1Adresse_spi, std::make_shared<Wait_arduino>(wait_arduino)));
@@ -261,7 +263,8 @@ void HardwareArduino::SPI_arduino::DataRW(uint8_t * data, uint8_t length)
 
 void HardwareArduino::Serial_Write(char const * buf)
 {
-	Serial.println(buf);
+	Serial.print(buf);
+	Serial.print("\n\r");
 }
 
 void HardwareArduino::Serial_Write(int number)
@@ -306,7 +309,7 @@ uint8_t HardwareArduino::PIN_arduino::get_pinnumber(PinNames pinname)
 
 void HardwareArduino::SerialOut::print(char const * buf)
 {
-	printf("%s\n", buf);
+	printf("%s\n\r", buf);
 }
 
 void HardwareArduino::Wait_arduino::ms(uint32_t time_ms) 

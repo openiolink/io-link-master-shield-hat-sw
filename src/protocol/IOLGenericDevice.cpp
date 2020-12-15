@@ -57,22 +57,23 @@ namespace openiolinklibrary
 
 
 
-        std::cout << "read data" << std::endl;
+        std::cout << "read data\n\r";
     }
 
     void IOLGenericDevice::printPage1Data(void)
     {
         std::ios_base::fmtflags f(std::cout.flags()); // save flags state
         std::cout << std::showbase << std::hex;
-        std::cout << "MasterCycleTime:    " << static_cast<int>(page1.MasterCycleTime) << std::endl;
-        std::cout << "MinCycleTime:    " << static_cast<int>(page1.MinCycleTime) << std::endl;
-        std::cout << "M_sequenceCapability:    " << static_cast<int>(page1.M_sequenceCapability) << std::endl;
-        std::cout << "RevisionID:    " << static_cast<int>(page1.RevisionID) << std::endl;
-        std::cout << "ProcessDataIn:    " << static_cast<int>(page1.ProcessDataIn) << std::endl;
-        std::cout << "ProcessDataOut:    " << static_cast<int>(page1.ProcessDataOut) << std::endl;
-        std::cout << "VendorID:    " << static_cast<int>(page1.VendorID.value) << std::endl;
-        std::cout << "deviceID:    " << static_cast<int>(page1.deviceID.value) << std::endl;
-        std::cout << "FunctionID:    " << static_cast<int>(page1.FunctionID.value) << std::endl;
+        std::cout << "MasterCycleTime:    " << static_cast<int>(page1.MasterCycleTime) << "\n\r";
+        std::cout << "MinCycleTime:    " << static_cast<int>(page1.MinCycleTime) << "\n\r";
+        std::cout << "M_sequenceCapability:    " << static_cast<int>(page1.M_sequenceCapability) << "\n\r";
+        std::cout << "RevisionID:    " << static_cast<int>(page1.RevisionID) << "\n\r";
+        std::cout << "ProcessDataIn:    " << static_cast<int>(page1.ProcessDataIn) << "\n\r";
+        std::cout << "ProcessDataOut:    " << static_cast<int>(page1.ProcessDataOut) << "\n\r";
+        std::cout << "VendorID:    " << static_cast<int>(page1.VendorID.value) << "\n\r";
+        std::cout << "deviceID:    " << static_cast<int>(page1.deviceID.value) << "\n\r";
+        std::cout << "FunctionID:    " << static_cast<int>(page1.FunctionID.value) << "\n\r";
+        std::cout << "\n\r";
         std::cout.flags(f); // restore flags state
     }
 } // namespace openiolinklibrary
