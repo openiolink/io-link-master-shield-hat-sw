@@ -55,3 +55,6 @@ build/*
 debug/*
 doc/*
 !doc/Doxyfile
+**/.vs/*
+**/out/*
+*.lnk
