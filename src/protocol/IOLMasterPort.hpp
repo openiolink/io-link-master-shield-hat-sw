@@ -153,7 +153,7 @@ namespace openiolinklibrary
         //!  \return uint8_t 0 if success
         //!  
         //!*****************************************************************************
-        uint8_t sendIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg);
+        uint8_t sendIOLData(const openiolinklibrary::IOLMessage &msg);
 
         //!*****************************************************************************
         //!  \brief reads an IO-Link answer

@@ -2,6 +2,7 @@
 // #include "catch.hpp"
 
 #include "OpenIOLink.hpp"
+#include <iostream>
 
 int main(int argc, char const *argv[])
 {
@@ -23,5 +24,7 @@ int main(int argc, char const *argv[])
 
     device.readPage1Data();
     device.printPage1Data();
+
+    std::cout << "test_board_raspi.cpp" << std::endl;
     return 0;
 }

@@ -94,7 +94,7 @@ namespace openiolinklibrary
             struct
             {
                 uint8_t MC_data;                                           ///< M-sequence control
-                uint8_t CKT_data;                                          ///< Checksum / M-sequence type
+                mutable uint8_t CKT_data;                                          ///< Checksum / M-sequence type  // mutable: darf man auch ändern, wenn es eigentlich const ist.
                 uint8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
             };
         };
@@ -108,7 +108,7 @@ namespace openiolinklibrary
         //!         IO-Link Interface and System Specification V1.1.2 Chapter A.1.6
         //!  
         //!*****************************************************************************
-        void calculateChecksum();
+        void calculateChecksum() const;
         
         //!*****************************************************************************
         //!  \brief Compresses 8-bit checksum to an 6 bit checksum
@@ -176,7 +176,7 @@ namespace openiolinklibrary
         //!  \return length of the message data
         //!  
         //!*****************************************************************************
-        uint8_t getData(uint8_t *data);
+        uint8_t getData(uint8_t *data) const;
 
         //!*****************************************************************************
         //!  \brief Sets the payload of the message
@@ -205,7 +205,7 @@ namespace openiolinklibrary
         //!  \return expected length of the answer
         //!  
         //!*****************************************************************************
-        uint8_t getanswer_length(void){return answer_length;};
+        uint8_t getanswer_length(void) const {return answer_length;};
     };
 
 } // namespace openiolinklibrary

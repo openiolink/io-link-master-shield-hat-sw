@@ -64,11 +64,11 @@ namespace openiolinklibrary
 
     IOLMasterPort::Mode IOLMasterPort::getMode() { return mode; }
 
-    uint8_t IOLMasterPort::sendIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg)
+    uint8_t IOLMasterPort::sendIOLData(const openiolinklibrary::IOLMessage &msg)
     {
         uint8_t buffer[openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH];
-        uint8_t msglength = msg->getData(buffer);
-        return sendIOLData(buffer, msglength, msg->getanswer_length());
+        uint8_t msglength = msg.getData(buffer);
+        return sendIOLData(buffer, msglength, msg.getanswer_length());
     }
 
     uint8_t IOLMasterPort::readIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg)
