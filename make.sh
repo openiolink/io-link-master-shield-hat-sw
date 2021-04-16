@@ -14,8 +14,6 @@
 #   clean       clean up "build" and "debug" directory                          
 ################################################################################
 
-# TODO: make programming the target board optional, only when -p is provided
-
 ## (constant) variable declaration
 # Flags
 PROGRAM_FLAG="-p"

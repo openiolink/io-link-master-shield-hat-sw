@@ -7,7 +7,11 @@
 # NOTE: DO NOT call this script manually. It is called by make.sh
 ################################################################################
 
+# TODO: make programming the target board optional, only when -p is provided
+# TODO: clean when changing target board
+
 ## direct call prevention
+# With this, it's not neccessary to check all arguments again
 CODE=123
 if [ $3 -ne $CODE ]
 then 
