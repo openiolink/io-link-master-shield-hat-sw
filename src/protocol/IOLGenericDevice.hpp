@@ -55,7 +55,7 @@ namespace openiolinklibrary
         union
         {
             uint8_t data[13];
-            struct __attribute__((__packed__))
+            struct //__attribute__((__packed__))
             {
                 uint8_t MasterCycleTime;
                 uint8_t MinCycleTime;
@@ -68,7 +68,7 @@ namespace openiolinklibrary
                     uint8_t bytes[2];
                     uint16_t value;
                 } VendorID;
-                union __attribute__((__packed__))
+                union //__attribute__((__packed__))
                 {
                     uint8_t bytes[3];
                     uint32_t value : 24;

@@ -48,7 +48,7 @@ namespace openiolinklibrary
         {
             
             msg.setMC(IOLMessage::Read_Write::Read_access, IOLMessage::Communication_Channel::Page, i+1); // 0x00 is MasterCommand
-            port->sendIOLData(std::make_shared<IOLMessage>(msg));
+            port->sendIOLData(msg);
 
             port->readIOLData(buffer, msg.getanswer_length());
             page1.data[i] = buffer[0];
@@ -64,15 +64,15 @@ namespace openiolinklibrary
     {
         std::ios_base::fmtflags f(std::cout.flags()); // save flags state
         std::cout << std::showbase << std::hex;
-        std::cout << "MasterCycleTime:    " << static_cast<int>(page1.MasterCycleTime) << "\n\r";
-        std::cout << "MinCycleTime:    " << static_cast<int>(page1.MinCycleTime) << "\n\r";
-        std::cout << "M_sequenceCapability:    " << static_cast<int>(page1.M_sequenceCapability) << "\n\r";
-        std::cout << "RevisionID:    " << static_cast<int>(page1.RevisionID) << "\n\r";
-        std::cout << "ProcessDataIn:    " << static_cast<int>(page1.ProcessDataIn) << "\n\r";
-        std::cout << "ProcessDataOut:    " << static_cast<int>(page1.ProcessDataOut) << "\n\r";
-        std::cout << "VendorID:    " << static_cast<int>(page1.VendorID.value) << "\n\r";
-        std::cout << "deviceID:    " << static_cast<int>(page1.deviceID.value) << "\n\r";
-        std::cout << "FunctionID:    " << static_cast<int>(page1.FunctionID.value) << "\n\r";
+        std::cout << "MasterCycleTime:      " << static_cast<int>(page1.MasterCycleTime) << "\n\r";
+        std::cout << "MinCycleTime:         " << static_cast<int>(page1.MinCycleTime) << "\n\r";
+        std::cout << "M_sequenceCapability: " << static_cast<int>(page1.M_sequenceCapability) << "\n\r";
+        std::cout << "RevisionID:           " << static_cast<int>(page1.RevisionID) << "\n\r";
+        std::cout << "ProcessDataIn:        " << static_cast<int>(page1.ProcessDataIn) << "\n\r";
+        std::cout << "ProcessDataOut:       " << static_cast<int>(page1.ProcessDataOut) << "\n\r";
+        std::cout << "VendorID:             " << static_cast<int>(page1.VendorID.value) << "\n\r";
+        std::cout << "deviceID:             " << static_cast<int>(page1.deviceID.value) << "\n\r";
+        std::cout << "FunctionID:           " << static_cast<int>(page1.FunctionID.value) << "\n\r";
         std::cout << "\n\r";
         std::cout.flags(f); // restore flags state
     }
