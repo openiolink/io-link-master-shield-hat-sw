@@ -1,98 +1,112 @@
 #!/bin/bash
 
-# NOTE: allowed parameters as $1:
-# "raspi", 
-# "arduino", 
-# "clean"
+################################################################################
+# HELP                                                                          
+# usage:                                                                        
+#   make.sh             display this help and exit                              
+#   make.sh $1          compile SW for platform ($1)                            
+#   make.sh $1 [-p]     compile and program                                     
+#   make.sh $1 [-d]     compile and debug                                       
+#                                                                               
+# command line argument $1:                                                     
+#   raspi       target Raspberry Pi                                             
+#   arduino     target Arduino Due                                              
+#   clean       clean up "build" and "debug" directory                          
+################################################################################
 
-# TODO: make programming the target board optional, only when -p is provided
+## (constant) variable declaration
+# Flags
+PROGRAM_FLAG="-p"
+DEBUG_FLAG="-d"
+# code names for different tasks
+STRING_RASPI="raspi"
+STRING_ARDUINO="arduino"
+STRING_CLEAN="clean"
+# tasks
+COMPILE=""
+PROGRAM=""
+DEBUG=""
+CLEAN=""
+# direct call prevention for sub-scripts
+CODE=123
 
+## argument checking
+# No argument specified --> display help and exit
+if [ $# -eq 0 ]
+then 
+    echo ""
+    echo " HELP                                                "
+    echo " usage:                                              "
+    echo "   make.sh             display this help and exit    "
+    echo "   make.sh \$1          compile SW for platform (\$1)  "
+    echo "   make.sh \$1 [-p]     compile and program           "
+    echo "   make.sh \$1 [-d]     compile and debug             "
+    echo "                                                     "
+    echo " command line argument \$1:                           "
+    echo "   raspi       target Raspberry Pi                   "
+    echo "   arduino     target Arduino Due                    "
+    echo "   clean       clean up 'build' and 'debug' directory"
+    echo ""
+    echo ""
+    exit 0
+fi
+
+# check the first argument
+if [ $1 != $STRING_RASPI ] && [ $1 != $STRING_ARDUINO ] && [ $1 != $STRING_CLEAN ]
+then
+    echo "invalid argument"
+    echo "please specify \"$STRING_RASPI\", \"$STRING_ARDUINO\" or \"$STRING_CLEAN\""
+    exit 1
+elif [ $1 = $STRING_CLEAN ]
+then
+    CLEAN="yes"
+    echo "CLEAN=yes"
+else
+    COMPILE="yes"
+    echo "COMPILE=yes"
+fi
+
+# process second argument
+# A) Programming after Compilation
+if [ "$2" = "$PROGRAM_FLAG" ]
+then
+    PROGRAM="yes"
+
+# B) Compile for Debugging (Raspberry Pi only)
+elif [ "$2" = "$DEBUG_FLAG" ]
+then
+    if [ "$1" == "$STRING_RASPI" ]
+    then
+        DEBUG="yes"
+    else
+        echo "Error: Debugging is supported on Raspberry Pi only"
+        exit 1
+    fi
+fi
+
+## call apropriate sub-script 
 # make sure the working directory for this script is the root of the software repository
 cd ~/git/io-link-master-shield-hat-sw/
 
-# Create build directory if not present, and enter it
-if [ ! -d build ]
-then
-    mkdir build
-fi
-cd build
-
-# Check if one command (argument) is provided and which one it is
-if [ ! $# -eq 1 ]
+if [ $COMPILE ]
 then 
-    echo "please specify 'raspi', 'arduino' or 'clean'"
-
-# Delete everything inside "build"
-elif [ $1 = "clean" ]
-then
-    echo "rm -rf *"
-    rm -rf *
-
-# Compile for Raspberry Pi and copy the executable to it. If not already done, 
-# the build system is initialized first
-elif [ $1 = "raspi" ]
-then
-    # Initialize build system
-    if [ ! -d CMakeFiles ]  # CMakeFiles directory not present --> cmake not ready
+    if [ $DEBUG ]
     then
-        cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/toolchain-raspi.cmake
-        echo ""
-        echo "Initialized the build system for Raspberry Pi"
-    fi
-    # Compile
-    echo "Building for Raspberry Pi..."
-    cmake --build . -j
-    # Copy to mounted remote filesystem 
-    # ~/sysroot_raspi must be mounted and ~/pi is assumed to point to sysroot_raspi/home/pi/
-    cp test/board/test_board ~/pi/ 
-    echo "Copied test_board"
+        echo "calling debug.sh"
+        ./debug.sh $1 $CODE
 
-# Compile for Arduino and program it. If not already done, the build system is 
-# initialized first
-elif [ $1 = "arduino" ]
-then
-    # Initialize build system
-    if [ ! -d CMakeFiles ]  # CMakeFiles directory not present --> cmake not ready
+    elif [ $PROGRAM ]
     then
-        cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/Arduino-CMake-Toolchain/Arduino-toolchain.cmake -DARDUINO_INSTALL_PATH=/mnt/c/Program\ Files\ \(x86\)/Arduino/ -DARDUINO_BOARD="Arduino Due (Programming Port) [sam.arduino_due_x_dbg]"
-        echo ""
-        echo "Initialized the build system for Arduino Due"
-    fi
-    # Compile
-    echo "Building for Arduino Due..."
-    cmake --build . -j
-    # Programm
-    # NOTE: The command to program the Arduino Due uses "~/bossac.exe". This 
-    #       must be a symbolic link to bossac.exe on the Windows host. We first 
-    #       test if it's present.
-    if [ ! -s ~/bossac.exe ]
-    then 
-        echo "Warning: bossac.exe is not reachable for programming"
-        exit 1  # exit script with status 1
-    fi
-    echo ""
-    echo "To program your Arduino Due, "
-    echo "- plug the USB cable to the PROGRAMMING PORT and connect power to the Shield"
-    echo "- press and hold the Erase button, then press the Reset button"
-    echo "- release both buttons"
-    echo "- confirm here with <enter>"
-    echo "Cancel with <CTRL + C>"
-    read    # wait for enter
-    # NOTE: Meaning of the arguments:
-    #  -i   show information about the Controller to be programmed
-    #  -e   erase chip before programming
-    #  -w   write file
-    #  -v   verify 
-    #  -R   Reset CPU
-    #  -b   startup from Flash 
-    # --port=COM3 -U    set the Arduino Due Programming Port
-    ~/bossac.exe -i --port=COM3 -U true -e -w -v -R -b test/board/test_board.bin
+        echo "calling program.sh"
+        ./program.sh $1 -p $CODE
 
-# Command line argument 1 does not match a known string
-else
-    echo "invalid argument"
-    echo "please specify 'raspi', 'arduino' or 'clean'"
-fi 
+    else
+        echo "calling program.sh"
+        ./program.sh $1 -- $CODE
+    fi
 
-# return to calling directory
-#cd ..
+elif [ $CLEAN ]
+then
+    echo "calling program.sh"
+    ./program.sh clean --  $CODE
+fi
