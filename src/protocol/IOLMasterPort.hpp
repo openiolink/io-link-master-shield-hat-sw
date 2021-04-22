@@ -93,7 +93,7 @@ namespace openiolinklibrary
         //!  \return uint8_t 1 for error because the function is not implemented
         //!  
         //!*****************************************************************************
-        virtual uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
+        virtual uint8_t sendIOLData(const /*FIXME OK?*/ uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
     public:
         //!*****************************************************************************
         //!  \brief Construct a new IOLMasterPort object

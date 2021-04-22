@@ -66,9 +66,10 @@ namespace openiolinklibrary
 
     uint8_t IOLMasterPort::sendIOLData(const openiolinklibrary::IOLMessage &msg)
     {
-        uint8_t buffer[openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH];
-        uint8_t msglength = msg.getData(buffer);
-        return sendIOLData(buffer, msglength, msg.getanswer_length());
+        //uint8_t buffer[openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH];
+        const/**/ uint8_t *datapointer; // FIXME sollte eigentlich nur mit const vornedran funtkionieren ohne Fehlermeldung
+        uint8_t msglength = msg.getData(&datapointer);
+        return sendIOLData(datapointer, msglength, msg.getanswer_length());
     }
 
     uint8_t IOLMasterPort::readIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg)
