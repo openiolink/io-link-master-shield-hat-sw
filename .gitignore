@@ -55,3 +55,4 @@ build/*
 debug/*
 doc/*
 !doc/Doxyfile
+script/test.sh

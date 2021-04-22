@@ -9,7 +9,7 @@
 
 # TODO: clean when changing target board
 
-## direct call prevention
+## direct call prevention ------------------------------------------------------
 # With this, it's not neccessary to check all arguments again
 CODE=123
 if [ $2 -ne $CODE ]
@@ -18,6 +18,31 @@ then
     exit 1
 fi
 
+## functions -------------------------------------------------------------------
+clean() {
+    echo "rm -rf *"
+    rm -rf *
+}
+
+checkLastTarget() {
+    # make sure the check file exists
+    checkFile=$2
+    touch $checkFile
+
+    # check if the target changed (i.e. the current target is (not) equal to the last target
+    currentTarget=$1
+    lastTarget=$(<$checkFile)
+    if [ "$currentTarget" != "$lastTarget" ]
+    then
+        echo "The target changed, cleaning the debug directory..."
+        clean
+    fi
+
+    # update the check file with the current target
+    printf "$currentTarget" > "$checkFile"
+}
+
+## script ----------------------------------------------------------------------
 # make sure the working directory for this script is the root of the software repository
 cd ~/git/io-link-master-shield-hat-sw/
 
@@ -27,6 +52,10 @@ then
     mkdir debug
 fi
 cd debug
+
+# make sure there is no wrong toolchain (i.e. form an other target board) set up
+checkFileName="lastTarget.txt"
+checkLastTarget $1 $checkFileName
 
 # Compile for Debugging on the Raspberry Pi
 if [ $1 = "raspi" ]
@@ -44,6 +73,8 @@ then
     cp test/board/test_board ~/pi/ 
     echo "Copied test_board"
     echo ""
-    echo "Please start the GDB server on the Raspberry Pi with the following command:"
-    echo "gdbserver :9080 ./test_board"
+    echo "1) Make sure you configured VS Code for debugging (.vscode/launch.json)"
+    echo "2) Start the GDB server on the Raspberry Pi with the following command:"
+    echo "      gdbserver :9080 ./test_board"
+    echo "3) Start debugging in VS Code"
 fi
