@@ -90,7 +90,8 @@ namespace openiolinklibrary
         //!  
         //!  \param sizeofanswer length of the expected answer
         //!  
-        //!  \return uint8_t 1 for error because the function is not implemented
+        //!  \return uint8_t 1 for error because the function is not implemented    
+        // TODO: Muss diese Methode hier überhaupt noch implementiert werden, oder könnte man sie auch rein virtuell machen mit "= 0;" ?
         //!  
         //!*****************************************************************************
         virtual uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
@@ -133,6 +134,7 @@ namespace openiolinklibrary
         //!  \param mode to be set
         //!  
         //!*****************************************************************************
+        // ca.= DL_SetMode
         void setMode(Mode mode);
 
         //!*****************************************************************************
