@@ -128,7 +128,7 @@ public:
     //!  \return shared pointer to the port
     //!  
     //!*****************************************************************************
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> getPort(uint8_t portnr);
+	std::shared_ptr<openiolink::IOLMasterPort> getPort(uint8_t portnr);
 
     //!*****************************************************************************
     //!  \brief Implementation of the PIN class used for the Max14819
@@ -436,10 +436,10 @@ public:
 	
     //! \name IO-Link Ports on the board
     //!\{
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT0; //!< Pointer to port0 on the board
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT1; //!< Pointer to port1 on the board
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT2; //!< Pointer to port2 on the board
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT3; //!< Pointer to port3 on the board
+	std::shared_ptr<openiolink::IOLMasterPort> PORT0; //!< Pointer to port0 on the board
+	std::shared_ptr<openiolink::IOLMasterPort> PORT1; //!< Pointer to port1 on the board
+	std::shared_ptr<openiolink::IOLMasterPort> PORT2; //!< Pointer to port2 on the board
+	std::shared_ptr<openiolink::IOLMasterPort> PORT3; //!< Pointer to port3 on the board
     //!\}
 };
 

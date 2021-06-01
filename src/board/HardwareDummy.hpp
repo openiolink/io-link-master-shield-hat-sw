@@ -31,7 +31,7 @@
 
 #include "board/HardwareDummyChip.hpp"
 #include <iostream>
-namespace openiolinklibrary
+namespace openiolink
 {
     //!*****************************************************************************
     //!  \brief This class simulates hardware
@@ -119,6 +119,6 @@ namespace openiolinklibrary
         PIN_Dummy testpin = PIN_Dummy("testpin", "output"); //!< a test pin
     };
 
-} // namespace openiolinklibrary
+} // namespace openiolink
 
 #endif // HARDWAREDUMMY_HPP_INCLUDED

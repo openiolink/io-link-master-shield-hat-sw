@@ -29,7 +29,7 @@
 
 #include "IOLMessage.hpp"
 
-namespace openiolinklibrary
+namespace openiolink
 {
     IOLMessage::IOLMessage()
     {
@@ -49,7 +49,7 @@ namespace openiolinklibrary
     uint8_t IOLMessage::getData(uint8_t *data) const    // sauberer, wenn in zwei Funktionen aufgeteilt: 1 prepare, 2 send // nicht alles auf einmal
     {
         this->calculateChecksum();
-        for (uint8_t i = 0; i < openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2; i++)
+        for (uint8_t i = 0; i < openiolink::config::MAX_IOL_MESSAGE_LENGTH + 2; i++)
         {
             data[i] = this->data[i];
         }
@@ -104,4 +104,4 @@ namespace openiolinklibrary
         this->answer_length = length + 1; // CKS uses size 1
     }
 
-} // namespace openiolinklibrary
+} // namespace openiolink

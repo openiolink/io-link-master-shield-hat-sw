@@ -178,7 +178,7 @@ void HardwareArduino::wait_for(uint32_t delay_ms)
     delay(delay_ms);
 }
 
-std::shared_ptr<openiolinklibrary::IOLMasterPort> HardwareArduino::getPort(uint8_t portnr)
+std::shared_ptr<openiolink::IOLMasterPort> HardwareArduino::getPort(uint8_t portnr)
 {
 	switch (portnr)
 	{

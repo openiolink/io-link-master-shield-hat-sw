@@ -202,7 +202,7 @@ void HardwareRaspberry::wait_for(uint32_t delay_ms)
 }
 
 // TODO inline oder weg
-std::shared_ptr<openiolinklibrary::IOLMasterPort> HardwareRaspberry::getPort(uint8_t portnr)
+std::shared_ptr<openiolink::IOLMasterPort> HardwareRaspberry::getPort(uint8_t portnr)
 {
 	switch (portnr)
 	{

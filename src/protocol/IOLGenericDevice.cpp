@@ -30,7 +30,7 @@
 #include "IOLGenericDevice.hpp"
 #include <iostream>
 
-namespace openiolinklibrary
+namespace openiolink
 {
     void IOLGenericDevice::setPort(std::shared_ptr<IOLMasterPort> port_)
     {
@@ -81,4 +81,4 @@ namespace openiolinklibrary
         std::cout << "\n\r";
         std::cout.flags(f); // restore flags state
     }
-} // namespace openiolinklibrary
+} // namespace openiolink

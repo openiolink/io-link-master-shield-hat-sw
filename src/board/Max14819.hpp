@@ -373,7 +373,7 @@ public:
     //!         create two ports with one chip.
     //!  
     //!*****************************************************************************
-    class Max14819_Port : public openiolinklibrary::IOLMasterPort   // TODO nachdem alle Klassen im namespace opeinolink sind: unnötige ns-Qualifizierer entfernen.
+    class Max14819_Port : public openiolink::IOLMasterPort   // TODO nachdem alle Klassen im namespace opeinolink sind: unnötige ns-Qualifizierer entfernen.
     {
     public:
         //!*****************************************************************************

@@ -37,7 +37,7 @@
 #else
     #include <cstdint>
 #endif
-namespace openiolinklibrary
+namespace openiolink
 {
     //!*****************************************************************************
     //!  \brief Abstract port class
@@ -155,7 +155,7 @@ namespace openiolinklibrary
         //!  \return uint8_t 0 if success
         //!  
         //!*****************************************************************************
-        uint8_t sendIOLData(const openiolinklibrary::IOLMessage &msg);
+        uint8_t sendIOLData(const openiolink::IOLMessage &msg);
 
         //!*****************************************************************************
         //!  \brief reads an IO-Link answer
@@ -166,7 +166,7 @@ namespace openiolinklibrary
         //!  \return uint8_t 0 if success
         //!  
         //!*****************************************************************************
-        uint8_t readIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg);
+        uint8_t readIOLData(std::shared_ptr<openiolink::IOLMessage> msg);
 
         //!*****************************************************************************
         //!  \brief Abstract function te read data from IO-Link
@@ -184,6 +184,6 @@ namespace openiolinklibrary
         virtual uint8_t readIOLData(uint8_t* data, uint8_t sizeofdata){return 1;}; // todo move to protected
 
     };
-} // namespace openiolinklibrary
+} // namespace openiolink
 
 #endif // IOLMASTERPORT_HPP_INCLUDED

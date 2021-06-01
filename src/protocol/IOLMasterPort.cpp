@@ -28,7 +28,7 @@
 //!  
 //!*****************************************************************************
 #include "IOLMasterPort.hpp"
-namespace openiolinklibrary
+namespace openiolink
 {
 
     IOLMasterPort::IOLMasterPort() : state(State::PowerDown), mode(Mode::PowerDown) {}
@@ -64,9 +64,9 @@ namespace openiolinklibrary
 
     IOLMasterPort::Mode IOLMasterPort::getMode() { return mode; }
 
-    uint8_t IOLMasterPort::sendIOLData(const openiolinklibrary::IOLMessage &msg)
+    uint8_t IOLMasterPort::sendIOLData(const openiolink::IOLMessage &msg)
     {
-        uint8_t buffer[openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH];
+        uint8_t buffer[openiolink::config::MAX_IOL_MESSAGE_LENGTH];
         uint8_t msglength = msg.getData(buffer);
         return sendIOLData(buffer, msglength, msg.getanswer_length());
 //        const/**/ uint8_t *datapointer; // FIXME sollte eigentlich nur mit const vornedran funtkionieren ohne Fehlermeldung
@@ -74,10 +74,10 @@ namespace openiolinklibrary
 //        return sendIOLData(datapointer, msglength, msg.getanswer_length());
     }
 
-    uint8_t IOLMasterPort::readIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg)
+    uint8_t IOLMasterPort::readIOLData(std::shared_ptr<openiolink::IOLMessage> msg)
     {
         // TODO function not working at the time
-        uint8_t buffer[openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH];
+        uint8_t buffer[openiolink::config::MAX_IOL_MESSAGE_LENGTH];
         readIOLData(buffer, msg->getanswer_length());
         for (uint8_t i = 0; i < msg->getanswer_length(); i++)
         {
@@ -95,4 +95,4 @@ namespace openiolinklibrary
         return 0; // TODO check checksum
     }
 
-} // namespace openiolinklibrary
+} // namespace openiolink

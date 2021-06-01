@@ -33,7 +33,7 @@
 #include "IOLMasterPort.hpp"
 #include <memory>
 
-namespace openiolinklibrary
+namespace openiolink
 {
     //!*****************************************************************************
     //!  \brief Class of an IO-Link device
@@ -68,7 +68,7 @@ namespace openiolinklibrary
                     uint8_t bytes[2];
                     uint16_t value;
                 } VendorID;
-                union __attribute__((__packed__))   // TODO, prüfen, ob __packed__ wirklich funktioniert (1): eins schreiben, andere lesen, (2): sizeof() prüfen
+                union //__attribute__((__packed__))   // TODO, prüfen, ob __packed__ wirklich funktioniert (1): eins schreiben, andere lesen, (2): sizeof() prüfen
                 {   // damit es bei jedem Kompilieren die Grösse überprüft wird, z.B. 1/(13-sizeof(x)) sollte division /0 bzw. static_assert(). Falls dies nicht geht, Subtraktion der Addressen des letzten und ersten Elements.
                     uint8_t bytes[3];
                     uint32_t value : 24;
@@ -124,6 +124,6 @@ namespace openiolinklibrary
         void printPage1Data();
     };
 
-} // namespace openiolinklibrary
+} // namespace openiolink
 
 #endif // IOLGENERICDEVICE_HPP_INCLUDED

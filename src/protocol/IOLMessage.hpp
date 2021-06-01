@@ -37,7 +37,7 @@
 	#include <cstdint>
 #endif
 
-namespace openiolinklibrary
+namespace openiolink
 {
     //!*****************************************************************************
     //!  \brief This class describes an IO-Link message
@@ -89,13 +89,13 @@ namespace openiolinklibrary
 
     private:
         union
-        {   // FIXME: magisches 2 ersetzen durch constextpr... oder Libraryconfig
-            uint8_t data[libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
+        {   // FIXME: magisches 2 ersetzen durch constextpr... oder config
+            uint8_t data[config::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
             struct
             {
                 uint8_t MC_data;                                           ///< M-sequence control
                 mutable uint8_t CKT_data;                                          ///< Checksum / M-sequence type  // mutable: darf man auch ändern, wenn es eigentlich const ist.
-                uint8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
+                uint8_t octet_data[config::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
             };
         };
         uint8_t message_length = 2;    ///< Length of the IO-Link message   // FIXME Name, Längen-Speicherung vereinheitlichen // seit C++14
@@ -209,6 +209,6 @@ namespace openiolinklibrary
         uint8_t getanswer_length(void) const {return answer_length;};
     };
 
-} // namespace openiolinklibrary
+} // namespace openiolink
 
 #endif // IOLMESSAGE_HPP_INCLUDED
