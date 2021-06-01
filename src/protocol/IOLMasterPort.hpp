@@ -94,7 +94,7 @@ namespace openiolinklibrary
         // TODO: Muss diese Methode hier überhaupt noch implementiert werden, oder könnte man sie auch rein virtuell machen mit "= 0;" ?
         //!  
         //!*****************************************************************************
-        virtual uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
+        virtual uint8_t sendIOLData(const /*FIXME OK?*/ uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
     public:
         //!*****************************************************************************
         //!  \brief Construct a new IOLMasterPort object

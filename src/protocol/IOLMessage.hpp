@@ -89,7 +89,7 @@ namespace openiolinklibrary
 
     private:
         union
-        {
+        {   // FIXME: magisches 2 ersetzen durch constextpr... oder Libraryconfig
             uint8_t data[libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
             struct
             {
@@ -98,7 +98,7 @@ namespace openiolinklibrary
                 uint8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
             };
         };
-        uint8_t message_length = 2;    ///< Length of the IO-Link message
+        uint8_t message_length = 2;    ///< Length of the IO-Link message   // FIXME Name, Längen-Speicherung vereinheitlichen // seit C++14
         // TODO set answer length automaticly with the M-sequence type
         uint8_t answer_length=1;       ///< expected answer length
 
@@ -176,7 +176,7 @@ namespace openiolinklibrary
         //!  \return length of the message data
         //!  
         //!*****************************************************************************
-        uint8_t getData(uint8_t *data) const;
+        uint8_t getData(const uint8_t **data) const;
 
         //!*****************************************************************************
         //!  \brief Sets the payload of the message
