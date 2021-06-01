@@ -136,6 +136,22 @@ else # compilation is requested
         # --port=COM3 -U    set the Arduino Due Programming Port
         ~/bossac.exe -i --port=COM3 -U true -e -w -v -R -b test/board/test_board.bin
 
+    # Compile for the WSL to run unit tests with Catch2
+    elif [ $1 = "test" ]
+    then
+        # Initialize build system
+        if [ ! -d CMakeFiles ]  # CMakeFiles directory not present --> cmake not ready
+        then
+            cmake ..
+            echo ""
+            echo "Initialized the build system for Unit Testing"
+        fi
+        # Compile
+        echo "Building for Unit Testing..."
+        cmake --build . -j
+        # Inform the user where to find the executable
+        echo "You can now search your executable... ;)"
+
     fi
 fi
 exit 0
