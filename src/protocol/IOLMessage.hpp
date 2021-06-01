@@ -176,7 +176,8 @@ namespace openiolinklibrary
         //!  \return length of the message data
         //!  
         //!*****************************************************************************
-        uint8_t getData(const uint8_t **data) const;
+//        uint8_t getData(const uint8_t **data) const;
+        uint8_t getData(uint8_t *data) const;
 
         //!*****************************************************************************
         //!  \brief Sets the payload of the message

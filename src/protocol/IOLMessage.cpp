@@ -45,15 +45,16 @@ namespace openiolinklibrary
     }
 
 // getDataPointer TODO
-    uint8_t IOLMessage::getData(const uint8_t **data) const    // sauberer, wenn in zwei Funktionen aufgeteilt: 1 prepare, 2 send // nicht alles auf einmal
+//    uint8_t IOLMessage::getData(const uint8_t **data) const    // sauberer, wenn in zwei Funktionen aufgeteilt: 1 prepare, 2 send // nicht alles auf einmal
+    uint8_t IOLMessage::getData(uint8_t *data) const    // sauberer, wenn in zwei Funktionen aufgeteilt: 1 prepare, 2 send // nicht alles auf einmal
     {
-//        this->calculateChecksum();
-//        for (uint8_t i = 0; i < openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2; i++)
-//        {
-//            data[i] = this->data[i];
-//        }
-//
-       *data = this->data;
+        this->calculateChecksum();
+        for (uint8_t i = 0; i < openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2; i++)
+        {
+            data[i] = this->data[i];
+        }
+
+//       *data = this->data;
        return this->message_length;
     }
 
