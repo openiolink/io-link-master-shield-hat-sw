@@ -3,9 +3,9 @@
 //!
 //!  \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
-//!  \brief Struct template to configure associations to a Transceiver chip for 
-//!         case when the "IO-Link-Master-Shield/Hat" from openiolink is used
-//!         with an Arduino Due.
+//!  \brief Struct template to configure associations to a Transceiver chip which
+//!         are valid for the "IO-Link-Master-Shield/Hat" from openiolink
+//!         independent of the target plattform (e.g. Raspberry Pi or Arduino).
 //!
 //!  \date 2021-06-01
 //!
@@ -29,71 +29,78 @@
 //!
 //!*****************************************************************************
 
-#ifndef ARDUINO_MAPPERCHIP_H
-#define ARDUINO_MAPPERCHIP_H
+#ifndef MAPPERCHIP_SHIELDHAT_H
+#define MAPPERCHIP_SHIELDHAT_H
 
-#include "MapperChip_ShieldHat.hpp"
+#include <iostream>
+#include "MapperSpi.hpp"
+#include "MapperChip_Arduino.hpp"
+#include "MapperChip_Raspberry.hpp"
+#include "../platform.hpp"
 
-namespace openiolink::ARDUINO
+namespace openiolink
 {
+    namespace shield_hat
+    {
+        // TODO Doc
+        template <int ChipNr>
+        struct MapperChip
+        {
+        };
 
+        // Configuration for chip 0
+        template <>
+        struct MapperChip<0>
+        {
+            static constexpr uint8_t SPIAddress = 0x00;
+            static constexpr int SPINr = 0;
+            using SPI = MapperSpi<SPINr>::SPI;
+        };
+
+        // Configuration for chip 1
+        template <>
+        struct MapperChip<1>
+        {
+            static constexpr uint8_t SPIAddress = 0x02;
+            static constexpr int SPINr = 1;
+            using SPI = MapperSpi<SPINr>::SPI;
+        };
+    }
+
+    // TODO Doc
     template <int ChipNr>
     struct MapperChip
     {
-    };
+        static constexpr uint8_t SPIAddress = shield_hat::MapperChip::SPIAddress;
+        static constexpr int SPINr = shield_hat::MapperChip::SPINr;
+        using SPI = shield_hat::MapperChip::SPI;
+        static constexpr int CSPinNr = platform::MapperChip::CSPinNr;
+        static constexpr int IRQPinNr = platform::MapperChip::IRQPinNr;
+    }
 
-    // Configuration for chip 0
-    template <>
-    struct MapperChip<0>
-    {
-        // independent of target platform (Arduino)
-        static constexpr std::uint8_t SPIAddress = MapperChipShieldHat<0>::SPIAddress;
-        static constexpr int SPINr = MapperChipShieldHat<0>::SPINr;
-        using SPI = MapperChipShieldHat<0>::SPI;
-
-        // specific for Arduino Due
-        static constexpr int CSPinNr = 10u;
-        static constexpr int IRQPinNr = 5u;
-    };
-
-    // Configuration for chip 1
-    template <>
-    struct MapperChip<1>
-    {
-        // independent of target platform (Arduino)
-        static constexpr std::uint8_t SPIAddress = MapperChipShieldHat<0>::SPIAddress;
-        static constexpr int SPINr = MapperChipShieldHat<0>::SPINr;
-        using SPI = MapperChipShieldHat<0>::SPI;
-
-        // specific for Arduino Due
-        static constexpr int CSPinNr = 4u;
-        static constexpr int IRQPinNr = 11u;
-    };
-
-    //------------------------------------------------------------------------------
-
+    // TODO Doc
     //TODO make sure that MapperIOLPort<Ch1IOLPortNr>::ChipNr == MapperIOLPort<Ch2IOLPortNr>::ChipNr == ChipNr
     template <int ChipNr>
     struct BackMapperChip
     {
     };
-    
+
     // Configuration for chip 0
-    template<>
+    template <>
     struct BackMapperChip<0>
     {
         static constexpr int Ch1IOLPortNr = 0;
         static constexpr int Ch2IOLPortNr = 1;
     };
-    
+
     // Configuration for chip 1
-    template<>
+    template <>
     struct BackMapperChip<1>
     {
         static constexpr int Ch1IOLPortNr = 2;
         static constexpr int Ch2IOLPortNr = 3;
     };
-    
 
-} // namespace openiolink::ARDUINO
-#endif
+} // namespace openiolink
+
+#endif // MAPPERCHIP_SHIELDHAT_H

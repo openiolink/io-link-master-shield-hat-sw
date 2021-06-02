@@ -1,13 +1,13 @@
 //!*****************************************************************************
-//!  \file MapperChip_ShieldHat.hpp
+//!  \file MapperChip_Raspberry.hpp
 //!
 //!  \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
-//!  \brief Struct template to configure associations to a Transceiver chip which
-//!         are valid for the "IO-Link-Master-Shield/Hat" from openiolink
-//!         independent of the target plattform (e.g. Raspberry Pi or Arduino).
+//!  \brief Struct template to configure pin associations to each transceiver chip
+//!         on the IO-Link-Master-Shield/Hat from openiolink when used with a
+//!         Raspberry Pi 3.
 //!
-//!  \date 2021-06-01
+//!  \date 2021-06-02
 //!
 //!
 //!  *****************************************************************************
@@ -29,38 +29,33 @@
 //!
 //!*****************************************************************************
 
-#ifndef MAPPERCHIP_SHIELDHAT_H
-#define MAPPERCHIP_SHIELDHAT_H
+#ifndef MAPPERCHIP_RASPBERRY_HPP
+#define MAPPERCHIP_RASPBERRY_HPP
 
-#include <iostream>
-#include "MapperSpi.hpp"
-
-namespace openiolink
+namespace openiolink::raspberry
 {
-
+    // TODO Doc
     template <int ChipNr>
-    struct MapperChipShieldHat
+    struct MapperChip
     {
     };
 
     // Configuration for chip 0
     template <>
-    struct MapperChipShieldHat<0>
+    struct MapperChip<0>
     {
-        static constexpr uint8_t SPIAddress = 0x00;
-        static constexpr int SPINr = 0;
-        using SPI = MapperSpi<SPINr>::SPI;
+        static constexpr int CSPinNr = 31u;
+        static constexpr int IRQPinNr = 0u;
     };
 
     // Configuration for chip 1
     template <>
-    struct MapperChipShieldHat<1>
+    struct MapperChip<1>
     {
-        static constexpr uint8_t SPIAddress = 0x02;
-        static constexpr int SPINr = 1;
-        using SPI = MapperSpi<SPINr>::SPI;
+        static constexpr int CSPinNr = 31u;
+        static constexpr int IRQPinNr = 4u;
     };
 
-} // namespace openiolink
+} // namespace openiolink::raspberry
 
-#endif // MAPPERCHIP_SHIELDHAT_H
+#endif // MAPPERCHIP_RASPBERRY_HPP
