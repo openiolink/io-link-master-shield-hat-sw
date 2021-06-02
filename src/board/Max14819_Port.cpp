@@ -53,7 +53,7 @@ uint8_t Max14819_Port::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t si
     uint8_t retValue = SUCCESS;
     uint8_t offset = 0;
     // Todo remove offset and replace with enum
-    if (portnr == PortNr::PORTB)
+    if (port == Port::PORTB)
     {
         offset = 1; // PORTB Registers are 1 address higher than PORTA Register
     }
@@ -76,7 +76,7 @@ uint8_t Max14819_Port::readIOLData(uint8_t *data, uint8_t sizeofdata)
     // Use corresponding transmit FIFO address
     uint8_t offset = 0;
     // Todo remove offset and replace with enum
-    if (portnr == PortNr::PORTB)
+    if (port == Port::PORTB)
     {
         offset = 1; // PORTB Registers are 1 address higher than PORTA Register
     }
@@ -112,7 +112,7 @@ void Max14819_Port::wakeUpRequest()
     uint16_t length = 0;
     uint8_t offset = 0;
 
-    if (portnr == PortNr::PORTB)
+    if (port == Port::PORTB)
     {
         offset = 1; // PORTB Registers are 1 address higher than PORTA Register
     }
