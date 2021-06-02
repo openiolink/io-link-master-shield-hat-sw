@@ -1,32 +1,32 @@
 //!*****************************************************************************
-//!  \file Max14819.hpp
-//!  
-//!  \author Janik Lehmann (CrazyGecko) (xxthegeckoxx@gmail.com)
-//!          based on the work of Pascal Frei (freip2)
-//!  
-//!  \brief Class for the maxim integrated Dual IO-Link Master Transceiver
+//! \file   Max14819.hpp
+//! 
+//! \author Tobias Gammeter (tobias.gammeter@gmail.com)
+//!         based on the work of Janik Lehmann (CrazyGecko) and Pascal Frei (freip2)
+//! 
+//! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
 //!         MAX14819
-//!  
-//!  \date 2020-11-18
-//!  
-//!  
-//!  *****************************************************************************
-//!  
-//!  \copyright
-//!  Copyright 2020 Bern University of Applied Sciences and Balluff AG
-//!  \n\n
-//!  Licensed under the Apache License, Version 2.0 (the "License");
-//!  you may not use this file except in compliance with the License.
-//!  You may obtain a copy of the License at
-//!  \n\n
-//!      http://www.apache.org/licenses/LICENSE-2.0
-//!  \n\n
-//!  Unless required by applicable law or agreed to in writing, software
-//!  distributed under the License is distributed on an "AS IS" BASIS,
-//!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//!  See the License for the specific language governing permissions and
-//!  limitations under the License.
-//!  
+//! 
+//! \date   2020-11-18
+//! 
+//! 
+//! *****************************************************************************
+//! 
+//! \copyright
+//! Copyright 2020 Bern University of Applied Sciences and Balluff AG
+//! \n\n
+//! Licensed under the Apache License, Version 2.0 (the "License");
+//! you may not use this file except in compliance with the License.
+//! You may obtain a copy of the License at
+//! \n\n
+//!     http://www.apache.org/licenses/LICENSE-2.0
+//! \n\n
+//! Unless required by applicable law or agreed to in writing, software
+//! distributed under the License is distributed on an "AS IS" BASIS,
+//! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//! See the License for the specific language governing permissions and
+//! limitations under the License.
+//! 
 //!*****************************************************************************
 #ifndef MAX14819_HPP_INCLUDED
 #define MAX14819_HPP_INCLUDED
@@ -37,9 +37,9 @@
 #include "protocol/IOLinkConfig.hpp"
 
 //!*****************************************************************************
-//!  \brief Class for the maxim integrated Dual IO-Link Master Transceiver
-//!         MAX14819
-//!  
+//! \brief Class for the maxim integrated Dual IO-Link Master Transceiver
+//!        MAX14819
+//! 
 //!*****************************************************************************
 class Max14819 : public std::enable_shared_from_this<Max14819>{
 public:
@@ -259,12 +259,12 @@ public:
     static constexpr uint8_t MAX_MSG_LENGTH= 64; //!< maximal number of bytes to send (according to max14819 FIFO length)
 
     //!*****************************************************************************
-    //!  \brief Abstract class for io pins
+    //! \brief Abstract class for io pins
     //!
-    //!         This is an abstract class which is needed to set pins from the
-    //!         max14819 class itself.
+    //!        This is an abstract class which is needed to set pins from the
+    //!        max14819 class itself.
     //!
-    //!  \note  This abstract class must be implemented for the used hardware.
+    //! \note  This abstract class must be implemented for the used hardware.
     //!
     //!*****************************************************************************
     class PIN
@@ -276,22 +276,22 @@ public:
         virtual ~PIN(){};
 
         //!*****************************************************************************
-        //!  \brief Sets the state of an IO-Pin
-        //!  
-        //!  
-        //!  \param state set to this
-        //!  
+        //! \brief Sets the state of an IO-Pin
+        //! 
+        //! 
+        //! \param state set to this
+        //! 
         //!*****************************************************************************
         virtual void set(bool state){};
         // ev. virtual void clear() {};
     };
 
     //!*****************************************************************************
-    //!  \brief Abstract class for SPI Communication
+    //! \brief Abstract class for SPI Communication
     //!
-    //!         To communicate with the MAX14819 chip a SPI interface is needed.
+    //!        To communicate with the MAX14819 chip a SPI interface is needed.
     //!
-    //!  \note  This abstract class must be implemented for the used hardware.
+    //! \note  This abstract class must be implemented for the used hardware.
     //!
     //!*****************************************************************************
     class SPI_Max14819
@@ -303,26 +303,26 @@ public:
         virtual ~SPI_Max14819(){};
 
         //!*****************************************************************************
-        //!  \brief Reads and writes data
-        //!         
-        //!         Sends the data with the specified length and writes the answer to 
-        //!         the source location of the data
+        //! \brief Reads and writes data
+        //!        
+        //!        Sends the data with the specified length and writes the answer to 
+        //!        the source location of the data
         //!
-        //!  \param data    Pointer to the data to send. It will be overwritten with
-        //!                 the answer
+        //! \param data    Pointer to the data to send. It will be overwritten with
+        //!                the answer
         //!
-        //!  \param length  Length of the data to send and receive.
+        //! \param length  Length of the data to send and receive.
         //!
         //!*****************************************************************************
         virtual void DataRW(uint8_t* data, uint8_t length) = 0;
     };
 
     //!*****************************************************************************
-    //!  \brief Abstract class of an output to write strings
+    //! \brief Abstract class of an output to write strings
     //!
-    //!         The MAX14819 class needs an oportunity to wait some ms.
+    //!        The MAX14819 class needs an oportunity to wait some ms.
     //!
-    //!  \note This abstract class must be implemented for the used hardware.
+    //! \note This abstract class must be implemented for the used hardware.
     //!
     //!*****************************************************************************
     class DebugOut
@@ -334,19 +334,19 @@ public:
         virtual ~DebugOut(){};
 
         //!*****************************************************************************
-        //!  \brief Printout a string
-        //!  
-        //!  
-        //!  \param buf pointer to an string
-        //!  
+        //! \brief Printout a string
+        //! 
+        //! 
+        //! \param buf pointer to an string
+        //! 
         //!*****************************************************************************
         virtual void print(char const * buf){};
     };
     
     //!*****************************************************************************
-    //!  \brief Abstract class to wait some time
-    //!  
-    //!  
+    //! \brief Abstract class to wait some time
+    //! 
+    //! 
     //!*****************************************************************************
     class Wait
     {
@@ -357,135 +357,15 @@ public:
         virtual ~Wait(){};
         
         //!*****************************************************************************
-        //!  \brief Blocking function to wait the given time in ms
-        //!  
-        //!  
-        //!  \param ms  time to wait in ms
-        //!  
+        //! \brief Blocking function to wait the given time in ms
+        //! 
+        //! 
+        //! \param ms  time to wait in ms
+        //! 
         //!*****************************************************************************
         virtual void ms(uint32_t ms){};
     };
 
-    //!*****************************************************************************
-    //!  \brief Class to create the two IO-Link ports on the 
-    //!  
-    //!         Each MAX14819 chip has two IO-Link ports. This class is used to 
-    //!         create two ports with one chip.
-    //!  
-    //!*****************************************************************************
-    class Max14819_Port : public openiolink::IOLMasterPort   // TODO nachdem alle Klassen im namespace opeinolink sind: unnötige ns-Qualifizierer entfernen.
-    {
-    public:
-        //!*****************************************************************************
-        //!  \brief Saves some information about the communication
-        //!  
-        //!  
-        //!*****************************************************************************
-        struct CommunicationInfo
-        {
-            uint8_t comSpeed;   //!< Communication speed in the register
-            uint32_t comSpeedBaud;  //!< Communication speed in baud
-        };
-
-        //!*****************************************************************************
-        //!  \brief enumerates PORTA and PORTB
-        //!  
-        //!  
-        //!*****************************************************************************
-        enum class PortNr {PORTA=0, PORTB=1};
-
-    private:
-        PortNr portnr;  //!< describes which port of the chip the object is
-        std::shared_ptr<Max14819> chip; //!< a reference to the chip, used for SPI etc. 
-        /* gammt1: Ein Max14819-Objekt ist *Besitzer* von  Max14819_Port-Objekten. Ein Pointer auf den Besitzer ist während der ganzen Lebenszeit 
-        des besitzten Objekts (Max14819_Port) gültig. Der Besitzer wird niemals vor seinen besitzen Objekten zerstötrt! */
-        CommunicationInfo communicationInfo;
-    
-    protected:
-        //!*****************************************************************************
-        //!  \brief Sends data over IO-Link
-        //!  
-        //!  
-        //!  \param data pointer to the data to send 
-        //!  
-        //!  \param sizeofdata length of the data to send
-        //!  
-        //!  \param sizeofanswer length of the expected answer
-        //!  
-        //!  \return uint8_t 0 if success
-        //!  
-        //!*****************************************************************************
-        uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer) override;
-
-        //!*****************************************************************************
-        //!  \brief Reads data from IO-Link
-        //!  
-        //!  
-        //!  \param data pointer to the destination of the data
-        //!  
-        //!  \param sizeofdata length of the expected data
-        //!  
-        //!  \return uint8_t 0 if success
-        //!  
-        //!*****************************************************************************
-        uint8_t readIOLData(uint8_t* data, uint8_t sizeofdata) override;
-        
-    public:
-        //!*****************************************************************************
-        //!  \brief Construct a new Max14819_Port object
-        //!  
-        //!  
-        //!  \param portnr_ defines if the initialized port is either PORTA or PORTB
-        //!  
-        //!  \param chip_ pointer to the chip which contains this port
-        //!  
-        //!*****************************************************************************
-        Max14819_Port(PortNr portnr_, std::shared_ptr<Max14819> chip_): portnr(portnr_), chip(chip_){};
-
-        //!*****************************************************************************
-        //!  \brief Destroy the Max14819_Port object
-        //!  
-        //!  
-        //!*****************************************************************************
-        ~Max14819_Port(){};
-
-        //!*****************************************************************************
-        //!  \brief Set the port to this mode
-        //!  
-        //!  
-        //!*****************************************************************************
-        // ca. = DL_SetMode
-        void setMode(Mode);
-
-        //!*****************************************************************************
-        //!  \brief Sends an WURQ over IO-Link
-        //!  
-        //!  
-        //!*****************************************************************************
-        void wakeUpRequest();
-
-        // TODO enableCyclicSend
-        // TODO disableCyclicSend
-        // TODO enableLedControl
-        // TODO disableLedControl
-        // TODO writeLED
-        // TODO writeDIConfig
-        // TODO readDIConfig
-        // TODO readCQ
-        // TODO writeCQ
-        // TODO writeDI
-
-        //!*****************************************************************************
-        //!  \brief Get the Communication Info object
-        //!  
-        //!  
-        //!  \return CommunicationInfo
-        //!  
-        //!*****************************************************************************
-        // = einfache Alternative zu `DL_Mode`
-        CommunicationInfo getCommunicationInfo(){return communicationInfo;};
-    };
-    
     
 private:
     std::shared_ptr<PIN> ErrLED=nullptr;
@@ -503,75 +383,75 @@ private:
 
 public:
     //!*****************************************************************************
-    //!  \brief Construct a new Max14819 object
+    //! \brief Construct a new Max14819 object
     //!
     //!
-    //!  \param debugout_ Interface to printout text
+    //! \param debugout_ Interface to printout text
     //!
-    //!  \param spi_interface_ SPI interface where the chip is connected
+    //! \param spi_interface_ SPI interface where the chip is connected
     //!
-    //!  \param spi_address_ The SPI address of the chip
+    //! \param spi_address_ The SPI address of the chip
     //!
-    //!  \param wait_ Class to be able to wait some time
+    //! \param wait_ Class to be able to wait some time
     //!
     //!*****************************************************************************
     Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI_Max14819> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_);
 
     //!*****************************************************************************
-    //!  \brief Destroy the Max14819 object
+    //! \brief Destroy the Max14819 object
     //!
     //!
     //!*****************************************************************************
     ~Max14819();
 
     //!*****************************************************************************
-    //!  \brief Initializes both ports of the chip
-    //!  
-    //!  
+    //! \brief Initializes both ports of the chip
+    //! 
+    //! 
     //!*****************************************************************************
     void initPorts(void);
 
     //!*****************************************************************************
-    //!  \brief Resets the whole chip
-    //!  
-    //!  
-    //!  \return uint8_t 0 if success
-    //!  
+    //! \brief Resets the whole chip
+    //! 
+    //! 
+    //! \return uint8_t 0 if success
+    //! 
     //!*****************************************************************************
     uint8_t reset(void);
 
     //!*****************************************************************************
-    //!  \brief Writes data into an register
-    //!  
-    //!  
-    //!  \param reg register definition
-    //!  
-    //!  \param data byte to write
-    //!  
-    //!  \return uint8_t 0 if success
-    //!  
+    //! \brief Writes data into an register
+    //! 
+    //! 
+    //! \param reg register definition
+    //! 
+    //! \param data byte to write
+    //! 
+    //! \return uint8_t 0 if success
+    //! 
     //!*****************************************************************************
     uint8_t writeRegister(uint8_t reg, uint8_t data);
 
     //!*****************************************************************************
-    //!  \brief Reads data from register
-    //!  
-    //!  
-    //!  \param reg register definition
-    //!  
-    //!  \return uint8_t byte read from the register
-    //!  
+    //! \brief Reads data from register
+    //! 
+    //! 
+    //! \param reg register definition
+    //! 
+    //! \return uint8_t byte read from the register
+    //! 
     //!*****************************************************************************
     uint8_t readRegister(uint8_t reg);
 
     //!*****************************************************************************
-    //!  \brief Get one of the ports
-    //!  
-    //!  
-    //!  \param port defines the port to return, either PORTA or PORTB
-    //!  
-    //!  \return std::shared_ptr<Max14819_Port> pointer to the port
-    //!  
+    //! \brief Get one of the ports
+    //! 
+    //! 
+    //! \param port defines the port to return, either PORTA or PORTB
+    //! 
+    //! \return std::shared_ptr<Max14819_Port> pointer to the port
+    //! 
     //!*****************************************************************************
     std::shared_ptr<Max14819_Port> getPort(Max14819_Port::PortNr port);
 };// class max14819
