@@ -30,11 +30,16 @@
 
 #include "DataLinkLayer.hpp"
 #include "IOLMasterPort.hpp"
+#include "ErrorCode.hpp"
 
 namespace openiolink
 {
 
-    DataLinkLayer::DataLinkLayer(const IOLMasterPort_thisIsPL &PL) : this.PL{PL}
+    DataLinkLayer::DataLinkLayer(const IOLMasterPort_thisIsPL &PL) : mPL{PL}
+    {
+    }
+
+    DataLinkLayer::~DataLinkLayer()
     {
     }
 
@@ -43,6 +48,10 @@ namespace openiolink
     //TODO: call the step() function of all handler FSMs
     void DataLinkLayer::stepFSM()
     {
+        ODHandler.stepFSM();
+        PDHandler.stepFSM();
+        MessageHandler.stepFSM();
+        ModeHandler.stepFSM();
     }
 
     //Move the state machine one step forward (i.e. make a state transition if neccessary).
@@ -52,14 +61,14 @@ namespace openiolink
     {
     }
 
-    BaseType DataLinkLayer::OD_Handler::readParam(const unsigned int address, int &value)
+    ErrorCode DataLinkLayer::OD_Handler::readParam(const unsigned int address, int &value)
     {
-        return static_cast<BaseType>(1); // unimplemented
+        return static_cast<ErrorCode>(1); // unimplemented
     }
 
-    BaseType DataLinkLayer::OD_Handler::writeParam(const unsigned int address, const int value)
+    ErrorCode DataLinkLayer::OD_Handler::writeParam(const unsigned int address, const int value)
     {
-        return static_cast<BaseType>(1); // unimplemented
+        return static_cast<ErrorCode>(1); // unimplemented
     }
 
     //Move the state machine one step forward (i.e. make a state transition if neccessary).
@@ -69,11 +78,11 @@ namespace openiolink
     {
     }
 
-    BaseType DataLinkLayer::PD_Handler::PDOutputUpdate()
+    ErrorCode DataLinkLayer::PD_Handler::PDOutputUpdate(const uint8_t *outputData, PDTransportStatus *transportStatus)
     {
     }
 
-    BaseType DataLinkLayer::PD_Handler::PDInputTransport()
+    ErrorCode DataLinkLayer::PD_Handler::PDInputTransport()
     {
     }
 
@@ -82,6 +91,11 @@ namespace openiolink
     //TODO: call the step() function of sub-FSMs if present
     void DataLinkLayer::MasterDLMode_Handler::stepFSM()
     {
+    }
+
+    ErrorCode DataLinkLayer::MasterDLMode_Handler::setMode(const Mode mode, const OperatingParam &valueList)
+    {
+        return ErrorCode();
     }
 
     //Move the state machine one step forward (i.e. make a state transition if neccessary).
