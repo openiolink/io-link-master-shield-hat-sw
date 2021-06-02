@@ -1,16 +1,16 @@
 //!*****************************************************************************
 //! \file   DataLinkLayer.hpp
-//! 
+//!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
-//! 
+//!
 //! \brief  Implementation of the Data Link Layer according to the IO-Link
 //!         Interface and System Specification V1.1.3
-//! 
+//!
 //! \date   2021-06-02
-//! 
-//! 
+//!
+//!
 //! ****************************************************************************
-//! 
+//!
 //! \copyright
 //! Copyright 2021 Bern University of Applied Sciences and Balluff AG
 //! \n\n
@@ -25,7 +25,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //! See the License for the specific language governing permissions and
 //! limitations under the License.
-//! 
+//!
 //!*****************************************************************************
 
 #include "DataLinkLayer.hpp"
@@ -33,73 +33,62 @@
 
 namespace openiolink
 {
-    
-DataLinkLayer::DataLinkLayer(const IOLMasterPort_thisIsPL & PL){
-// Bouml preserved body begin 0002B5F7
-// Bouml preserved body end 0002B5F7
-}
 
-//Move the state machine one step forward (i.e. make a state transition if neccessary).
-//IMPORTATNT NOTE: This function has to be called periodically!
-//TODO: call the step() function of all handler FSMs
-void DataLinkLayer::stepFSM() {
-// Bouml preserved body begin 00023A77
-// Bouml preserved body end 00023A77
-}
+    DataLinkLayer::DataLinkLayer(const IOLMasterPort_thisIsPL &PL) : this.PL{PL}
+    {
+    }
 
-//Move the state machine one step forward (i.e. make a state transition if neccessary).
-//IMPORTATNT NOTE: This function has to be called periodically!
-//TODO: call the step() function of sub-FSMs if present
-void DataLinkLayer::OD_Handler::stepFSM() {
-// Bouml preserved body begin 00023C77
-// Bouml preserved body end 00023C77
-}
+    //Move the state machine one step forward (i.e. make a state transition if neccessary).
+    //IMPORTATNT NOTE: This function has to be called periodically!
+    //TODO: call the step() function of all handler FSMs
+    void DataLinkLayer::stepFSM()
+    {
+    }
 
-BaseType DataLinkLayer::OD_Handler::readParam(const unsigned int address, int & value) {
-// Bouml preserved body begin 00023677
-    return static_cast<BaseType>(1);  // unimplemented
-// Bouml preserved body end 00023677
-}
+    //Move the state machine one step forward (i.e. make a state transition if neccessary).
+    //IMPORTATNT NOTE: This function has to be called periodically!
+    //TODO: call the step() function of sub-FSMs if present
+    void DataLinkLayer::OD_Handler::stepFSM()
+    {
+    }
 
-BaseType DataLinkLayer::OD_Handler::writeParam(const unsigned int address, const int value) {
-// Bouml preserved body begin 000236F7
-    return static_cast<BaseType>(1);  // unimplemented
-// Bouml preserved body end 000236F7
-}
+    BaseType DataLinkLayer::OD_Handler::readParam(const unsigned int address, int &value)
+    {
+        return static_cast<BaseType>(1); // unimplemented
+    }
 
-//Move the state machine one step forward (i.e. make a state transition if neccessary).
-//IMPORTATNT NOTE: This function has to be called periodically!
-//TODO: call the step() function of sub-FSMs if present
-void DataLinkLayer::PD_Handler::stepFSM() {
-// Bouml preserved body begin 00023AF7
-// Bouml preserved body end 00023AF7
-}
+    BaseType DataLinkLayer::OD_Handler::writeParam(const unsigned int address, const int value)
+    {
+        return static_cast<BaseType>(1); // unimplemented
+    }
 
-BaseType DataLinkLayer::PD_Handler::PDOutputUpdate() {
-// Bouml preserved body begin 00023177
-// Bouml preserved body end 00023177
-}
+    //Move the state machine one step forward (i.e. make a state transition if neccessary).
+    //IMPORTATNT NOTE: This function has to be called periodically!
+    //TODO: call the step() function of sub-FSMs if present
+    void DataLinkLayer::PD_Handler::stepFSM()
+    {
+    }
 
-BaseType DataLinkLayer::PD_Handler::PDInputTransport() {
-// Bouml preserved body begin 00023377
-// Bouml preserved body end 00023377
-}
+    BaseType DataLinkLayer::PD_Handler::PDOutputUpdate()
+    {
+    }
 
-//Move the state machine one step forward (i.e. make a state transition if neccessary).
-//IMPORTATNT NOTE: This function has to be called periodically!
-//TODO: call the step() function of sub-FSMs if present
-void DataLinkLayer::MasterDLMode_Handler::stepFSM() {
-// Bouml preserved body begin 00023BF7
-// Bouml preserved body end 00023BF7
-}
+    BaseType DataLinkLayer::PD_Handler::PDInputTransport()
+    {
+    }
 
-//Move the state machine one step forward (i.e. make a state transition if neccessary).
-//IMPORTATNT NOTE: This function has to be called periodically!
-//TODO: call the step() function of sub-FSMs if present
-void DataLinkLayer::Message_Handler::stepFSM() {
-// Bouml preserved body begin 00023B77
-// Bouml preserved body end 00023B77
-}
+    //Move the state machine one step forward (i.e. make a state transition if neccessary).
+    //IMPORTATNT NOTE: This function has to be called periodically!
+    //TODO: call the step() function of sub-FSMs if present
+    void DataLinkLayer::MasterDLMode_Handler::stepFSM()
+    {
+    }
 
+    //Move the state machine one step forward (i.e. make a state transition if neccessary).
+    //IMPORTATNT NOTE: This function has to be called periodically!
+    //TODO: call the step() function of sub-FSMs if present
+    void DataLinkLayer::Message_Handler::stepFSM()
+    {
+    }
 
 } // namespace openiolink
