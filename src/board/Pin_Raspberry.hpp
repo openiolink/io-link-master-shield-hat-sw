@@ -1,9 +1,9 @@
 //!*****************************************************************************
-//! \file   Pin_Arduino.hpp
+//! \file   Pin_Raspberry.hpp
 //!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
-//! \brief  Abstraction of input-GPIOs and output-GPIOs of an Arduino DUE
+//! \brief  Abstraction of input-GPIOs and output-GPIOs of an Raspberry Pi 3
 //!
 //!         This module contains the following classes:
 //!         PinBase, OutputPin and InputPin
@@ -31,26 +31,25 @@
 //!
 //!*****************************************************************************
 
-#ifndef PIN_ARDUINO_HPP
-#define PIN_ARDUINO_HPP
+#ifndef PIN_RASPBERRY_HPP
+#define PIN_RASPBERRY_HPP
 
-#include "typedefs_board.hpp" // boolean return codes
-#include <Arduino.h>
+#include <wiringpi.h>
 
-namespace openiolink::arduino
+namespace openiolink::raspberry
 {
     //!*************************************************************************
     //! \brief  Available possibilities of modes of a pin (GPIO)
     //!
-    //! \note   The definitons OUTPUT, INPUT and INPUT_PULLUP are part of the
-    //!         Arduino library.
+    //! \note   OUTPUT and INPUT are part of the WiringPi library.
     //!
     //!*************************************************************************
     enum class PinModes
     {
         out = OUTPUT,
-        in = INPUT, // input without pullup resistor
-        in_pullup = INPUT_PULLUP
+        in = INPUT,
+        in_pullup,
+        in_pulldown
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -74,10 +73,31 @@ namespace openiolink::arduino
     //!
     //! \param mode mode of the pin
     //!
+    //! \note   refer to http://wiringpi.com/reference/core-functions/
+    //!
     //!*************************************************************************
-    inline void PinBase::init(const int gpioNr, const PinModes mode)
+    inline void PinBase::init(const int gpioNr, const PinModes mode) // TODO make non-inline?
     {
-        pinMode(gpioNr, mode); // pinMode() is part of the Arduino library.
+        if (mode == PinModes::out)
+        {
+            pinMode(gpioNr, PinModes::out);
+        }
+        else
+        {
+            pinMode(gpioNr, PinModes::in);
+            if (mode == PinModes::in_pullup)
+            {
+                pullUpDnControl(gpioNr, PUD_UP);
+            }
+            else if (mode == PinModes::in_pulldown)
+            {
+                pullUpDnControl(gpioNr, PUD_DOWN);
+            }
+            else
+            {
+                pullUpDnControl(gpioNr, PUD_OFF);
+            }
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -164,9 +184,9 @@ namespace openiolink::arduino
     template <int GpioNr>
     inline bool InputPin<GpioNr>::getState()
     {
-        return digitalRead(GpioNr);
+        return static_cast<bool>(digitalRead(GpioNr));
     }
 
-} // namespace openiolink::arduino
+} // namespace openiolink::raspberry
 
 #endif
