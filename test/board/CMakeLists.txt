@@ -13,6 +13,8 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     else()
         add_executable(test_board    test_board_dummy.cpp)
         target_link_libraries(test_board Catch openiolink)
+#        add_executable(test_board   test_MapperIOLPort.cpp)
+#        target_link_libraries(test_board  openiolink)
     endif()
                             
 endif()
