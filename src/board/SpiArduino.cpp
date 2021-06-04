@@ -33,8 +33,15 @@
 #include <SPI.h>              // SPI for Arduino
 #include <iostream>           // for uint8_t
 
-namespace arduino
+namespace openiolink::arduino
 {
+    /*
+    TODO Documentation
+    \brief initialization of the class member
+    */
+    template <int SpiPort>
+    bool SPI<SpiPort>::mInitDone = false;
+
     // NOTE: Arduino DUE has only one SPI port
     /*
     TODO Documentation
@@ -64,10 +71,10 @@ namespace arduino
     TODO Documentation
     */
     template <int SpiPort>
-    bool DataRW(uint8_t *data, const int length) const
+    bool DataRW(uint8_t *data, const int length)
     {
         // Arduino DUE has only one SPI port, make sure only this one is used
-        static_assert(SpiPort==0);
+        static_assert(SpiPort == 0);
 
         // simultaneously transmit and receive each byte
         // TODO Isn't a buffer transceive operation also possible (see https://www.arduino.cc/en/Reference/SPITransfer)?
@@ -78,4 +85,4 @@ namespace arduino
         return BoolSuccess;
     }
 
-} // namespace arduino
+} // namespace openiolink::arduino

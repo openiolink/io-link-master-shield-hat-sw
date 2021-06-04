@@ -65,18 +65,18 @@ namespace openiolink
             static constexpr int SPINr = 1;
             using SPI = MapperSpi<SPINr>::SPI;
         };
-    }
+    } // namespace shield_hat
 
     // TODO Doc
     template <int ChipNr>
     struct MapperChip
     {
-        static constexpr uint8_t SPIAddress = shield_hat::MapperChip::SPIAddress;
-        static constexpr int SPINr = shield_hat::MapperChip::SPINr;
-        using SPI = shield_hat::MapperChip::SPI;
-        static constexpr int CSPinNr = platform::MapperChip::CSPinNr;
-        static constexpr int IRQPinNr = platform::MapperChip::IRQPinNr;
-    }
+        static constexpr uint8_t SPIAddress = shield_hat::MapperChip<ChipNr>::SPIAddress;
+        static constexpr int SPINr = shield_hat::MapperChip<ChipNr>::SPINr;
+        using SPI = typename shield_hat::MapperChip<ChipNr>::SPI;
+        static constexpr int CSPinNr = platform::MapperChip<ChipNr>::CSPinNr;
+        static constexpr int IRQPinNr = platform::MapperChip<ChipNr>::IRQPinNr;
+    };
 
     // TODO Doc
     //TODO make sure that MapperIOLPort<Ch1IOLPortNr>::ChipNr == MapperIOLPort<Ch2IOLPortNr>::ChipNr == ChipNr

@@ -28,24 +28,32 @@
 //!*****************************************************************************
 
 #include <iostream>
+//FIXME
+//#include <wiringPi.h>
+//#include <wiringPiSPI.h> // Needed for SPI communication
+//HACK
+int wiringPiSPIDataRW(int, uint8_t *, const int);
 
-namespace raspberry
+#include "typedefs_board.hpp"
+
+namespace openiolink::raspberry
 {
     template <int SpiPort>
     class SPI
     {
     public:
         static bool init();
-        static inline bool DataRW(uint8_t *data, const int length) const;
+        static inline bool DataRW(uint8_t *data, const int length);
 
     private:
-        static bool mInitDone = false;
+        static bool mInitDone;
     };
 
     template <int SpiPort>
-    inline bool SPI<SpiPort>::DataRW(uint8_t *data, const int length) const
+    inline bool SPI<SpiPort>::DataRW(uint8_t *data, const int length)
     {
-        wiringPiSPIDataRW(SpiPort, data, length);
+        wiringPiSPIDataRW(SpiPort, data, length); // FIXME: What does this function return?
+        return BoolSuccess;
     }
 
-} // namespace raspberry
+} // namespace openiolink::raspberry

@@ -7,6 +7,10 @@ add_library(openiolink  OpenIOLink.hpp
                         protocol/IOLMasterPort.cpp
                         protocol/IOLGenericDevice.hpp
                         protocol/IOLGenericDevice.cpp
+#                        board/SpiArduino.hpp
+#                        board/SpiArduino.cpp
+#                        board/SpiRaspberry.hpp
+#                        board/SpiRaspberry.cpp
                         board/MapperIOLPort.hpp)
                         #FIXME: Which files exactly have to be added here?
 

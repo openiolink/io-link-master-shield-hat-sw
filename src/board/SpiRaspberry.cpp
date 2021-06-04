@@ -27,18 +27,28 @@
 //!
 //!*****************************************************************************
 
-#include "SpiRaspberry.hpp"     // the header of this class
+#include "SpiRaspberry.hpp" // the header of this class
 #include "typedefs_board.hpp"
 #include <wiringPi.h>
-#include <wiringPiSPI.h>		// Needed for SPI communication
-#include <fcntl.h>   			// Needed for SPI port
-#include <sys/ioctl.h>			// Needed for SPI port
-#include <linux/spi/spidev.h>	// Needed for SPI port
+#include <wiringPiSPI.h>      // Needed for SPI communication
+#include <fcntl.h>            // Needed for SPI port
+#include <sys/ioctl.h>        // Needed for SPI port
+#include <linux/spi/spidev.h> // Needed for SPI port
 
-namespace raspberry
+namespace openiolink::raspberry
 {
-    // NOTE: on Raspberry Pi, we use both SPI channels that are available
+    /*
+    TODO Documentation
+    \brief initialization of the class member
+    */
+    template <int SpiPort>
+    bool SPI<SpiPort>::mInitDone = false;
 
+
+    // NOTE: on Raspberry Pi, we use both SPI channels that are available
+    /*
+    TODO Documentation
+    */
     template <int SpiPort>
     bool SPI<SpiPort>::init()
     {
@@ -52,4 +62,4 @@ namespace raspberry
         return BoolSuccess;
     }
 
-    } // namespace raspberry
+} // namespace openiolink::raspberry

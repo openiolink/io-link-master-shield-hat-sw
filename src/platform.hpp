@@ -1,3 +1,7 @@
+// TODO Dateiheader
+
+#ifndef PLATFORM_HPP
+#define PLATFORM_HPP
 
 namespace openiolink
 {
@@ -19,3 +23,5 @@ namespace openiolink
 #endif
 
 } // namespace openiolink
+
+#endif
