@@ -31,8 +31,6 @@
 #ifndef RASPBERRY_MAPPERIOLPORT_HPP
 #define RASPBERRY_MAPPERIOLPORT_HPP
 
-#include "MapperIOLPort_ShieldHat.hpp"
-
 namespace openiolink::raspberry
 {
     template <int IOLPortNr>
