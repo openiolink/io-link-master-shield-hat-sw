@@ -29,7 +29,7 @@
 #ifndef HARDWAREDUMMYCHIP_HPP_INCLUDED
 #define HARDWAREDUMMYCHIP_HPP_INCLUDED
 
-namespace openiolinklibrary
+namespace openiolink
 {
     //!*****************************************************************************
     //!  \brief This class simulates an chip
@@ -143,6 +143,6 @@ namespace openiolinklibrary
         //!*****************************************************************************
         State getState();
     };
-} // namespace openiolinklibrary
+} // namespace openiolink
 
 #endif // HARDWAREDUMMYCHIP_HPP_INCLUDED

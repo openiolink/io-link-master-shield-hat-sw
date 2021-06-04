@@ -14,7 +14,7 @@
 #   clean       clean up "build" and "debug" directory                          
 ################################################################################
 
-## (constant) variable declaration
+## (constant) variable declaration ##
 # Flags
 PROGRAM_FLAG="-p"
 DEBUG_FLAG="-d"
@@ -22,15 +22,17 @@ DEBUG_FLAG="-d"
 STRING_RASPI="raspi"
 STRING_ARDUINO="arduino"
 STRING_CLEAN="clean"
+STRING_TEST="test"
 # tasks
 COMPILE=""
 PROGRAM=""
 DEBUG=""
 CLEAN=""
+TEST=""
 # direct call prevention for sub-scripts
 CODE=123
 
-## argument checking
+## argument checking ##
 # No argument specified --> display help and exit
 if [ $# -eq 0 ]
 then 
@@ -43,19 +45,19 @@ then
     echo "   make.sh \$1 [-d]     compile and debug             "
     echo "                                                     "
     echo " command line argument \$1:                           "
-    echo "   raspi       target Raspberry Pi                   "
-    echo "   arduino     target Arduino Due                    "
-    echo "   clean       clean up 'build' and 'debug' directory"
-    echo ""
+    echo "   $STRING_RASPI       target Raspberry Pi                   "
+    echo "   $STRING_ARDUINO     target Arduino Due                    "
+    echo "   $STRING_CLEAN       clean up 'build' and 'debug' directory"
+    echo "   $STRING_TEST        execute unit tests (with Catch2)"
     echo ""
     exit 0
 fi
 
 # check the first argument
-if [ $1 != $STRING_RASPI ] && [ $1 != $STRING_ARDUINO ] && [ $1 != $STRING_CLEAN ]
+if [ $1 != $STRING_RASPI ] && [ $1 != $STRING_ARDUINO ] && [ $1 != $STRING_CLEAN ] && [ $1 != $STRING_TEST ]
 then
     echo "invalid argument"
-    echo "please specify \"$STRING_RASPI\", \"$STRING_ARDUINO\" or \"$STRING_CLEAN\""
+    echo "please specify \"$STRING_RASPI\", \"$STRING_ARDUINO\", \"$STRING_CLEAN\" or \"$STRING_TEST\""
     exit 1
 elif [ $1 = $STRING_CLEAN ]
 then
@@ -71,6 +73,7 @@ fi
 if [ "$2" = "$PROGRAM_FLAG" ]
 then
     PROGRAM="yes"
+    echo "PROGRAM=yes"
 
 # B) Compile for Debugging (Raspberry Pi only)
 elif [ "$2" = "$DEBUG_FLAG" ]
@@ -78,13 +81,14 @@ then
     if [ "$1" == "$STRING_RASPI" ]
     then
         DEBUG="yes"
+        echo "DEBUG=yes"
     else
         echo "Error: Debugging is supported on Raspberry Pi only"
         exit 1
     fi
 fi
 
-## call apropriate sub-script 
+## call apropriate sub-script ##
 # make sure the working directory for this script is the root of the software repository
 cd ~/git/io-link-master-shield-hat-sw/
 
@@ -97,7 +101,7 @@ then
 
     elif [ $PROGRAM ]
     then
-        echo "calling program.sh"
+        echo "calling program.sh with option -p"
         ./program.sh $1 -p $CODE
 
     else

@@ -19,7 +19,7 @@ void setup() {
 
 // the loop routine runs over and over again forever:
 void loop() {
-    namespace iol = openiolinklibrary;
+    namespace iol = openiolink;
     using iol::IOLMessage;
     HardwareArduino hwarduino;
     uint8_t buffer[10];

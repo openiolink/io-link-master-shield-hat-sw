@@ -29,13 +29,13 @@
 #ifndef IOLINK_CONFIG_HPP_INCLUDED
 #define IOLINK_CONFIG_HPP_INCLUDED
 
-namespace openiolinklibrary //  TODO rename to openiolink
+namespace openiolink
 {
-    namespace libraryconfig //  TODO rename to config
+    namespace config
     {
         static constexpr int MAX_IOL_MESSAGE_LENGTH = 10; //!< maximum expected length of an IO-Link message
-    } // namespace libraryconfig
+    } // namespace config
     
-} // namespace openiolinklibrary
+} // namespace openiolink
 
 #endif // IOLINK_CONFIG_HPP_INCLUDED

@@ -59,3 +59,5 @@ doc/*
 **/out/*
 *.lnk
 script/test.sh
+/origin_develop
+/origin_develop

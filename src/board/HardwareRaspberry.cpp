@@ -54,6 +54,9 @@ HardwareRaspberry::HardwareRaspberry()
 	spi1.init(1, std::make_shared<PIN_raspi>(CS_chip1));
 	printf("Init_SPI finished\n");
 	wait_for(1*1000);
+
+	// FIXME: IOLChip0, 1 als normale Member definieren, dann hier mit Initialisierer-Liste initialisiern
+	// Gleiches für die Ports
 	IOLChip0 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi0), chip0Adresse_spi, std::make_shared<Wait_raspi>(wait_raspi)));
 	IOLChip1 = std::make_shared<Max14819>(Max14819(std::make_shared<SerialOut>(serialout), std::make_shared<SPI_raspi>(spi1), chip1Adresse_spi, std::make_shared<Wait_raspi>(wait_raspi)));
 
@@ -198,7 +201,8 @@ void HardwareRaspberry::wait_for(uint32_t delay_ms)
 	//printf("Sleep_out\n");
 }
 
-std::shared_ptr<openiolinklibrary::IOLMasterPort> HardwareRaspberry::getPort(uint8_t portnr)
+// TODO inline oder weg
+std::shared_ptr<openiolink::IOLMasterPort> HardwareRaspberry::getPort(uint8_t portnr)
 {
 	switch (portnr)
 	{
@@ -221,6 +225,9 @@ std::shared_ptr<openiolinklibrary::IOLMasterPort> HardwareRaspberry::getPort(uin
 	}
 }
 
+// FIXME: möglicherweise wird pinname nur hier verwendet, dann diesen nur hier als 
+// Parameter verwenden, aber nicht abspeichern. Dafür die Pinnummer via get pinnumber
+// schon in init() bestimmen und abspeichern.
 HardwareRaspberry::PIN_raspi::PIN_raspi(PinNames name, PinMode mode){
 	this->init(name, mode);
 }
@@ -234,19 +241,21 @@ void HardwareRaspberry::PIN_raspi::init(PinNames name, PinMode mode){
 	IO_PinMode(name, mode);
 }
 
-void HardwareRaspberry::PIN_raspi::set(bool state){
+// Weiterführend: für Zeitoptimierung: zwei virtuelle Funktionen in Max14819::PIN, nämlich set() und clear()
+// aber da wir vor allem LEDs an den Pins haben, ist das nicht so zeitkritisch 
+void HardwareRaspberry::PIN_raspi::set(bool state){	// inline in hpp
 	// High active
 	if (state)
 	{
-		IO_Write(pinname, LOW);
+		IO_Write(pinname, LOW);	// FIXME: Warum ein Attribut als Parameter übergeben?
 	}
 	else
 	{
-		IO_Write(pinname, HIGH);
+		IO_Write(pinname, HIGH);	// IO_Write unbedingt inline
 	}
 }
 
-uint8_t HardwareRaspberry::PIN_raspi::get_pinnumber(PinNames pinname)
+uint8_t HardwareRaspberry::PIN_raspi::get_pinnumber(PinNames pinname)	// inline in hpp und als constexpr-funtion
 {
 	switch (pinname) {
 		case PinNames::port01CS:		return 31u;			//SPI_CS0	(Pin24, output)

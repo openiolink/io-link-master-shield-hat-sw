@@ -30,7 +30,7 @@
 #include <ostream>
 #include <unistd.h>
 
-namespace openiolinklibrary
+namespace openiolink
 {
 
     HardwareDummy::HardwareDummy(/* args */)
@@ -82,4 +82,4 @@ namespace openiolinklibrary
         std::cout << "Pin set: " << pinname << "=" << output << "\n";
     }
 
-} // namespace openiolinklibrary
+} // namespace openiolink

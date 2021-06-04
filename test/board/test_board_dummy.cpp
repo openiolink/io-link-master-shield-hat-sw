@@ -2,5 +2,5 @@
 #include "catch.hpp"
 
 #include "board/HardwareDummy.hpp"
-using namespace openiolinklibrary;
+using namespace openiolink;
 HardwareDummy hwdummy;
