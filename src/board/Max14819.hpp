@@ -283,6 +283,7 @@ public:
         //!  
         //!*****************************************************************************
         virtual void set(bool state){};
+        // ev. virtual void clear() {};
     };
 
     //!*****************************************************************************
@@ -372,7 +373,7 @@ public:
     //!         create two ports with one chip.
     //!  
     //!*****************************************************************************
-    class Max14819_Port : public openiolinklibrary::IOLMasterPort
+    class Max14819_Port : public openiolink::IOLMasterPort   // TODO nachdem alle Klassen im namespace opeinolink sind: unnötige ns-Qualifizierer entfernen.
     {
     public:
         //!*****************************************************************************
@@ -395,7 +396,9 @@ public:
 
     private:
         PortNr portnr;  //!< describes which port of the chip the object is
-        std::shared_ptr<Max14819> chip; //!< a reference to the chip, used for SPI etc.
+        std::shared_ptr<Max14819> chip; //!< a reference to the chip, used for SPI etc. 
+        /* gammt1: Ein Max14819-Objekt ist *Besitzer* von  Max14819_Port-Objekten. Ein Pointer auf den Besitzer ist während der ganzen Lebenszeit 
+        des besitzten Objekts (Max14819_Port) gültig. Der Besitzer wird niemals vor seinen besitzen Objekten zerstötrt! */
         CommunicationInfo communicationInfo;
     
     protected:
@@ -412,7 +415,7 @@ public:
         //!  \return uint8_t 0 if success
         //!  
         //!*****************************************************************************
-        uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer);
+        uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer) override;
 
         //!*****************************************************************************
         //!  \brief Reads data from IO-Link
@@ -425,7 +428,7 @@ public:
         //!  \return uint8_t 0 if success
         //!  
         //!*****************************************************************************
-        uint8_t readIOLData(uint8_t* data, uint8_t sizeofdata);
+        uint8_t readIOLData(uint8_t* data, uint8_t sizeofdata) override;
         
     public:
         //!*****************************************************************************
@@ -451,6 +454,7 @@ public:
         //!  
         //!  
         //!*****************************************************************************
+        // ca. = DL_SetMode
         void setMode(Mode);
 
         //!*****************************************************************************
@@ -478,6 +482,7 @@ public:
         //!  \return CommunicationInfo
         //!  
         //!*****************************************************************************
+        // = einfache Alternative zu `DL_Mode`
         CommunicationInfo getCommunicationInfo(){return communicationInfo;};
     };
     

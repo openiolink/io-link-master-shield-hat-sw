@@ -37,7 +37,7 @@
 #else
     #include <cstdint>
 #endif
-namespace openiolinklibrary
+namespace openiolink
 {
     //!*****************************************************************************
     //!  \brief Abstract port class
@@ -90,10 +90,11 @@ namespace openiolinklibrary
         //!  
         //!  \param sizeofanswer length of the expected answer
         //!  
-        //!  \return uint8_t 1 for error because the function is not implemented
+        //!  \return uint8_t 1 for error because the function is not implemented    
+        // TODO: Muss diese Methode hier überhaupt noch implementiert werden, oder könnte man sie auch rein virtuell machen mit "= 0;" ?
         //!  
         //!*****************************************************************************
-        virtual uint8_t sendIOLData(uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
+        virtual uint8_t sendIOLData(const /*FIXME OK?*/ uint8_t* data, uint8_t sizeofdata, uint8_t sizeofanswer){ return 1;};
     public:
         //!*****************************************************************************
         //!  \brief Construct a new IOLMasterPort object
@@ -133,6 +134,7 @@ namespace openiolinklibrary
         //!  \param mode to be set
         //!  
         //!*****************************************************************************
+        // ca.= DL_SetMode
         void setMode(Mode mode);
 
         //!*****************************************************************************
@@ -153,7 +155,7 @@ namespace openiolinklibrary
         //!  \return uint8_t 0 if success
         //!  
         //!*****************************************************************************
-        uint8_t sendIOLData(const openiolinklibrary::IOLMessage &msg);
+        uint8_t sendIOLData(const openiolink::IOLMessage &msg);
 
         //!*****************************************************************************
         //!  \brief reads an IO-Link answer
@@ -164,7 +166,7 @@ namespace openiolinklibrary
         //!  \return uint8_t 0 if success
         //!  
         //!*****************************************************************************
-        uint8_t readIOLData(std::shared_ptr<openiolinklibrary::IOLMessage> msg);
+        uint8_t readIOLData(std::shared_ptr<openiolink::IOLMessage> msg);
 
         //!*****************************************************************************
         //!  \brief Abstract function te read data from IO-Link
@@ -182,6 +184,6 @@ namespace openiolinklibrary
         virtual uint8_t readIOLData(uint8_t* data, uint8_t sizeofdata){return 1;}; // todo move to protected
 
     };
-} // namespace openiolinklibrary
+} // namespace openiolink
 
 #endif // IOLMASTERPORT_HPP_INCLUDED

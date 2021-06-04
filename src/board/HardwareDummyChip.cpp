@@ -27,7 +27,7 @@
 //!  
 //!*****************************************************************************
 #include "HardwareDummyChip.hpp"
-namespace openiolinklibrary
+namespace openiolink
 {
     IOLinkDummyChip::IOLinkDummyChip()
     {
@@ -56,4 +56,4 @@ namespace openiolinklibrary
     }
     IOLinkDummyChip::State IOLinkDummyChip::getState() { return state; }
 
-} // namespace openiolinklibrary
+} // namespace openiolink

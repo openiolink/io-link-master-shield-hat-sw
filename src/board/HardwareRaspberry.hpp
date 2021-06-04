@@ -128,12 +128,12 @@ public:
     //!  \return shared pointer to the port
     //!  
     //!*****************************************************************************
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> getPort(uint8_t portnr);
+	std::shared_ptr<openiolink::IOLMasterPort> getPort(uint8_t portnr);
 
     //!*****************************************************************************
     //!  \brief Implementation of the PIN class used for the Max14819
     //!  
-    //!  
+    //!  // diese Klasse braucht nur wenig Speicher, deshalb macht es kaum Sinn, sie "wegzuoptimieren"
     //!*****************************************************************************
 	class PIN_raspi : public Max14819::PIN
 	{
@@ -141,9 +141,9 @@ public:
         //!*****************************************************************************
         //!  \brief Pinnames to convert them into pinnumbers
         //!  
-        //!  
+        //!  // TODO Ev numersichen Wert direkt zuordnen, man kann dann aber Pins mit der gleichen Nummer nicht mehr auseinanderhalten.
         //!*****************************************************************************
-		enum class PinNames {port01CS, port23CS, port01IRQ, port23IRQ, port0DI, port1DI, port2DI, port3DI,	
+		enum class PinNames: uint8_t {port01CS, port23CS, port01IRQ, port23IRQ, port0DI, port1DI, port2DI, port3DI,	
 		port0LedGreen, port0LedRed, port0LedRxErr, port0LedRxRdy,
 		port1LedGreen, port1LedRed, port1LedRxErr, port1LedRxRdy,
 		port2LedGreen, port2LedRed, port2LedRxErr, port2LedRxRdy,
@@ -158,7 +158,7 @@ public:
 		enum class PinMode { out, in_pullup, in };
 	private:
 		PinNames pinname;
-		constexpr static int LOW=0;
+		constexpr static int LOW=0; // TODO bool LOW = false // oder direkt false verwenden // oder separate Methoden set() und clear()
 		constexpr static int HIGH=1;
         //!*****************************************************************************
         //!  \brief Sets a pin to the specified logical value
@@ -436,10 +436,10 @@ public:
 	
     //! \name IO-Link Ports on the board
     //!\{
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT0; //!< Pointer to port0 on the board
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT1; //!< Pointer to port1 on the board
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT2; //!< Pointer to port2 on the board
-	std::shared_ptr<openiolinklibrary::IOLMasterPort> PORT3; //!< Pointer to port3 on the board
+	std::shared_ptr<openiolink::IOLMasterPort> PORT0; //!< Pointer to port0 on the board
+	std::shared_ptr<openiolink::IOLMasterPort> PORT1; //!< Pointer to port1 on the board
+	std::shared_ptr<openiolink::IOLMasterPort> PORT2; //!< Pointer to port2 on the board
+	std::shared_ptr<openiolink::IOLMasterPort> PORT3; //!< Pointer to port3 on the board
     //!\}
 };
 

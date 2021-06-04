@@ -29,7 +29,7 @@
 
 #include "IOLMessage.hpp"
 
-namespace openiolinklibrary
+namespace openiolink
 {
     IOLMessage::IOLMessage()
     {
@@ -44,15 +44,18 @@ namespace openiolinklibrary
         MC_data = ((static_cast<uint8_t>(rw) << 7) | (static_cast<uint8_t>(cc) << 5) | address);
     }
 
+// getDataPointer TODO
+//    uint8_t IOLMessage::getData(const uint8_t **data) const    // sauberer, wenn in zwei Funktionen aufgeteilt: 1 prepare, 2 send // nicht alles auf einmal
     uint8_t IOLMessage::getData(uint8_t *data) const    // sauberer, wenn in zwei Funktionen aufgeteilt: 1 prepare, 2 send // nicht alles auf einmal
     {
         this->calculateChecksum();
-        for (uint8_t i = 0; i < openiolinklibrary::libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2; i++)
+        for (uint8_t i = 0; i < openiolink::config::MAX_IOL_MESSAGE_LENGTH + 2; i++)
         {
             data[i] = this->data[i];
         }
 
-        return this->message_length;
+//       *data = this->data;
+       return this->message_length;
     }
 
     void IOLMessage::setOctets(uint8_t *data, uint8_t length)
@@ -64,6 +67,7 @@ namespace openiolinklibrary
         this->message_length = length + 2;
     }
 
+    // TODO: angeben, wo genau steht, wie die Checksumme berechnet wird.
     void IOLMessage::calculateChecksum() const  // oder ev VOR dem senden berechnen? dann ist kein mutable nötig
     {
         uint8_t checksum = 0x52;
@@ -75,11 +79,12 @@ namespace openiolinklibrary
         this->CKT_data |= compressTo6Checksum(checksum);
     }
 
+    // TODO: angeben, wo genau steht, wie die Checksumme berechnet wird.
     uint8_t IOLMessage::compressTo6Checksum(uint8_t checksum8)
     {
         uint8_t checksum = 0;
         for (uint8_t i = 0; i < 4; i++)
-        {
+        {   // % 2 umschreiben zu & 0x01
             checksum = checksum | ((((checksum8 >> (i * 2)) % 2) ^ (((checksum8 >> (i * 2 + 1)) % 2))) << i);
         }
         checksum = checksum | ((((checksum8 >> 7) % 2) ^ ((checksum8 >> 5) % 2) ^ ((checksum8 >> 3) % 2) ^ ((checksum8 >> 1) % 2)) << 5);
@@ -99,4 +104,4 @@ namespace openiolinklibrary
         this->answer_length = length + 1; // CKS uses size 1
     }
 
-} // namespace openiolinklibrary
+} // namespace openiolink

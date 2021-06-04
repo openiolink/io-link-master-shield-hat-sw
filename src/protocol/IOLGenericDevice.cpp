@@ -30,7 +30,7 @@
 #include "IOLGenericDevice.hpp"
 #include <iostream>
 
-namespace openiolinklibrary
+namespace openiolink
 {
     void IOLGenericDevice::setPort(std::shared_ptr<IOLMasterPort> port_)
     {
@@ -48,7 +48,12 @@ namespace openiolinklibrary
         {
             
             msg.setMC(IOLMessage::Read_Write::Read_access, IOLMessage::Communication_Channel::Page, i+1); // 0x00 is MasterCommand
+            //port->prepareForSend()    // u.a. Checksumme berechnen // andererseits gehört es fest zum Senden dazu...
+            // daher in diesem Kontext in einer Funktion zusammen lassen. 
+            // Vorschlag besserer Name: sendMessage()
+            // oder msg->prepareForSend()
             port->sendIOLData(msg);
+
 
             port->readIOLData(buffer, msg.getanswer_length());
             page1.data[i] = buffer[0];
@@ -76,4 +81,4 @@ namespace openiolinklibrary
         std::cout << "\n\r";
         std::cout.flags(f); // restore flags state
     }
-} // namespace openiolinklibrary
+} // namespace openiolink

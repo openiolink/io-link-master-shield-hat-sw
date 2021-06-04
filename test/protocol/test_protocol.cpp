@@ -4,7 +4,7 @@
 #include "protocol/IOLMasterPort.hpp"
 #include "protocol/IOLMessage.hpp"
 
-using namespace openiolinklibrary;
+using namespace openiolink;
 
 IOLMasterPort port;
 
@@ -39,11 +39,11 @@ TEST_CASE("Test the Builds of IOLinkMessages", "[IOLinkMessage]")
         IOLMessage message;
         union 
         {
-            uint8_t data[libraryconfig::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
+            uint8_t data[config::MAX_IOL_MESSAGE_LENGTH + 2]; ///< Data to send
             struct {
                 uint8_t MC_data;                            ///< M-sequence control
                 uint8_t CKT_data;                           ///< Checksum / M-sequence type
-                uint8_t octet_data[libraryconfig::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
+                uint8_t octet_data[config::MAX_IOL_MESSAGE_LENGTH]; ///< Message Content
             };
         }message_data;
 

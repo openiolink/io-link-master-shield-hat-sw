@@ -6,7 +6,9 @@ add_library(openiolink  OpenIOLink.hpp
                         protocol/IOLMasterPort.hpp
                         protocol/IOLMasterPort.cpp
                         protocol/IOLGenericDevice.hpp
-                        protocol/IOLGenericDevice.cpp)
+                        protocol/IOLGenericDevice.cpp
+                        board/MapperIOLPort.hpp)
+                        #FIXME: Which files exactly have to be added here?
 
 # Check hardwarespecific Files
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
