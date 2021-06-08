@@ -60,7 +60,7 @@ namespace openiolink
     //! \note: Specification 5.2.2.1 (PL_SetMode)
     //!
     //!*****************************************************************************
-    void IOLMasterPort::setMode(Mode targetMode)
+    void IOLMasterPort::setMode(const Mode &targetMode)
     {
         this->mode = targetMode;
         switch (targetMode)

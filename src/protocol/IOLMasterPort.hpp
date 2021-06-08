@@ -87,11 +87,11 @@ namespace openiolink
         //!*****************************************************************************
         virtual void wakeUpRequest(){}; // todo move to private
 
+        virtual void setMode(const Mode &targetMode);
+        virtual uint8_t sendIOLData(const openiolink::IOLMessage &msg);
+        virtual uint8_t readIOLData(std::shared_ptr<openiolink::IOLMessage> msg);
         State getState();
-        void setMode(Mode targetMode);
         Mode getMode();
-        uint8_t sendIOLData(const openiolink::IOLMessage &msg);
-        uint8_t readIOLData(std::shared_ptr<openiolink::IOLMessage> msg);
 
         //!*****************************************************************************
         //!  \brief Abstract function te read data from IO-Link
@@ -127,9 +127,10 @@ namespace openiolink
         //!*****************************************************************************
         virtual uint8_t sendIOLData(const /*FIXME OK?*/ uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) { return 1; };
 
-    private:
+    private:// TODO protected
         State state;
         Mode mode;
+        // TODO comSpeed
     };
 } // namespace openiolink
 
