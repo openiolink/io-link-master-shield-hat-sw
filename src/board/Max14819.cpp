@@ -61,7 +61,7 @@ Max14819::~Max14819()
 
 //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
 //inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::initPorts()
-void Max14819::initPorts(void) // todo transform this to get ports
+void Max14819::initPorts() // todo transform this to get ports
 {
     char buffer[30];
     PORTA = std::make_shared<Max14819_Port>(Max14819_Port(Max14819_Port::PortNr::PORTA, shared_from_this()));
@@ -76,7 +76,7 @@ void Max14819::initPorts(void) // todo transform this to get ports
 
 //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
 //inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::reset()
-uint8_t Max14819::reset(void)
+uint8_t Max14819::reset()
 {
     uint8_t retValue = SUCCESS;
     // Reset all max14819 registers

@@ -206,7 +206,7 @@ namespace openiolink
         //!  \return expected length of the answer
         //!  
         //!*****************************************************************************
-        uint8_t getanswer_length(void) const {return answer_length;};
+        uint8_t getanswer_length() const {return answer_length;};
     };
 
 } // namespace openiolink

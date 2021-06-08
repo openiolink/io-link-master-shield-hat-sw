@@ -61,7 +61,7 @@ namespace openiolink
         std::cout << "read data\n\r";
     }
 
-    void IOLGenericDevice::printPage1Data(void)
+    void IOLGenericDevice::printPage1Data()
     {
         std::ios_base::fmtflags f(std::cout.flags()); // save flags state
         std::cout << std::showbase << std::hex;
