@@ -1,44 +1,64 @@
-	//!*****************************************************************************
-	//!  \file      main.cpp
-	//!*****************************************************************************
-	//!
-	//!  \brief		Software Demonstration for the bachelor thesis.
-	//!
-	//!  \author    Pascal Frei (freip2)
-	//!
-	//!  \date      2019-06-27
-	//!
-	//!*****************************************************************************
-	//!
-	//!	 Copyright 2019 Bern University of Applied Sciences and Balluff AG
-	//!
-	//!	 Licensed under the Apache License, Version 2.0 (the "License");
-	//!  you may not use this file except in compliance with the License.
-	//!  You may obtain a copy of the License at
-	//!
-	//!	     http://www.apache.org/licenses/LICENSE-2.0
-	//!
-	//!	 Unless required by applicable law or agreed to in writing, software
-	//!	 distributed under the License is distributed on an "AS IS" BASIS,
-	//!	 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	//!	 See the License for the specific language governing permissions and
-	//!	 limitations under the License.
-	//!	
-	//!*****************************************************************************
+//!*****************************************************************************
+//!  \file      main.cpp
+//!*****************************************************************************
+//!
+//!  \brief		Software Demonstration for the bachelor thesis.
+//!
+//!  \author    Pascal Frei (freip2)
+//!
+//!  \date      2019-06-27
+//!
+//!*****************************************************************************
+//!
+//!	 Copyright 2019 Bern University of Applied Sciences and Balluff AG
+//!
+//!	 Licensed under the Apache License, Version 2.0 (the "License");
+//!  you may not use this file except in compliance with the License.
+//!  You may obtain a copy of the License at
+//!
+//!	     http://www.apache.org/licenses/LICENSE-2.0
+//!
+//!	 Unless required by applicable law or agreed to in writing, software
+//!	 distributed under the License is distributed on an "AS IS" BASIS,
+//!	 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//!	 See the License for the specific language governing permissions and
+//!	 limitations under the License.
+//!
+//!*****************************************************************************
 
-	//!**** Header-Files ***********************************************************
+//!**** Header-Files ***********************************************************
+#include "../src/IOLMasterStackDriver.hpp"
 
-	//!**** Macros *****************************************************************
+//!**** Macros *****************************************************************
 
-	//!**** Data types *************************************************************
+//!**** Data types *************************************************************
+class mainClass : public openiolink::PortModeHandler, public openiolink::DeviceHandler
+{
+public:
+	mainClass(/* args */);
+	~mainClass();
 
-	//!**** Function prototypes ****************************************************
+private:
+	openiolink::IOLMasterStackDriver mIOLMasterStack;
+	openiolink::GenericIOLDevice device0;
+};
 
-	//!**** Data *******************************************************************
+mainClass::mainClass(/* args */)
+{
+}
 
-	//!**** Implementation *********************************************************
+mainClass::~mainClass()
+{
+}
 
-	int main(){
+//!**** Function prototypes ****************************************************
 
-		return 0;
-	}
+//!**** Data *******************************************************************
+
+//!**** Implementation *********************************************************
+
+int main()
+{
+
+	return 0;
+}
