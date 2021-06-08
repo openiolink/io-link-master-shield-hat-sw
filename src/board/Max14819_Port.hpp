@@ -39,7 +39,7 @@
 #include "MapperIOLPort.hpp"
 #include "Max14819.hpp"
 
-namespace openiolink
+namespace openiolink // TODO ::PCB?
 {
     //!*****************************************************************************
     //! \brief A port of the MAX14819 IO-Link transceiver
@@ -74,11 +74,17 @@ namespace openiolink
         };
 
     private:
-        typedef Max14819<ChipNr> MyChip;                               //! A Port has to call his Chip for variuos tasks.
+        typedef Max14819<ChipNr> MyChip;                           //! A Port has to call his Chip for variuos tasks.
         constexpr Port port = MapperIOLPort<IOLPortNr>::ChannelNr; //!< describes which port of the chip the object is
         CommunicationInfo communicationInfo;
 
     protected:
+        //typedef Max14819<ChipNr> Chip;
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin;
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin;
+        typedef BicolorLed<IOLPortNr> StateLED;
+
         //!*****************************************************************************
         //! \brief Sends data over IO-Link
         //!
@@ -131,17 +137,20 @@ namespace openiolink
         //!
         //!
         //!*****************************************************************************
-        // ca. = DL_SetMode
-        void setMode(Mode);
+        virtual void setMode(const Modes &targetMode) override;
 
         //!*****************************************************************************
         //! \brief Sends an WURQ over IO-Link
         //!
-        //!
+        //! \note   Specification 5.2.2.2 (PL_WakeUp.req)
         //!*****************************************************************************
-        void wakeUpRequest();
+        virtual void wakeUpRequest() override;
 
-        // TODO enableCyclicSend
+        //TODO public
+        //virtual readIOLData() override;
+        //virtual writeIOLData() override;
+
+        // TODO enableCyclicSend ??
         // TODO disableCyclicSend
         // TODO enableLedControl
         // TODO disableLedControl

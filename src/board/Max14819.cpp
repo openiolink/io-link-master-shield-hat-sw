@@ -1,17 +1,17 @@
 //!*****************************************************************************
 //! \file   Max14819.cpp
-//! 
+//!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!         based on the work of Janik Lehmann (CrazyGecko) and Pascal Frei (freip2)
-//! 
+//!
 //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
 //!         MAX14819
-//! 
+//!
 //! \date   2020-11-18
-//! 
-//! 
+//!
+//!
 //! *****************************************************************************
-//! 
+//!
 //! \copyright
 //! Copyright 2020 Bern University of Applied Sciences and Balluff AG
 //! \n\n
@@ -26,7 +26,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //! See the License for the specific language governing permissions and
 //! limitations under the License.
-//! 
+//!
 //!*****************************************************************************
 
 #include "protocol/IOLMasterPort.hpp"
@@ -34,27 +34,33 @@
 #include "Max14819.hpp"
 
 #ifdef ARDUINO
-    #include <stdint.h>
-	#include <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 #else
-    #include <cstdint>
-	#include <cstdio>
-#endif	
+#include <cstdint>
+#include <cstdio>
+#endif
+
+//namespace openiolink // TODO ::PCB?
+//{
 
 //! \name Commands to read or write registers
 //!\{
-constexpr uint8_t read = 0b00000001; //!< read command
+constexpr uint8_t read = 0b00000001;  //!< read command
 constexpr uint8_t write = 0b01111111; //!< write command
 //!\}
 
-Max14819::Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI_Max14819> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_) : debug_interface(debugout_), spi_interface(spi_interface_), spi_address(spi_address_), wait(wait_){
+Max14819::Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI_Max14819> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_) : debug_interface(debugout_), spi_interface(spi_interface_), spi_address(spi_address_), wait(wait_)
+{
     debug_interface->print("Initialize Max");
 }
 
-Max14819::~Max14819() {
-
+Max14819::~Max14819()
+{
 }
 
+//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+//inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::initPorts()
 void Max14819::initPorts(void) // todo transform this to get ports
 {
     char buffer[30];
@@ -62,7 +68,16 @@ void Max14819::initPorts(void) // todo transform this to get ports
     PORTB = std::make_shared<Max14819_Port>(Max14819_Port(Max14819_Port::PortNr::PORTB, shared_from_this()));
 }
 
-uint8_t Max14819::reset(void) {
+////TODO take care that each chip is initialized at most once.
+//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+//void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::init()
+//{
+//}
+
+//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+//inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::reset()
+uint8_t Max14819::reset(void)
+{
     uint8_t retValue = SUCCESS;
     // Reset all max14819 registers
     retValue = writeRegister(ChanStatA, Rst);
@@ -74,12 +89,17 @@ uint8_t Max14819::reset(void) {
     // Return Error state
     return retValue;
 }
-uint8_t Max14819::readRegister(uint8_t reg) {
+
+//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+//inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::readRegister()
+uint8_t Max14819::readRegister(uint8_t reg)
+{
     uint8_t channel = 0;
     uint8_t buf[2];
 
     // Check if register address is in the correct range
-    if (reg > MAX_REG) {
+    if (reg > MAX_REG)
+    {
         debug_interface->print("Registeraddress out of range");
         return ERROR;
     }
@@ -97,12 +117,16 @@ uint8_t Max14819::readRegister(uint8_t reg) {
     return buf[1];
 }
 
-uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data) {
+//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+//inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::writeRegister()
+uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data)
+{
     uint8_t retValue = SUCCESS;
     uint8_t buf[2];
 
     // Check if register address is in the correct range
-    if (reg > MAX_REG) {
+    if (reg > MAX_REG)
+    {
         debug_interface->print("Registeraddress out of range");
         return ERROR;
     }
@@ -116,7 +140,7 @@ uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data) {
     spi_interface->DataRW(buf, 2);
 
     // Return Error state
-    return retValue;;
+    return retValue;
 }
 
 std::shared_ptr<Max14819::Max14819_Port> Max14819::getPort(Max14819_Port::PortNr port)
@@ -129,9 +153,10 @@ std::shared_ptr<Max14819::Max14819_Port> Max14819::getPort(Max14819_Port::PortNr
     case Max14819_Port::PortNr::PORTB:
         return PORTB;
         break;
-    
+
     default:
         return nullptr;
         break;
     }
 }
+//} // namespace openiolink // TODO ::PCB?

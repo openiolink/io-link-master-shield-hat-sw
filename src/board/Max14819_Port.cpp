@@ -42,12 +42,17 @@
 #include <cstdio>
 #endif
 
+namespace openiolink    // TODO ::PCB?
+{
+
 //! \name Commands to read or write registers
 //!\{
 constexpr uint8_t read = 0b00000001;  //!< read command
 constexpr uint8_t write = 0b01111111; //!< write command
 //!\}
 
+//template <int IOLPortNr, int ChipNr>
+//Max14819_Port<IOLPortNr, ChipNr>::writeIOLData()
 uint8_t Max14819_Port::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
 {
     uint8_t retValue = SUCCESS;
@@ -69,7 +74,8 @@ uint8_t Max14819_Port::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t si
     return retValue;
 }
 
-uint8_t Max14819_Port::readIOLData(uint8_t *data, uint8_t sizeofdata)
+template <int IOLPortNr, int ChipNr>
+Max14819_Port<IOLPortNr, ChipNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
 {
     uint8_t bufferRegister;
     uint8_t retValue = SUCCESS;
@@ -99,12 +105,15 @@ uint8_t Max14819_Port::readIOLData(uint8_t *data, uint8_t sizeofdata)
     return retValue;
 }
 
-void Max14819_Port::setMode(Mode mode)
+template <int IOLPortNr, int ChipNr>
+void Max14819_Port<IOLPortNr, ChipNr>::setMode(const Modes &targetMode)
 {
     // TODO set mode
 }
 
-void Max14819_Port::wakeUpRequest()
+//Specification 5.2.2.2 (PL_WakeUp.req)
+template <int IOLPortNr, int ChipNr>
+void Max14819_Port<IOLPortNr, ChipNr>::wakeUpRequest()
 {
     uint8_t retValue = 0;
     uint8_t comReqRunning = 0;
@@ -166,3 +175,4 @@ void Max14819_Port::wakeUpRequest()
     chip->debug_interface->print("wurq done");
     // return SUCCESS;
 }
+} // namespace openiolink

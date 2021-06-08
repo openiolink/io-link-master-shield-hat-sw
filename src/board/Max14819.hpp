@@ -1,17 +1,17 @@
 //!*****************************************************************************
 //! \file   Max14819.hpp
-//! 
+//!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!         based on the work of Janik Lehmann (CrazyGecko) and Pascal Frei (freip2)
-//! 
+//!
 //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
 //!         MAX14819
-//! 
+//!
 //! \date   2020-11-18
-//! 
-//! 
+//!
+//!
 //! *****************************************************************************
-//! 
+//!
 //! \copyright
 //! Copyright 2020 Bern University of Applied Sciences and Balluff AG
 //! \n\n
@@ -26,7 +26,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //! See the License for the specific language governing permissions and
 //! limitations under the License.
-//! 
+//!
 //!*****************************************************************************
 #ifndef MAX14819_HPP_INCLUDED
 #define MAX14819_HPP_INCLUDED
@@ -36,12 +36,18 @@
 #include "protocol/IOLMessage.hpp"
 #include "protocol/IOLinkConfig.hpp"
 
+//namespace openiolink // TODO ::PCB?
+//{
+
 //!*****************************************************************************
 //! \brief Class for the maxim integrated Dual IO-Link Master Transceiver
 //!        MAX14819
-//! 
+//!
 //!*****************************************************************************
-class Max14819 : public std::enable_shared_from_this<Max14819>{
+//template <int ChipNr, class SPI = MapperChip<ChipNr>::SPI, int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr, int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
+//class Max14819
+class Max14819 : public std::enable_shared_from_this<Max14819>
+{
 public:
     //! \name Error define
     //!\{
@@ -277,10 +283,10 @@ public:
 
         //!*****************************************************************************
         //! \brief Sets the state of an IO-Pin
-        //! 
-        //! 
+        //!
+        //!
         //! \param state set to this
-        //! 
+        //!
         //!*****************************************************************************
         virtual void set(bool state){};
         // ev. virtual void clear() {};
@@ -304,8 +310,8 @@ public:
 
         //!*****************************************************************************
         //! \brief Reads and writes data
-        //!        
-        //!        Sends the data with the specified length and writes the answer to 
+        //!
+        //!        Sends the data with the specified length and writes the answer to
         //!        the source location of the data
         //!
         //! \param data    Pointer to the data to send. It will be overwritten with
@@ -314,7 +320,7 @@ public:
         //! \param length  Length of the data to send and receive.
         //!
         //!*****************************************************************************
-        virtual void DataRW(uint8_t* data, uint8_t length) = 0;
+        virtual void DataRW(uint8_t *data, uint8_t length) = 0;
     };
 
     //!*****************************************************************************
@@ -335,18 +341,18 @@ public:
 
         //!*****************************************************************************
         //! \brief Printout a string
-        //! 
-        //! 
+        //!
+        //!
         //! \param buf pointer to an string
-        //! 
+        //!
         //!*****************************************************************************
-        virtual void print(char const * buf){};
+        virtual void print(char const *buf){};
     };
-    
+
     //!*****************************************************************************
     //! \brief Abstract class to wait some time
-    //! 
-    //! 
+    //!
+    //!
     //!*****************************************************************************
     class Wait
     {
@@ -355,21 +361,20 @@ public:
     public:
         Wait(){};
         virtual ~Wait(){};
-        
+
         //!*****************************************************************************
         //! \brief Blocking function to wait the given time in ms
-        //! 
-        //! 
+        //!
+        //!
         //! \param ms  time to wait in ms
-        //! 
+        //!
         //!*****************************************************************************
         virtual void ms(uint32_t ms){};
     };
 
-    
 private:
-    std::shared_ptr<PIN> ErrLED=nullptr;
-    std::shared_ptr<PIN> StatLED=nullptr;
+    std::shared_ptr<PIN> ErrLED = nullptr;
+    std::shared_ptr<PIN> StatLED = nullptr;
     std::shared_ptr<SPI_Max14819> spi_interface;
     std::shared_ptr<DebugOut> debug_interface;
     std::shared_ptr<Wait> wait;
@@ -379,7 +384,14 @@ private:
     std::shared_ptr<Max14819_Port> PORTA;
     std::shared_ptr<Max14819_Port> PORTB;
 
-
+    //// TODO
+    //typedef Max14819_Port<ChAPortNr> ChannelA;
+    //typedef Max14819_Port<ChBPortNr> ChannelB;
+    //typedef HW::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin;
+    //typedef HW::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;
+    //ChannelA *mPortA;
+    //ChannelB *mPortB;
+    //bool mInitDone = false;
 
 public:
     //!*****************************************************************************
@@ -395,6 +407,7 @@ public:
     //! \param wait_ Class to be able to wait some time
     //!
     //!*****************************************************************************
+    // TODO remove (use as type only)
     Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI_Max14819> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_);
 
     //!*****************************************************************************
@@ -402,58 +415,62 @@ public:
     //!
     //!
     //!*****************************************************************************
+    // TODO remove (use as type only)
     ~Max14819();
 
     //!*****************************************************************************
     //! \brief Initializes both ports of the chip
-    //! 
-    //! 
+    //!
+    //!
     //!*****************************************************************************
-    void initPorts(void);
+    void initPorts();
+    void init(); //TODO take care that each chip is initialized at most once.
 
     //!*****************************************************************************
     //! \brief Resets the whole chip
-    //! 
-    //! 
+    //!
+    //!
     //! \return uint8_t 0 if success
-    //! 
+    //!
     //!*****************************************************************************
-    uint8_t reset(void);
+    uint8_t reset();
 
     //!*****************************************************************************
     //! \brief Writes data into an register
-    //! 
-    //! 
+    //!
+    //!
     //! \param reg register definition
-    //! 
+    //!
     //! \param data byte to write
-    //! 
+    //!
     //! \return uint8_t 0 if success
-    //! 
+    //!
     //!*****************************************************************************
     uint8_t writeRegister(uint8_t reg, uint8_t data);
 
     //!*****************************************************************************
     //! \brief Reads data from register
-    //! 
-    //! 
+    //!
+    //!
     //! \param reg register definition
-    //! 
+    //!
     //! \return uint8_t byte read from the register
-    //! 
+    //!
     //!*****************************************************************************
     uint8_t readRegister(uint8_t reg);
 
     //!*****************************************************************************
     //! \brief Get one of the ports
-    //! 
-    //! 
+    //!
+    //!
     //! \param port defines the port to return, either PORTA or PORTB
-    //! 
+    //!
     //! \return std::shared_ptr<Max14819_Port> pointer to the port
-    //! 
+    //!
     //!*****************************************************************************
-    std::shared_ptr<Max14819_Port> getPort(Max14819_Port::PortNr port);
-};// class max14819
+    std::shared_ptr<Max14819_Port> getPort(Max14819_Port::PortNr port); // ()
 
+}; // class max14819
+
+//} // namespace openiolink // TODO ::PCB?
 #endif //MAX14819_HPP_INCLUDED
