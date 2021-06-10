@@ -9,7 +9,7 @@ namespace openiolink
 {
 
     //constructor
-    SystemManagement::PortHandler::PortHandler(const IOLMasterPort_thisIsPL &PL, const DataLinkLayer &DL, const GenericIOLDevice_thisIsAL &AL)
+    SystemManagement::PortHandler::PortHandler(const IOLMasterPort &PL, const DataLinkLayer &DL, const GenericIOLDevice &AL)
     {
     }
 

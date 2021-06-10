@@ -157,7 +157,7 @@ namespace openiolink
     {
     }
 
-    DataLinkLayer::DataLinkLayer(const IOLMasterPort_thisIsPL &PL) : mPL{PL}
+    DataLinkLayer::DataLinkLayer(const IOLMasterPort &PL) : mPL{PL}
     {
     }
 

@@ -37,8 +37,8 @@
 
 namespace openiolink
 {
-    class IOLMasterPort_thisIsPL;
-    class GenericIOLDevice_thisIsAL;
+    class IOLMasterPort;
+    class GenericIOLDevice;
     class ApplicationLayer;
 }
 
@@ -202,7 +202,7 @@ namespace openiolink
             inline void pdTrig() const;
         };
 
-        DataLinkLayer(const IOLMasterPort_thisIsPL &PL);
+        DataLinkLayer(const IOLMasterPort &PL);
         ~DataLinkLayer();
         void stepFSM();
         inline void mode(RealMode &realMode);

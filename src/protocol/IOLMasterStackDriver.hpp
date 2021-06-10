@@ -19,16 +19,14 @@ namespace openiolink
     class IOLMasterStackDriver
     {
     public:
+        IOLMasterStackDriver();
+        ~IOLMasterStackDriver();
         inline stepFSM();
-
-        //call mSM.registerObserver(..)
         inline void registerPortEventHandler(const int Port, const PortModeHandler &Handler);
-
         setDevice(const int portNr, const GenericIOLDevice &device);
 
     private:
         SystemManagement mSM;
-
         <IOLMasterStackPort> mPort;
     };
 

@@ -7,9 +7,9 @@
 
 namespace openiolink
 {
-    class IOLMasterPort_thisIsPL;
+    class IOLMasterPort;
     class DataLinkLayer;
-    class GenericIOLDevice_thisIsAL;
+    class GenericIOLDevice;
     class ApplicationLayer;
     struct SMRequestedConfig;
     struct SMRealConfig;
@@ -145,20 +145,20 @@ namespace openiolink
         {
         public:
             //constructor
-            PortHandler(const IOLMasterPort_thisIsPL &PL, const DataLinkLayer &DL, const GenericIOLDevice_thisIsAL &AL);
+            PortHandler(const IOLMasterPort &PL, const DataLinkLayer &DL, const GenericIOLDevice &AL);
             void stepFSM();
             setPortConfig(); // TODO Interface wie bei äusserer Klasse
             getPortConfig(); // TODO Interface wie bei äusserer Klasse
             ErrorCode operate(int &PortNumber);
             inline void portMode(int &PortNumber, PortModes &Mode);
             inline void handleDLMode();
-            inline void setAL(const GenericIOLDevice_thisIsAL &AL); // noch nötig?, Kann es nicht bei Konstruktion gemacht werden?
+            inline void setAL(const GenericIOLDevice &AL); // noch nötig?, Kann es nicht bei Konstruktion gemacht werden?
 
         private:
             SystemManagement *mSM;
             ApplicationLayer *mAL;       // PortHandler (SM) uses the service Read of the Application Layer (AL)
             DataLinkLayer *mDL;          // PortHandler (SM) needs some services of the DL
-            IOLMasterPort_thisIsPL *mPL; // PortHandler (SM) uses the service SetMode of the Physical Layer (PL)
+            IOLMasterPort *mPL; // PortHandler (SM) uses the service SetMode of the Physical Layer (PL)
             inline void portMode() const;
         };
 
@@ -188,7 +188,7 @@ namespace openiolink
     }
 
     //noch nötig?, Kann es nicht bei Konstruktion gemacht werden?
-    inline void SystemManagement::PortHandler::setAL(const GenericIOLDevice_thisIsAL &AL)
+    inline void SystemManagement::PortHandler::setAL(const GenericIOLDevice &AL)
     {
     }
 
