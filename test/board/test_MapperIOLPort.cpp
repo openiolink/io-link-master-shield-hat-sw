@@ -18,7 +18,28 @@ namespace openiolink
 
 #include "../../src/board/MapperIOLPort.hpp"
 #include <iostream>
+
+// Umschalten zwischen Catch und static_assert ---------------------------------
+#if 0
 #include "catch.hpp"
+int value(int x)
+{
+    return x;
+}
+#else
+#define TEST_CASE(x) void testfunction() // todo aufrufen
+#define REQUIRE(x) static_assert(x, #x)
+
+TEST_CASE(0);
+
+int main2(int argc, char const *argv[]) // todo catch main() ausschalten
+{
+    std::cout << "test in" << std::endl;
+    testfunction();
+    std::cout << "test out" << std::endl;
+    return 0;
+}
+#endif
 
 using namespace openiolink;
 

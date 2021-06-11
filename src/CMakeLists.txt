@@ -47,5 +47,5 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
                             
 endif()
 
-set_target_properties(openiolink PROPERTIES CXX_STANDARD_REQUIRED 11 CXX_STANDARD 14)
+set_target_properties(openiolink PROPERTIES CXX_STANDARD_REQUIRED ON CXX_STANDARD 17) # mindestens 17 nötig für static constexpr member
 target_include_directories(openiolink PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
