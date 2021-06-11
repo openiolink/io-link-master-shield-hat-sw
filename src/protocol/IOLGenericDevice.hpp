@@ -27,11 +27,15 @@
 //!
 //!*****************************************************************************
 
-#ifndef IOLGENERICDEVICE_HPP_INCLUDED
+#ifndef IOLGENERICDEVICE_HPP_INCLUDED // TODO rename
 #define IOLGENERICDEVICE_HPP_INCLUDED
 
 #include "IOLMasterPort.hpp"
 #include <memory>
+//#include "SIODevice.hpp"
+//#include "PortModeObserver.hpp"
+//#include "ALServiceObserver.hpp"
+//#include "state_t.hpp"
 
 namespace openiolink
 {
@@ -41,7 +45,7 @@ namespace openiolink
     //!         This class describes an device connected to an IO-Link port
     //!
     //!*****************************************************************************
-    class IOLGenericDevice // TODO rename to GenericIOLDevice //  : public SIODevice, public ALHandler, public DeviceSubject
+    class IOLGenericDevice // TODO rename to GenericIOLDevice //  : public SIODevice, protected PortModeHandler, protected ALServiceHandler
     {
     private:
         std::shared_ptr<IOLMasterPort> port; //!< Port, where the device is connected
@@ -81,7 +85,11 @@ namespace openiolink
             };
         } page1; ///< Aufbau der Page1 eines Sensors
 
+        // protected:
         // const bool sio_capable;
+        // MSequenceCapability;
+        // unsigned int mDeviceID;
+        // private:
         // ApplicationLayer *mAL;
 
     public:
@@ -90,7 +98,7 @@ namespace openiolink
         //!
         //!
         //!*****************************************************************************
-        IOLGenericDevice(){};
+        IOLGenericDevice(){}; // TODO protected
 
         //!*****************************************************************************
         //!  \brief Destroy the IOLGenericDevice object
@@ -126,6 +134,7 @@ namespace openiolink
         //!*****************************************************************************
         void printPage1Data();
 
+        // public:
         // bool isSIOCapable();
         // state_t SwitchToSIO();
         // bool getPinStateSIO();

@@ -38,7 +38,6 @@
 namespace openiolink
 {
     class IOLMasterPort;
-    class GenericIOLDevice;
     class ApplicationLayer;
 }
 
@@ -107,9 +106,11 @@ namespace openiolink
             int OnReqDataLengthPerMessage;
         };
 
-        class OD_Handler
+        class ODHandler
         {
         public:
+            ODHandler(const DataLinkLayer &parentDL, const MessageHandler &messageHandler);
+            ~ODHandler();
             void stepFSM();
             ErrorCode readParam(const unsigned int address, int &value);
             ErrorCode writeParam(const unsigned int address, const int value);
@@ -124,14 +125,17 @@ namespace openiolink
             inline void handleEventFlag();
 
         private:
-            Message_Handler *mMessageHandler; // lower layer: DL-A
+            DataLinkLayer *mDL;
+            MessageHandler *mMessageHandler; // lower layer: DL-A
             inline void control() const;
             inline void event() const;
         };
 
-        class PD_Handler
+        class PDHandler
         {
         public:
+            PDHandler(const DataLinkLayer &parentDL, const MessageHandler &messageHandler);
+            ~PDHandler();
             void stepFSM();
             inline ErrorCode pdOutputUpdate(const uint8_t *outputData, PDTransportStatus *transportStatus);
             inline void pdInputTransport(OctetString &inputData) const;
@@ -140,15 +144,16 @@ namespace openiolink
             inline void handlePDTrig();
 
         private:
-            Message_Handler *mMessageHandler; // lower layer DL-A
+            DataLinkLayer *mDL;
+            MessageHandler *mMessageHandler; // lower layer DL-A
             inline void pdInputTransport() const;
         };
 
-        class MasterDLMode_Handler
+        class MasterDLModeHandler
         {
         public:
-            MasterDLMode_Handler();
-            ~MasterDLMode_Handler();
+            MasterDLModeHandler(const DataLinkLayer &parentDL);
+            ~MasterDLModeHandler();
             void stepFSM();
             inline ErrorCode setMode(const Mode mode, const OperatingParam &valueList);
             inline void mode(RealMode &realMode);
@@ -156,7 +161,7 @@ namespace openiolink
 
         private:
             // States of the Master DL-mode handler state machine
-            enum class MHState
+            enum class ModeHandlerState
             {
                 Idle_0,
                 EstablishComm_1,
@@ -170,15 +175,18 @@ namespace openiolink
                 Retry_9
             };
 
-            Mode mRequestedMode; // the DL is requested to go to this mode
-            MHState state;       // the current state of the DL
+            DataLinkLayer *mDL;
+            Mode mRequestedMode;    // the DL is requested to go to this mode
+            ModeHandlerState state; // the current state of the DL
             inline void mode() const;
         };
 
         // Sollte alle M Sequence Typen unterstuetzen
-        class Message_Handler
+        class MessageHandler
         {
         public:
+            MessageHandler(const DataLinkLayer &parentDL, const IOLMasterPort &physicalLayer, const MasterDLModeHandler &modeHandler);
+            ~MessageHandler();
             void stepFSM();
             void mhInfo(MHInfo &mhInfo);
             ErrorCode OD(const RWDirection &rwDirection, const ComChannel &comChannel, const int addressCtrl, uint8_t *data, int &length);
@@ -188,12 +196,14 @@ namespace openiolink
             ErrorCode PD(const uint8_t *pdOut, const int pdOutAddress, const int pdOutLength, uint8_t *pdIn, int &pdInAddress, int &pdInLength);
             inline void pdTrig(int &dataLength) const;
             inline void handlePLTransfer_ind();
+            void setODHandler(ODHandler *value);
+            void setPDHandler(PDHandler *value);
 
         private:
             IOLMasterPort *mPL;
-            MasterDLMode_Handler *mModeHandler; // neccessary to provide the service MHInfo
-            OD_Handler *mOD_Handler;            // upper layer: DL-B (must be known to be able to provide the services OD.cnf, ODTrig, PDInStatus and EventFlag)
-            PD_Handler *mPD_Handler;            // upper layer DL-B (must be known in order to be able to provide the services PD.cnf and PDTrig)
+            MasterDLModeHandler *mModeHandler; // neccessary to provide the service MHInfo
+            ODHandler *mODHandler;             // upper layer: DL-B (must be known to be able to provide the services OD.cnf, ODTrig, PDInStatus and EventFlag)
+            PDHandler *mPDHandler;             // upper layer DL-B (must be known in order to be able to provide the services PD.cnf and PDTrig)
             inline void od_cnf() const;
             inline void odTrig() const;
             inline void pdInStatus() const;
@@ -202,7 +212,7 @@ namespace openiolink
             inline void pdTrig() const;
         };
 
-        DataLinkLayer(const IOLMasterPort &PL);
+        DataLinkLayer(const IOLMasterPort &PL, const ApplicationLayer &AL);
         ~DataLinkLayer();
         void stepFSM();
         inline void mode(RealMode &realMode);
@@ -219,16 +229,15 @@ namespace openiolink
         inline ErrorCode pdOutputUpdate(const uint8_t *outputData, PDTransportStatus &transportStatus);
         inline void pdInputTransport(OctetString &inputData) const;
         inline void pdCycle() const;
-        inline void registerAL(const GenericIOLDevice_AL &ApplicationLayer);
-        inline void registerPortHandler(const SystemManagement::PortHandler &NewPortHandler);
+        inline void setPortHandler(const SystemManagement::PortHandler &portHandler);
 
     private:
-        OD_Handler ODHandler;
-        PD_Handler PDHandler;
-        MasterDLMode_Handler ModeHandler;
-        MasterDLMode_Handler MessageHandler;
-        SystemManagement::PortHandler *mPortHandler; // PortHandler (SM) is receiver of the service DL_Mode
         ApplicationLayer *mAL;
+        SystemManagement::PortHandler *mPortHandler; // PortHandler (SM) is receiver of the service DL_Mode
+        MasterDLModeHandler ModeHandler;
+        MasterDLModeHandler MessageHandler;
+        PDHandler PDHandler;
+        ODHandler ODHandler;
         IOLMasterPort *mPL;
         inline void mode() const;
         inline void control() const;
@@ -241,94 +250,94 @@ namespace openiolink
     //**************************************************************************
 
     //DL_ISDUTransport (Specification 7.2.1.6), not implemented, TODO add parameters
-    inline ErrorCode DataLinkLayer::OD_Handler::isduTransport()
+    inline ErrorCode DataLinkLayer::ODHandler::isduTransport()
     {
     }
 
     //DL_ISDUAbort (Specification 7.2.1.7), not implemented, TODO add parameters
-    inline ErrorCode DataLinkLayer::OD_Handler::isduAbort()
+    inline ErrorCode DataLinkLayer::ODHandler::isduAbort()
     {
     }
 
     //Specification 7.2.1.18, not implemented
     //The Master uses the DL_Control service to convey control information via the MasterCommand mechanism to the corresponding Device application and to get control information via the PD status flag mechanism (see A.1.5) and the PDInStatus service (see 7.2.2.5).
-    inline void DataLinkLayer::OD_Handler::control(DataLinkLayer::ControlCode &controlCode)
+    inline void DataLinkLayer::ODHandler::control(DataLinkLayer::ControlCode &controlCode)
     {
     }
 
     //Specification 7.2.1.15, not implemented, TODO add arguments
-    inline void DataLinkLayer::OD_Handler::event() const
+    inline void DataLinkLayer::ODHandler::event() const
     {
     }
 
     //confirms the transmitted Events via the Event handler.
     //Specification 7.2.1.16, not implemented
-    inline void DataLinkLayer::OD_Handler::eventConf() const
+    inline void DataLinkLayer::ODHandler::eventConf() const
     {
     }
 
     //end point of the service OD.cnf (from Message handler)
-    inline void DataLinkLayer::OD_Handler::handleOD_cnf()
+    inline void DataLinkLayer::ODHandler::handleOD_cnf()
     {
     }
 
     //end point of the service ODTrig (from Message handler)
-    inline void DataLinkLayer::OD_Handler::handleODTrig()
+    inline void DataLinkLayer::ODHandler::handleODTrig()
     {
     }
 
     //end point of the service PDInStatus (from Message handler)
-    inline void DataLinkLayer::OD_Handler::handlePDInStatus()
+    inline void DataLinkLayer::ODHandler::handlePDInStatus()
     {
     }
 
     //end point of the service EventFlag (from Message handler)
-    inline void DataLinkLayer::OD_Handler::handleEventFlag()
+    inline void DataLinkLayer::ODHandler::handleEventFlag()
     {
     }
 
     //Initiates the Service DL_Control, when used in direction away from DL (Specification 7.2.1.18)
-    inline void DataLinkLayer::OD_Handler::control() const
+    inline void DataLinkLayer::ODHandler::control() const
     {
     }
 
     //Initiates the Service DL_Event (Specification 7.2.1.15), not implemented yet
-    inline void DataLinkLayer::OD_Handler::event() const
+    inline void DataLinkLayer::ODHandler::event() const
     {
     }
 
     //The Master's application layer uses the DL_PDOutputUpdate service to update the output data (Process Data from Master to Device) on the data link layer. (Spec. 7.2.1.8)
-    inline ErrorCode DataLinkLayer::PD_Handler::pdOutputUpdate(const uint8_t *outputData, TransportStatus &transportStatus)
+    inline ErrorCode DataLinkLayer::PDHandler::pdOutputUpdate(const uint8_t *outputData, TransportStatus &transportStatus)
     {
     }
 
     //The data link layer on the Master uses the DL_PDInputTransport service to transfer the content of input data (Process Data from Device to Master) to the application layer.
     //Specification 7.2.1.11
-    inline void DataLinkLayer::PD_Handler::pdInputTransport(OctetString &inputData) const
+    inline void DataLinkLayer::PDHandler::pdInputTransport(OctetString &inputData) const
     {
     }
 
     //indicate the end of a Process Data cycle to the application layer (Spec. 7.2.1.12)
-    inline void DataLinkLayer::PD_Handler::pdCycle() const
+    inline void DataLinkLayer::PDHandler::pdCycle() const
     {
     }
 
     //end point of the service PD.cnf (from Message handler)
-    inline void DataLinkLayer::PD_Handler::handlePD_cnf()
+    inline void DataLinkLayer::PDHandler::handlePD_cnf()
     {
     }
 
     //end point of the service PDTrig (from Message handler)
-    inline void DataLinkLayer::PD_Handler::handlePDTrig()
+    inline void DataLinkLayer::PDHandler::handlePDTrig()
     {
     }
 
     //Initiates the DL service PDInputTransport (to AL)
-    inline void DataLinkLayer::PD_Handler::pdInputTransport() const
+    inline void DataLinkLayer::PDHandler::pdInputTransport() const
     {
     }
 
-    inline ErrorCode DataLinkLayer::MasterDLMode_Handler::setMode(const Mode mode, const OperatingParam &valueList)
+    inline ErrorCode DataLinkLayer::MasterDLModeHandler::setMode(const Mode mode, const OperatingParam &valueList)
     {
         return ErrorCode();
     }
@@ -336,77 +345,77 @@ namespace openiolink
     //report to System Management that a certain operating status has been reached.
     //Specification 7.2.1.14
     //realMode[out]: where to store the current mode of the DL
-    inline void DataLinkLayer::MasterDLMode_Handler::mode(RealMode &realMode)
+    inline void DataLinkLayer::MasterDLModeHandler::mode(RealMode &realMode)
     {
     }
 
     //end point of the service DL_Mode
-    inline void DataLinkLayer::MasterDLMode_Handler::handleMHInfo()
+    inline void DataLinkLayer::MasterDLModeHandler::handleMHInfo()
     {
     }
 
     //Initiates the Service DL_Mode (Specification 7.2.1.14)
-    inline void DataLinkLayer::MasterDLMode_Handler::mode() const
+    inline void DataLinkLayer::MasterDLModeHandler::mode() const
     {
     }
 
     //Specification 7.2.2.7
     //dataLength[out]	available space for On-request Data (OD) per message
-    inline void DataLinkLayer::Message_Handler::odTrig(int &dataLength) const
+    inline void DataLinkLayer::MessageHandler::odTrig(int &dataLength) const
     {
     }
 
     //Sets "status" to the current validity state of the input Process Data.
     //PDStatus: enum VALID, INVALID
-    inline void DataLinkLayer::Message_Handler::pdInStatus(PDStatus &status)
+    inline void DataLinkLayer::MessageHandler::pdInStatus(PDStatus &status)
     {
     }
 
     //Sets "flag" to the status of the "Event flag" during cyclic communication.
     //Specification 7.2.2.4
-    inline void DataLinkLayer::Message_Handler::eventFlag(bool &flag)
+    inline void DataLinkLayer::MessageHandler::eventFlag(bool &flag)
     {
     }
 
     //Specification 7.2.2.8
     //dataLength[out]	available space for Process Data (PD) per message
-    inline void DataLinkLayer::Message_Handler::pdTrig(int &dataLength) const
+    inline void DataLinkLayer::MessageHandler::pdTrig(int &dataLength) const
     {
     }
 
     //end point of the service PL_Transfer.ind
     //TODO implementation: react on /IRQ from MAX14819, call readIOLData()
-    inline void DataLinkLayer::Message_Handler::handlePLTransfer_ind()
+    inline void DataLinkLayer::MessageHandler::handlePLTransfer_ind()
     {
     }
 
     //Initiates the Service OD.cnf (Specification 7.2.2.2 OD)
-    inline void DataLinkLayer::Message_Handler::od_cnf() const
+    inline void DataLinkLayer::MessageHandler::od_cnf() const
     {
     }
 
     //Initiates the Service ODTrig (Specification 7.2.2.7)
-    inline void DataLinkLayer::Message_Handler::odTrig() const
+    inline void DataLinkLayer::MessageHandler::odTrig() const
     {
     }
 
     //Initiates the Service PDInStatus (Specification 7.2.2.5)
-    inline void DataLinkLayer::Message_Handler::pdInStatus() const
+    inline void DataLinkLayer::MessageHandler::pdInStatus() const
     {
     }
 
     //Initiates the Service EventFlag (Specification 7.2.2.4), not implemented
-    inline void DataLinkLayer::Message_Handler::eventFlag() const
+    inline void DataLinkLayer::MessageHandler::eventFlag() const
     {
     }
 
     //Initiates the Service PD.cnf (Specification 7.2.2.3 PD)
-    inline void DataLinkLayer::Message_Handler::pd_cnf() const
+    inline void DataLinkLayer::MessageHandler::pd_cnf() const
     {
     }
 
     //Initiates the Service PDTrig (Specification 7.2.2.8)
-    inline void DataLinkLayer::Message_Handler::pdTrig() const
+    inline void DataLinkLayer::MessageHandler::pdTrig() const
     {
     }
 
@@ -592,20 +601,17 @@ namespace openiolink
     }
 
     //!*************************************************************************
-    //! \brief  Register the application layer (AL) object (i.e. the IO-Link-
-    //!         Device) which belongs to this data link layer (DL).
+    //! \brief  Register the Port Handler object from the System Management (SM)
+    //!         which belongs to this data link layer (DL).
     //!
-    //! \param ApplicationLayer[in] pointer to the AL (IO-Link Device)
+    //! \param portHandler[in]
+    //!
+    //! \note   TODO called by the PortHandler when he is given the Address of the DL
     //!
     //!*************************************************************************
-    inline void DataLinkLayer::registerAL(const GenericIOLDevice_AL &ApplicationLayer)
+    inline void DataLinkLayer::setPortHandler(const SystemManagement::PortHandler &portHandler)
     {
-        mAL = ApplicationLayer;
-    }
-
-    inline void DataLinkLayer::registerPortHandler(const SystemManagement::PortHandler &NewPortHandler)
-    {
-        mPortHandler = &NewPortHandler; // TODO OK? (Referenz zu Pointer wandeln).
+        mPortHandler = &portHandler; // TODO OK? (Referenz zu Pointer wandeln).
     }
 
     //Initiates the Service DL_Mode (Specification 7.2.1.14)

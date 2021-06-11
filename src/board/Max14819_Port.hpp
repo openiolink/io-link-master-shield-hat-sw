@@ -76,6 +76,7 @@ namespace openiolink // TODO ::PCB?
     private:
         typedef Max14819<ChipNr> MyChip;                           //! A Port has to call his Chip for variuos tasks.
         constexpr Port port = MapperIOLPort<IOLPortNr>::ChannelNr; //!< describes which port of the chip the object is
+        //int channelNr;
         CommunicationInfo communicationInfo;
 
     protected:
@@ -98,7 +99,7 @@ namespace openiolink // TODO ::PCB?
         //! \return uint8_t 0 if success
         //!
         //!*****************************************************************************
-        uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override;
+        uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override; // virtual
 
         //!*****************************************************************************
         //! \brief Reads data from IO-Link
@@ -111,7 +112,7 @@ namespace openiolink // TODO ::PCB?
         //! \return uint8_t 0 if success
         //!
         //!*****************************************************************************
-        uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;
+        uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override; // virtual
 
     public:
         //!*****************************************************************************

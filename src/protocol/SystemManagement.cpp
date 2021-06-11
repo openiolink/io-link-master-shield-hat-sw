@@ -2,13 +2,15 @@
 #include "SystemManagement.hpp"
 #include "IOLMasterPort.hpp"
 #include "DataLinkLayer.hpp"
-#include "ProxyClasses.hpp"
+#include "GenericIOLDevice.hpp"
 #include "ApplicationLayer.hpp"
 
 namespace openiolink
 {
 
     //constructor
+    //TODO call mDL = mAL->getDL();
+    //TODO call mDL.setPortHandler(this);
     SystemManagement::PortHandler::PortHandler(const IOLMasterPort &PL, const DataLinkLayer &DL, const GenericIOLDevice &AL)
     {
     }

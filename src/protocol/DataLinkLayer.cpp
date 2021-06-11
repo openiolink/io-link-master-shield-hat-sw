@@ -34,130 +34,170 @@
 
 namespace openiolink
 {
+    /** OD Handler */
+    DataLinkLayer::ODHandler::ODHandler(const DataLinkLayer &parentDL, const DataLinkLayer::MessageHandler &messageHandler)
+    {
+    }
+
+    DataLinkLayer::ODHandler::~ODHandler()
+    {
+    }
+
     //Move the state machine one step forward (i.e. make a state transition if neccessary).
     //IMPORTATNT NOTE: This function has to be called periodically!
     //TODO: call the step() function of sub-FSMs if present
     void
-    DataLinkLayer::OD_Handler::stepFSM()
+    DataLinkLayer::ODHandler::stepFSM()
     {
     }
 
-    ErrorCode DataLinkLayer::OD_Handler::readParam(const unsigned int address, int &value)
+    ErrorCode DataLinkLayer::ODHandler::readParam(const unsigned int address, int &value)
     {
         return ErrorCode::UNKNOWN_ERROR; // unimplemented
     }
 
-    ErrorCode DataLinkLayer::OD_Handler::writeParam(const unsigned int address, const int value)
+    ErrorCode DataLinkLayer::ODHandler::writeParam(const unsigned int address, const int value)
     {
         return ErrorCode::UNKNOWN_ERROR; // unimplemented
+    }
+
+    /** PD Handler */
+    DataLinkLayer::PDHandler::PDHandler(const DataLinkLayer &parentDL, const DataLinkLayer::MessageHandler &messageHandler)
+    {
+    }
+
+    DataLinkLayer::PDHandler::~PDHandler()
+    {
     }
 
     //Move the state machine one step forward (i.e. make a state transition if neccessary).
     //IMPORTATNT NOTE: This function has to be called periodically!
     //TODO: call the step() function of sub-FSMs if present
-    void DataLinkLayer::PD_Handler::stepFSM()
+    void DataLinkLayer::PDHandler::stepFSM()
     {
     }
 
-    void DataLinkLayer::MasterDLMode_Handler MasterDLMode_Handler() : mRequestedMode{Mode::INACTIVE}, state{MHState::Idle_0}
+    /** Master DL Mode Handler */
+    DataLinkLayer::MasterDLModeHandler::MasterDLModeHandler(const DataLinkLayer &parentDL) : mRequestedMode{Mode::INACTIVE}, state{ModeHandlerState::Idle_0}
+    // TODO complete and sort initializer list
     {
     }
 
-    void DataLinkLayer::MasterDLMode_Handler ~MasterDLMode_Handler()
+    void DataLinkLayer::MasterDLModeHandler::~MasterDLModeHandler()
     {
     }
     //Move the state machine one step forward (i.e. make a state transition if neccessary).
     //IMPORTATNT NOTE: This function has to be called periodically!
-    void DataLinkLayer::MasterDLMode_Handler::stepFSM()
+    void DataLinkLayer::MasterDLModeHandler::stepFSM()
     {
         switch (state)
         {
-        case MHState::Idle_0:
+        case ModeHandlerState::Idle_0:
             if (mRequestedMode == Mode::STARTUP)
             { // T1
-                state = MHState::EstablishComm_1;
+                state = ModeHandlerState::EstablishComm_1;
             }
             break;
 
-        case MHState::EstablishComm_1:
+        case ModeHandlerState::EstablishComm_1:
             mPL.wakeupRequest();
             // TODO: when done:
-            state = MHState::Startup_2; // replaces T2, T3 and T4
+            state = ModeHandlerState::Startup_2; // replaces T2, T3 and T4
             // TODO: on error:
-            state = MHState::Idle_0; // TOOD: T5
+            state = ModeHandlerState::Idle_0; // TOOD: T5
             break;
 
-        case MHState::Startup_2:
+        case ModeHandlerState::Startup_2:
             if (mRequestedMode == Mode::PREOPERATE)
             { // TODO: T6
-                state = MHState::Preoperate_3;
+                state = ModeHandlerState::Preoperate_3;
             }
             else if (mRequestedMode == Mode::OPERATE)
             { // TODO: T11
-                state = MHState::Operate_4;
+                state = ModeHandlerState::Operate_4;
             }
             break;
 
-        case MHState::Preoperate_3:
+        case ModeHandlerState::Preoperate_3:
             if (mRequestedMode == Mode::STARTUP)
             { // TODO: T7
-                state = MHState::Startup_2;
+                state = ModeHandlerState::Startup_2;
             }
             else if (mRequestedMode == Mode::INACTIVE /*TODO || MHInfo_COMLOST*/)
             { // TODO: T8, TODO: T9
-                state = MHState::Idle_0;
+                state = ModeHandlerState::Idle_0;
             }
             else if (mRequestedMode == Mode::OPERARTE)
             { // TODO: T10
-                state = MHState::Operate_4;
+                state = ModeHandlerState::Operate_4;
             }
             break;
 
-        case MHState::Operate_4:
+        case ModeHandlerState::Operate_4:
             if (mRequestedMode == Mode::STARTUP)
             { // TODO: T12
-                state = MHState::Startup_2;
+                state = ModeHandlerState::Startup_2;
             }
             else if (mRequestedMode == Mode::INACTIVE /*TODO || MHInfo_COMLOST*/)
             { // TODO: T13, TODO: T14
-                state = MHState::Idle_0;
+                state = ModeHandlerState::Idle_0;
             }
             break;
 
-        case MHState::WURQ_5:
-        case MHState::ComRequestCOM3_6:
-        case MHState::ComRequestCOM2_7:
-        case MHState::ComRequestCOM1_8:
-        case MHState::Retry_9:
-            state = MHState::EstablishComm_1; // "Submachine 1 "WakeUp"" not implemented (not neccessary with MAX14819 transceiver)
+        case ModeHandlerState::WURQ_5:
+        case ModeHandlerState::ComRequestCOM3_6:
+        case ModeHandlerState::ComRequestCOM2_7:
+        case ModeHandlerState::ComRequestCOM1_8:
+        case ModeHandlerState::Retry_9:
+            state = ModeHandlerState::EstablishComm_1; // "Submachine 1 "WakeUp"" not implemented (not neccessary with MAX14819 transceiver)
             break;
         }
     }
 
+    /** Message Handler */
+    DataLinkLayer::MessageHandler::MessageHandler(const DataLinkLayer &parentDL, const IOLMasterPort &physicalLayer, const DataLinkLayer::MasterDLModeHandler &modeHandler)
+    {
+    }
+
+    DataLinkLayer::MessageHandler::~MessageHandler()
+    {
+    }
+
     //Move the state machine one step forward (i.e. make a state transition if neccessary).
     //IMPORTATNT NOTE: This function has to be called periodically!
     //TODO: call the step() function of sub-FSMs if present
-    void DataLinkLayer::Message_Handler::stepFSM()
+    void DataLinkLayer::MessageHandler::stepFSM()
     {
     }
 
     //Specification 7.2.2.6 MHInfo
-    void DataLinkLayer::Message_Handler::mhInfo(MHInfo &mhInfo)
+    void DataLinkLayer::MessageHandler::mhInfo(MHInfo &mhInfo)
     {
     }
 
     //Set up the On-request Data for the next message to be sent. In 1266 turn, the confirmation of the service contains the data from the receiver.
     //\note "data" and "length" are only valid, when ErrorCode::NO_ERROR is returned!
-    ErrorCode DataLinkLayer::Message_Handler::OD(const RWDirection &rwDirection, const ComChannel &comChannel, const int addressCtrl, uint8_t *data, int &length)
+    ErrorCode DataLinkLayer::MessageHandler::OD(const RWDirection &rwDirection, const ComChannel &comChannel, const int addressCtrl, uint8_t *data, int &length)
     {
     }
 
     //Setup the Process Data to be sent through the process communication channel. The confirmation of the service contains the data from the receiver.
-    ErrorCode DataLinkLayer::Message_Handler::PD(const uint8_t *pdOut, const int pdOutAddress, const int pdOutLength, uint8_t *pdIn, int &pdInAddress, int &pdInLength)
+    ErrorCode DataLinkLayer::MessageHandler::PD(const uint8_t *pdOut, const int pdOutAddress, const int pdOutLength, uint8_t *pdIn, int &pdInAddress, int &pdInLength)
     {
     }
 
-    DataLinkLayer::DataLinkLayer(const IOLMasterPort &PL) : mPL{PL}
+    void DataLinkLayer::MessageHandler::setODHandler(DataLinkLayer::ODHandler *value)
+    {
+        mODHandler = value;
+    }
+
+    void DataLinkLayer::MessageHandler::setPDHandler(DataLinkLayer::PDHandler *value)
+    {
+        mPDHandler = value;
+    }
+
+    /** Data link Layer */
+    DataLinkLayer::DataLinkLayer(const IOLMasterPort &PL, const ApplicationLayer &AL) : mPL{PL}, mAL{AL}
     {
     }
 
@@ -177,7 +217,7 @@ namespace openiolink
     }
 
     //DL_ISDUTransport (Specification 7.2.1.6), not implemented, TODO add parameters
-    //TODO call mOD_Handler.isduTransport()
+    //TODO call mODHandler.isduTransport()
     ErrorCode DataLinkLayer::isduTransport()
     {
     }

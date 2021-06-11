@@ -1,7 +1,7 @@
 #ifndef OPENIOLINK_SYSTEMMANAGEMENT_HPP
 #define OPENIOLINK_SYSTEMMANAGEMENT_HPP
 
-#include "Observer.hpp"
+#include "PortModeObserver.hpp"
 #include "ErrorCode.hpp"
 #include "SM_typedefs.hpp"
 
@@ -145,6 +145,8 @@ namespace openiolink
         {
         public:
             //constructor
+            //TODO call mDL = mAL->getDL();
+            //TODO call mDL.setPortHandler(this);
             PortHandler(const IOLMasterPort &PL, const DataLinkLayer &DL, const GenericIOLDevice &AL);
             void stepFSM();
             setPortConfig(); // TODO Interface wie bei äusserer Klasse
@@ -152,7 +154,6 @@ namespace openiolink
             ErrorCode operate(int &PortNumber);
             inline void portMode(int &PortNumber, PortModes &Mode);
             inline void handleDLMode();
-            inline void setAL(const GenericIOLDevice &AL); // noch nötig?, Kann es nicht bei Konstruktion gemacht werden?
 
         private:
             SystemManagement *mSM;
@@ -170,7 +171,7 @@ namespace openiolink
         inline void registerObserver(const int Port, const PortModeHandler &Observer);
 
     private:
-        <PortHandler *> mPortHandler;
+        PortHandler mPortHandler[4];
     };
 
     //**************************************************************************
@@ -184,11 +185,6 @@ namespace openiolink
     }
 
     inline void SystemManagement::PortHandler::handleDLMode()
-    {
-    }
-
-    //noch nötig?, Kann es nicht bei Konstruktion gemacht werden?
-    inline void SystemManagement::PortHandler::setAL(const GenericIOLDevice &AL)
     {
     }
 

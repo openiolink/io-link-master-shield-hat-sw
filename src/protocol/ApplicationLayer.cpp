@@ -17,7 +17,7 @@ namespace openiolink
 
     //write On-request Data to a Device connected to a specific port
     //Specification 8.2.2.2
-    ErrorCode ApplicationLayer::write(uint8_t &port, const int index, const int subindex, const uint8_t *data)
+    ErrorCode ApplicationLayer::write(uint8_t &port, const int index, const int subindex, const uint8_t *&data)
     {
     }
 

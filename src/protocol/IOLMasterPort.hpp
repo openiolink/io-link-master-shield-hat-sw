@@ -85,11 +85,11 @@ namespace openiolink
         //!  \note This abstract function must be implemented for the used hardware
         //!
         //!*****************************************************************************
-        virtual void wakeUpRequest(){}; // todo move to private
+        virtual void wakeUpRequest(){}; // todo move to private // TODO pure virtual
 
-        virtual void setMode(const Mode &targetMode);
-        virtual uint8_t sendIOLData(const openiolink::IOLMessage &msg);
-        virtual uint8_t readIOLData(std::shared_ptr<openiolink::IOLMessage> msg);
+        virtual void setMode(const Mode &targetMode);                             // TODO pure virtual
+        virtual uint8_t sendIOLData(const openiolink::IOLMessage &msg);           // TODO pure virtual
+        virtual uint8_t readIOLData(std::shared_ptr<openiolink::IOLMessage> msg); // TODO pure virtual
         State getState();
         Mode getMode();
 
@@ -127,7 +127,7 @@ namespace openiolink
         //!*****************************************************************************
         virtual uint8_t sendIOLData(const /*FIXME OK?*/ uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) { return 1; };
 
-    private:// TODO protected
+    private: // TODO protected
         State state;
         Mode mode;
         // TODO comSpeed
