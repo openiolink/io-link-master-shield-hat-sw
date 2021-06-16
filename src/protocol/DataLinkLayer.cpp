@@ -39,20 +39,38 @@ namespace openiolink
     // OD Handler
     //**************************************************************************
 
-    DataLinkLayer::ODHandler::ODHandler(DataLinkLayer &parentDL, DataLinkLayer::MessageHandler &messageHandler)
+    //!*************************************************************************
+    //! \brief  Construct a new ODHandler object
+    //!
+    //! \param parentDL [in]        the DL object encapsulating this ODHandler
+    //!
+    //! \param messageHandler [in]  the associated Message Handler
+    //!
+    //!*************************************************************************
+    DataLinkLayer::ODHandler::ODHandler(DataLinkLayer &parentDL,
+                                        DataLinkLayer::MessageHandler &messageHandler)
+        : mDL{parentDL}, mMessageHandler{messageHandler} // references
     {
     }
 
+    //!*************************************************************************
+    //! \brief  Destruct the ODHandler object
+    //!
+    //!*************************************************************************
     DataLinkLayer::ODHandler::~ODHandler()
     {
     }
 
-    //Move the state machine one step forward (i.e. make a state transition if neccessary).
-    //IMPORTATNT NOTE: This function has to be called periodically!
-    //TODO: call the step() function of sub-FSMs if present
-    void
-    DataLinkLayer::ODHandler::stepFSM()
+    //!*************************************************************************
+    //! \brief  Move the state machine one step forward (i.e. make a state
+    //!         transition if neccessary).
+    //!
+    //! \note   IMPORTATNT: This function has to be called periodically!
+    //!
+    //!*************************************************************************
+    void DataLinkLayer::ODHandler::stepFSM()
     {
+        //TODO: call the step() function of sub-FSMs if present
     }
 
     ErrorCode DataLinkLayer::ODHandler::readParam(const unsigned int address, int &value) const
@@ -69,35 +87,71 @@ namespace openiolink
     // PD Handler
     //**************************************************************************
 
-    DataLinkLayer::PDHandler::PDHandler(DataLinkLayer &parentDL, DataLinkLayer::MessageHandler &messageHandler)
+    //!*************************************************************************
+    //! \brief  Construct a new PDHandler object
+    //!
+    //! \param parentDL [in]        the DL object encapsulating this ODHandler
+    //!
+    //! \param messageHandler [in]  the associated Message Handler
+    //!
+    //!*************************************************************************
+    DataLinkLayer::PDHandler::PDHandler(DataLinkLayer &parentDL,
+                                        DataLinkLayer::MessageHandler &messageHandler)
+        : mDL{parentDL}, mMessageHandler{messageHandler} // references
     {
     }
 
+    //!*************************************************************************
+    //! \brief  Destruct the PDHandler object
+    //!
+    //!*************************************************************************
     DataLinkLayer::PDHandler::~PDHandler()
     {
     }
 
-    //Move the state machine one step forward (i.e. make a state transition if neccessary).
-    //IMPORTATNT NOTE: This function has to be called periodically!
-    //TODO: call the step() function of sub-FSMs if present
+    //!*************************************************************************
+    //! \brief  Move the state machine one step forward (i.e. make a state
+    //!         transition if neccessary).
+    //!
+    //! \note   IMPORTATNT: This function has to be called periodically!
+    //!
+    //!*************************************************************************
     void DataLinkLayer::PDHandler::stepFSM()
     {
+        //TODO: call the step() function of sub-FSMs if present
     }
 
     //**************************************************************************
     // Master DL Mode Handler
     //**************************************************************************
 
-    DataLinkLayer::MasterDLModeHandler::MasterDLModeHandler(DataLinkLayer &parentDL) : mRequestedMode{Mode::INACTIVE}, state{ModeHandlerState::Idle_0}
-    // TODO complete and sort initializer list
+    //!*************************************************************************
+    //! \brief  Construct a new MasterDLModeHandler object
+    //!
+    //! \param parentDL [in]    the DL object encapsulating this ODHandler
+    //!
+    //!*************************************************************************
+    DataLinkLayer::MasterDLModeHandler::MasterDLModeHandler(DataLinkLayer &parentDL)
+        : mDL{parentDL},                                                  // reference
+          mRequestedMode{Mode::INACTIVE}, state{ModeHandlerState::Idle_0} // attributes
     {
     }
 
+    //!*************************************************************************
+    //! \brief  Destruct the MasterDLModeHandler object
+    //!
+    //!*************************************************************************
     DataLinkLayer::MasterDLModeHandler::~MasterDLModeHandler()
     {
     }
-    //Move the state machine one step forward (i.e. make a state transition if neccessary).
-    //IMPORTATNT NOTE: This function has to be called periodically!
+
+    //!*************************************************************************
+    //! \brief  Move the state machine one step forward (i.e. make a state
+    //!         transition if neccessary).
+    //!
+    //! \note   IMPORTATNT: This function has to be called periodically!
+    //!
+    //!*************************************************************************
     void DataLinkLayer::MasterDLModeHandler::stepFSM()
     {
         switch (state)
@@ -169,19 +223,40 @@ namespace openiolink
     // Message Handler
     //**************************************************************************
 
-    DataLinkLayer::MessageHandler::MessageHandler(DataLinkLayer &parentDL, IOLMasterPort &physicalLayer, DataLinkLayer::MasterDLModeHandler &modeHandler)
+    //!*************************************************************************
+    //! \brief  Construct a new MessageHandler object
+    //!
+    //! \param physicalLayer [in]   the PL (IO-Link-Master port) below the encapsulating DL object
+    //!
+    //! \param modeHandler [in]     the associated Master DL-mode Handler
+    //!
+    //!*************************************************************************
+    DataLinkLayer::MessageHandler::MessageHandler(IOLMasterPort &physicalLayer,
+                                                  DataLinkLayer::MasterDLModeHandler &modeHandler)
+        : mPL{physicalLayer}, mModeHandler{modeHandler}, // references
+          mODHandler{nullptr}, mPDHandler{nullptr}       // pointers
     {
+        // NOTE: mODHandler and mPDHandler must be initialized later via setXDHandler()
     }
 
+    //!*************************************************************************
+    //! \brief  Destruct the MessageHandler object
+    //!
+    //!*************************************************************************
     DataLinkLayer::MessageHandler::~MessageHandler()
     {
     }
 
-    //Move the state machine one step forward (i.e. make a state transition if neccessary).
-    //IMPORTATNT NOTE: This function has to be called periodically!
-    //TODO: call the step() function of sub-FSMs if present
+    //!*************************************************************************
+    //! \brief  Move the state machine one step forward (i.e. make a state
+    //!         transition if neccessary).
+    //!
+    //! \note   IMPORTATNT: This function has to be called periodically!
+    //!
+    //!*************************************************************************
     void DataLinkLayer::MessageHandler::stepFSM()
     {
+        //TODO: call the step() function of sub-FSMs if present
     }
 
     //Specification 7.2.2.6 MHInfo
@@ -214,19 +289,50 @@ namespace openiolink
     // Data link Layer
     //**************************************************************************
 
-    DataLinkLayer::DataLinkLayer(IOLMasterPort &PL, ApplicationLayer &AL) : mPL{PL}, mAL{AL}, mPortHandler{nullptr}, mModeHandler{this}, mMessageHandler{}
+    //!*************************************************************************
+    //! \brief  Construct a new MessageHandler object
+    //!
+    //! \param PL [in]  the associated Physical Layer (IO-Link-Master port)
+    //!
+    //! \param AL [in]  the associated Aplication Layer
+    //!
+    //!*************************************************************************
+    DataLinkLayer::DataLinkLayer(IOLMasterPort &PL, ApplicationLayer &AL)
+        : mPL{PL}, mAL{AL},                                                      // references
+          mPortHandler{nullptr},                                                 // pointer
+          mModeHandler{*this}, mMessageHandler{PL, mModeHandler},                // attributes
+          mPDHandler{*this, mMessageHandler}, mODHandler{*this, mMessageHandler} // attributes
     {
+        // NOTE: mPortHandler must be initialized later with setPortHandler()
+
+        // mModeHandler does not need additional initialization
+        // additional initialization of mMessageHandler
+        mMessageHandler.setODHandler(&mODHandler);
+        mMessageHandler.setPDHandler(&mPDHandler);
+        // mODHandler does not need additional initialization
+        // mPDHandler does not need additional initialization
     }
 
+    //!*************************************************************************
+    //! \brief  Destruct the DataLinkLayer object
+    //!
+    //!*************************************************************************
     DataLinkLayer::~DataLinkLayer()
     {
+        mMessageHandler.setPDHandler(nullptr);
+        mMessageHandler.setODHandler(nullptr);
     }
 
-    //Move the state machine one step forward (i.e. make a state transition if neccessary).
-    //IMPORTATNT NOTE: This function has to be called periodically!
-    //TODO: call the step() function of all handler FSMs
+    //!*************************************************************************
+    //! \brief  Move the state machine one step forward (i.e. make a state
+    //!         transition if neccessary).
+    //!
+    //! \note   IMPORTATNT: This function has to be called periodically!
+    //!
+    //!*************************************************************************
     void DataLinkLayer::stepFSM()
     {
+        // FIXME call order
         mODHandler.stepFSM();
         mPDHandler.stepFSM();
         mMessageHandler.stepFSM();

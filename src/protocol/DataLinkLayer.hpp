@@ -234,8 +234,9 @@ namespace openiolink
             inline void handleEventFlag();
 
         private:
-            DataLinkLayer *mDL;
-            MessageHandler *mMessageHandler; // lower layer: DL-A
+            DataLinkLayer &mDL;              // encapsulating DL object
+            MessageHandler &mMessageHandler; // lower layer: DL-A
+
             inline void control() const;
             inline void event() const;
         };
@@ -258,8 +259,9 @@ namespace openiolink
             inline void handlePDTrig();
 
         private:
-            DataLinkLayer *mDL;
-            MessageHandler *mMessageHandler; // lower layer DL-A
+            DataLinkLayer &mDL;              // encapsulating DL object
+            MessageHandler &mMessageHandler; // lower layer DL-A
+
             inline void pdInputTransport() const;
             inline void pdCycle() const;
         };
@@ -296,9 +298,10 @@ namespace openiolink
                 Retry_9
             };
 
-            DataLinkLayer *mDL;
+            DataLinkLayer &mDL;     // encapsulating DL object
             Mode mRequestedMode;    // the DL is requested to go to this mode
             ModeHandlerState state; // the current state of the DL
+
             inline void mode() const;
         };
 
@@ -312,7 +315,7 @@ namespace openiolink
         class MessageHandler
         {
         public:
-            MessageHandler(DataLinkLayer &parentDL, IOLMasterPort &physicalLayer, MasterDLModeHandler &modeHandler);
+            MessageHandler(IOLMasterPort &physicalLayer, DataLinkLayer::MasterDLModeHandler &modeHandler);
             ~MessageHandler();
             void stepFSM();
             void mhInfo(MHInfo &mhInfo);
@@ -327,10 +330,11 @@ namespace openiolink
             void setPDHandler(PDHandler *value);
 
         private:
-            IOLMasterPort *mPL;
-            MasterDLModeHandler *mModeHandler; // neccessary to provide the service MHInfo
+            IOLMasterPort &mPL;
+            MasterDLModeHandler &mModeHandler; // neccessary to provide the service MHInfo
             ODHandler *mODHandler;             // upper layer: DL-B (must be known to be able to provide the services OD.cnf, ODTrig, PDInStatus and EventFlag)
             PDHandler *mPDHandler;             // upper layer DL-B (must be known in order to be able to provide the services PD.cnf and PDTrig)
+
             inline void od_cnf() const;
             inline void odTrig() const;
             inline void pdInStatus() const;
@@ -370,6 +374,7 @@ namespace openiolink
         MessageHandler mMessageHandler;
         PDHandler mPDHandler;
         ODHandler mODHandler;
+
         inline void mode() const;
         inline void control() const;
         inline void event() const;
@@ -488,7 +493,7 @@ namespace openiolink
     inline void DataLinkLayer::ODHandler::handleODTrig()
     {
         int requestedODBytes; // TODO use this value
-        mMessageHandler->odTrig(requestedODBytes);
+        mMessageHandler.odTrig(requestedODBytes);
     }
 
     //!*************************************************************************
@@ -529,7 +534,7 @@ namespace openiolink
     {
         // Because the OD handler is encapsulated inside the DL, it has to ask
         // the DL to forward this message.
-        mDL->control();
+        mDL.control();
     }
 
     //!*************************************************************************
@@ -544,7 +549,7 @@ namespace openiolink
     {
         // Because the OD handler is encapsulated inside the DL, it has to ask
         // the DL to forward this message.
-        mDL->event();
+        mDL.event();
     }
 
     //**************************************************************************
@@ -628,7 +633,7 @@ namespace openiolink
     {
         // Because the PD handler is encapsulated inside the DL, it has to ask
         // the DL to forward this message.
-        mDL->pdInputTransport();
+        mDL.pdInputTransport();
     }
 
     //!*************************************************************************
@@ -645,7 +650,7 @@ namespace openiolink
     {
         // Because the PD handler is encapsulated inside the DL, it has to ask
         // the DL to forward this message.
-        mDL->pdCycle();
+        mDL.pdCycle();
     }
 
     //**************************************************************************
@@ -712,7 +717,7 @@ namespace openiolink
     {
         // Because the mode handler is encapsulated inside the DL, it has to ask
         // the DL to forward this message.
-        mDL->mode();
+        mDL.mode();
     }
 
     //**************************************************************************
