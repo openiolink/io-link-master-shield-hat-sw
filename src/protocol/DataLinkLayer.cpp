@@ -73,11 +73,41 @@ namespace openiolink
         //TODO: call the step() function of sub-FSMs if present
     }
 
+    //!*************************************************************************
+    //! \brief  Service DL_ReadParam. Read a parameter value from the Device via
+    //!         the page communication channel
+    //!
+    //! \param address [in] address of the requested Device parameter FIXME {0..31}
+    //!
+    //! \param value [out]  the read Device parameter
+    //!
+    //! \return error info, one of the following (see enum class ErrorCode):
+    //!             NO_ERROR, NO_COMM, STATE_CONFLICT,
+    //!             UNKNOWN_ERROR (illegall address value)
+    //!
+    //! \note   see IO-Link Specification V1.1.3 par. 7.2.1.2
+    //!
+    //!*************************************************************************
     ErrorCode DataLinkLayer::ODHandler::readParam(const unsigned int address, int &value) const
     {
         return ErrorCode::UNKNOWN_ERROR; // unimplemented
     }
 
+    //!*************************************************************************
+    //! \brief  Service DL_WriteParam. Write a parameter value to the Device via
+    //!         the page communication channel
+    //!
+    //! \param address [in] address of the requested Device parameter {16..31}
+    //!
+    //! \param value [in]   Device parameter value to be written
+    //!
+    //! \return error info, one of the following (see enum class ErrorCode):
+    //!             NO_ERROR, NO_COMM, STATE_CONFLICT,
+    //!             UNKNOWN_ERROR (illegall address value)
+    //!
+    //! \note   see IO-Link Specification V1.1.3 par. 7.2.1.3
+    //!
+    //!*************************************************************************
     ErrorCode DataLinkLayer::ODHandler::writeParam(const unsigned int address, const int value)
     {
         return ErrorCode::UNKNOWN_ERROR; // unimplemented
@@ -133,8 +163,10 @@ namespace openiolink
     //!*************************************************************************
     DataLinkLayer::MasterDLModeHandler::MasterDLModeHandler(DataLinkLayer &parentDL)
         : mDL{parentDL},                                                  // reference
+          mMessageHandler{nullptr},                                       // pointer
           mRequestedMode{Mode::INACTIVE}, state{ModeHandlerState::Idle_0} // attributes
     {
+        // NOTE: mMessageHandler must be initialized later with
     }
 
     //!*************************************************************************
@@ -275,16 +307,6 @@ namespace openiolink
     {
     }
 
-    void DataLinkLayer::MessageHandler::setODHandler(DataLinkLayer::ODHandler *value)
-    {
-        mODHandler = value;
-    }
-
-    void DataLinkLayer::MessageHandler::setPDHandler(DataLinkLayer::PDHandler *value)
-    {
-        mPDHandler = value;
-    }
-
     //**************************************************************************
     // Data link Layer
     //**************************************************************************
@@ -305,10 +327,13 @@ namespace openiolink
     {
         // NOTE: mPortHandler must be initialized later with setPortHandler()
 
-        // mModeHandler does not need additional initialization
+        // additional initialization of mModeHandler
+        mModeHandler.setMessageHandler(&mMessageHandler);
+
         // additional initialization of mMessageHandler
         mMessageHandler.setODHandler(&mODHandler);
         mMessageHandler.setPDHandler(&mPDHandler);
+
         // mODHandler does not need additional initialization
         // mPDHandler does not need additional initialization
     }
@@ -319,8 +344,10 @@ namespace openiolink
     //!*************************************************************************
     DataLinkLayer::~DataLinkLayer()
     {
+        // revert the additional initialization (see constructor)
         mMessageHandler.setPDHandler(nullptr);
         mMessageHandler.setODHandler(nullptr);
+        mModeHandler.setMessageHandler(nullptr);
     }
 
     //!*************************************************************************

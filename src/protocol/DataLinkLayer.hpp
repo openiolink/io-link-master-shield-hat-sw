@@ -185,19 +185,6 @@ namespace openiolink
         };
 
         //!*********************************************************************
-        //! \brief  exceptions within the messge handler (Message Handler Info)
-        //!
-        //! \note   see IO-Link Specification V1.1.3 par. 7.2.2.6
-        //!
-        //!*********************************************************************
-        enum class MHInfo
-        {
-            COMLOST,             // lost communication
-            ILLEGAL_MESSAGETYPE, // unexpected M-sequence type detected
-            CHECKSUM_MISMATCH    // Checksum error detected
-        };
-
-        //!*********************************************************************
         //! forward declaration of the handler-classes within the DL
         //!
         //!*********************************************************************
@@ -280,6 +267,7 @@ namespace openiolink
             void stepFSM();
             inline ErrorCode setMode(const Mode mode, const OperatingParam &valueList);
             inline void mode(RealMode &realMode);
+            inline void setMessageHandler(MessageHandler *messageHandler);
             inline void handleMHInfo();
 
         private:
@@ -298,9 +286,10 @@ namespace openiolink
                 Retry_9
             };
 
-            DataLinkLayer &mDL;     // encapsulating DL object
-            Mode mRequestedMode;    // the DL is requested to go to this mode
-            ModeHandlerState state; // the current state of the DL
+            DataLinkLayer &mDL;              // encapsulating DL object
+            MessageHandler *mMessageHandler; //
+            Mode mRequestedMode;             // the DL is requested to go to this mode
+            ModeHandlerState state;          // the current state of the DL
 
             inline void mode() const;
         };
@@ -325,9 +314,9 @@ namespace openiolink
             inline void eventFlag(bool &flag);
             ErrorCode PD(const uint8_t *pdOut, const int pdOutAddress, const int pdOutLength, uint8_t *pdIn, int &pdInAddress, int &pdInLength);
             inline void pdTrig(int &dataLength) const;
+            inline void setODHandler(ODHandler *value);
+            inline void setPDHandler(PDHandler *value);
             inline void handlePLTransfer_ind();
-            void setODHandler(ODHandler *value);
-            void setPDHandler(PDHandler *value);
 
         private:
             IOLMasterPort &mPL;
@@ -693,6 +682,15 @@ namespace openiolink
     }
 
     //!*************************************************************************
+    //! \brief  Back-aggregation mode handler to message handler
+    //!
+    //!*************************************************************************
+    inline void DataLinkLayer::MasterDLModeHandler::setMessageHandler(MessageHandler *messageHandler)
+    {
+        mMessageHandler = messageHandler;
+    }
+
+    //!*************************************************************************
     //! \brief  This method is the "receiver" of the MHInfo Service from the
     //!         Message handler, which herewith signals an exceptional operation
     //!         within the message handler.
@@ -704,6 +702,8 @@ namespace openiolink
     //!*************************************************************************
     inline void DataLinkLayer::MasterDLModeHandler::handleMHInfo()
     {
+        MHInfo exception; // TODO use this info
+        mMessageHandler->mhInfo(exception);
     }
 
     //!*************************************************************************
@@ -783,6 +783,24 @@ namespace openiolink
     //!*************************************************************************
     inline void DataLinkLayer::MessageHandler::pdTrig(int &dataLength) const
     {
+    }
+
+    //!*************************************************************************
+    //! \brief  Back-aggregation message handler to OD handler
+    //!
+    //!*************************************************************************
+    inline void DataLinkLayer::MessageHandler::setODHandler(DataLinkLayer::ODHandler *value)
+    {
+        mODHandler = value;
+    }
+
+    //!*************************************************************************
+    //! \brief  Back-aggregation message handler to PD handler
+    //!
+    //!*************************************************************************
+    inline void DataLinkLayer::MessageHandler::setPDHandler(DataLinkLayer::PDHandler *value)
+    {
+        mPDHandler = value;
     }
 
     //!*************************************************************************
