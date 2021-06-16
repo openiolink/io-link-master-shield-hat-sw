@@ -4,9 +4,9 @@
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
 //! \brief  Implementation of the Data Link Layer according to the IO-Link
-//!         Interface and System Specification V1.1.3
+//!         Interface and System Specification V1.1.3 chapter 7
 //!
-//! \date   2021-06-02
+//! \date   2021-06-15
 //!
 //!
 //! ****************************************************************************
@@ -31,6 +31,7 @@
 #include "DataLinkLayer.hpp"
 #include "IOLMasterPort.hpp"
 #include "ErrorCode.hpp"
+#include "global_typedef.hpp" // type OctetString
 
 namespace openiolink
 {
@@ -51,7 +52,7 @@ namespace openiolink
     {
     }
 
-    ErrorCode DataLinkLayer::ODHandler::readParam(const unsigned int address, int &value)
+    ErrorCode DataLinkLayer::ODHandler::readParam(const unsigned int address, int &value) const
     {
         return ErrorCode::UNKNOWN_ERROR; // unimplemented
     }
@@ -83,7 +84,7 @@ namespace openiolink
     {
     }
 
-    void DataLinkLayer::MasterDLModeHandler::~MasterDLModeHandler()
+    DataLinkLayer::MasterDLModeHandler::~MasterDLModeHandler()
     {
     }
     //Move the state machine one step forward (i.e. make a state transition if neccessary).
@@ -100,6 +101,7 @@ namespace openiolink
             break;
 
         case ModeHandlerState::EstablishComm_1:
+            // FIXME ERROR "a nonstatic member reference must be relative to a specific object"
             mPL.wakeupRequest();
             // TODO: when done:
             state = ModeHandlerState::Startup_2; // replaces T2, T3 and T4
@@ -127,7 +129,7 @@ namespace openiolink
             { // TODO: T8, TODO: T9
                 state = ModeHandlerState::Idle_0;
             }
-            else if (mRequestedMode == Mode::OPERARTE)
+            else if (mRequestedMode == Mode::OPERATE)
             { // TODO: T10
                 state = ModeHandlerState::Operate_4;
             }
@@ -210,16 +212,10 @@ namespace openiolink
     //TODO: call the step() function of all handler FSMs
     void DataLinkLayer::stepFSM()
     {
-        ODHandler.stepFSM();
-        PDHandler.stepFSM();
-        MessageHandler.stepFSM();
-        ModeHandler.stepFSM();
-    }
-
-    //DL_ISDUTransport (Specification 7.2.1.6), not implemented, TODO add parameters
-    //TODO call mODHandler.isduTransport()
-    ErrorCode DataLinkLayer::isduTransport()
-    {
+        mODHandler.stepFSM();
+        mPDHandler.stepFSM();
+        mMessageHandler.stepFSM();
+        mModeHandler.stepFSM();
     }
 
 } // namespace openiolink

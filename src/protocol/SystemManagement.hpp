@@ -3,7 +3,7 @@
 
 #include "PortModeObserver.hpp"
 #include "ErrorCode.hpp"
-#include "SM_typedefs.hpp"
+//#include "SM_typedefs.hpp"
 
 namespace openiolink
 {
@@ -140,7 +140,6 @@ namespace openiolink
             CYCTIME_FAULT   // Device does not support the configured cycle time
         };
 
-    protected:
         class PortHandler : public PortModeSubject
         {
         public:
@@ -157,13 +156,12 @@ namespace openiolink
 
         private:
             SystemManagement *mSM;
-            ApplicationLayer *mAL;       // PortHandler (SM) uses the service Read of the Application Layer (AL)
-            DataLinkLayer *mDL;          // PortHandler (SM) needs some services of the DL
-            IOLMasterPort *mPL; // PortHandler (SM) uses the service SetMode of the Physical Layer (PL)
+            ApplicationLayer *mAL; // PortHandler (SM) uses the service Read of the Application Layer (AL)
+            DataLinkLayer *mDL;    // PortHandler (SM) needs some services of the DL
+            IOLMasterPort *mPL;    // PortHandler (SM) uses the service SetMode of the Physical Layer (PL)
             inline void portMode() const;
         };
 
-    public:
         inline void stepFSM();
         inline ErrorCode setPortConfig(int &PortNumber, const SMRequestedConfig &ParameterList);
         inline ErrorCode getPortConfig(const int PortNumber, SMRealConfig &ParameterList);

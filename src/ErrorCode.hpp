@@ -48,8 +48,11 @@ namespace openiolink
         NO_COMM,            // no communication available
         STATE_CONFLICT,     // service unavailable within current state
         PARAMETER_CONFLICT, // consistency of parameter set violated
+        ISDU_TIMEOUT,       // ISDU acknowledgment time elapsed, see Table 102
+        ISDU_NOT_SUPPORTED, // ISDU not implemented
+        VALUE_OUT_OF_RANGE, // Service parameter value violates range definitions
 
-        // general/unknown
+        // general/unknown error (NOT according to the IO-Link Specification)
         UNKNOWN_ERROR
     };
 
