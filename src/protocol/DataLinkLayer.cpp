@@ -35,8 +35,11 @@
 
 namespace openiolink
 {
-    /** OD Handler */
-    DataLinkLayer::ODHandler::ODHandler(const DataLinkLayer &parentDL, const DataLinkLayer::MessageHandler &messageHandler)
+    //**************************************************************************
+    // OD Handler
+    //**************************************************************************
+
+    DataLinkLayer::ODHandler::ODHandler(DataLinkLayer &parentDL, DataLinkLayer::MessageHandler &messageHandler)
     {
     }
 
@@ -62,8 +65,11 @@ namespace openiolink
         return ErrorCode::UNKNOWN_ERROR; // unimplemented
     }
 
-    /** PD Handler */
-    DataLinkLayer::PDHandler::PDHandler(const DataLinkLayer &parentDL, const DataLinkLayer::MessageHandler &messageHandler)
+    //**************************************************************************
+    // PD Handler
+    //**************************************************************************
+
+    DataLinkLayer::PDHandler::PDHandler(DataLinkLayer &parentDL, DataLinkLayer::MessageHandler &messageHandler)
     {
     }
 
@@ -78,8 +84,11 @@ namespace openiolink
     {
     }
 
-    /** Master DL Mode Handler */
-    DataLinkLayer::MasterDLModeHandler::MasterDLModeHandler(const DataLinkLayer &parentDL) : mRequestedMode{Mode::INACTIVE}, state{ModeHandlerState::Idle_0}
+    //**************************************************************************
+    // Master DL Mode Handler
+    //**************************************************************************
+
+    DataLinkLayer::MasterDLModeHandler::MasterDLModeHandler(DataLinkLayer &parentDL) : mRequestedMode{Mode::INACTIVE}, state{ModeHandlerState::Idle_0}
     // TODO complete and sort initializer list
     {
     }
@@ -156,8 +165,11 @@ namespace openiolink
         }
     }
 
-    /** Message Handler */
-    DataLinkLayer::MessageHandler::MessageHandler(const DataLinkLayer &parentDL, const IOLMasterPort &physicalLayer, const DataLinkLayer::MasterDLModeHandler &modeHandler)
+    //**************************************************************************
+    // Message Handler
+    //**************************************************************************
+
+    DataLinkLayer::MessageHandler::MessageHandler(DataLinkLayer &parentDL, IOLMasterPort &physicalLayer, DataLinkLayer::MasterDLModeHandler &modeHandler)
     {
     }
 
@@ -198,8 +210,11 @@ namespace openiolink
         mPDHandler = value;
     }
 
-    /** Data link Layer */
-    DataLinkLayer::DataLinkLayer(const IOLMasterPort &PL, const ApplicationLayer &AL) : mPL{PL}, mAL{AL}
+    //**************************************************************************
+    // Data link Layer
+    //**************************************************************************
+
+    DataLinkLayer::DataLinkLayer(IOLMasterPort &PL, ApplicationLayer &AL) : mPL{PL}, mAL{AL}, mPortHandler{nullptr}, mModeHandler{this}, mMessageHandler{}
     {
     }
 

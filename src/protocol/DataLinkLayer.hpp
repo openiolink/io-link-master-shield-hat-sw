@@ -77,6 +77,26 @@ namespace openiolink
         };
 
         //!*********************************************************************
+        //! \brief  all M-Sequence types
+        //!
+        //! \note   see IO-Link Specification V1.1.3 fig. 39
+        //!
+        //!*********************************************************************
+        enum class MSequenceType
+        {
+            TYPE_0,
+            TYPE_1_1,
+            TYPE_1_2,
+            TYPE_1_V,
+            TYPE_2_1,
+            TYPE_2_2,
+            TYPE_2_3,
+            TYPE_2_4,
+            TYPE_2_5,
+            TYPE_2_V
+        };
+
+        //!*********************************************************************
         //! \brief  relevant operating parameters for the Master's DL (used @
         //!         DL_SetMode)
         //!
@@ -86,7 +106,7 @@ namespace openiolink
         struct OperatingParam
         {
             int mSequenceTime;
-            MSequenceType mSequenceType; // TODO enum class
+            MSequenceType mSequenceType;
             int PDInputLength;
             int PDOutputLength;
             int OnReqDataLengthPerMessage;
@@ -198,7 +218,7 @@ namespace openiolink
         class ODHandler
         {
         public:
-            ODHandler(const DataLinkLayer &parentDL, const MessageHandler &messageHandler);
+            ODHandler(DataLinkLayer &parentDL, MessageHandler &messageHandler);
             ~ODHandler();
             void stepFSM();
             ErrorCode readParam(const unsigned int address, int &value) const;
@@ -229,7 +249,7 @@ namespace openiolink
         class PDHandler
         {
         public:
-            PDHandler(const DataLinkLayer &parentDL, const MessageHandler &messageHandler);
+            PDHandler(DataLinkLayer &parentDL, MessageHandler &messageHandler);
             ~PDHandler();
             void stepFSM();
             inline ErrorCode pdOutputUpdate(const OctetString &outputData, PDTransportStatus &transportStatus);
@@ -253,7 +273,7 @@ namespace openiolink
         class MasterDLModeHandler
         {
         public:
-            MasterDLModeHandler(const DataLinkLayer &parentDL);
+            MasterDLModeHandler(DataLinkLayer &parentDL);
             ~MasterDLModeHandler();
             void stepFSM();
             inline ErrorCode setMode(const Mode mode, const OperatingParam &valueList);
@@ -292,7 +312,7 @@ namespace openiolink
         class MessageHandler
         {
         public:
-            MessageHandler(const DataLinkLayer &parentDL, const IOLMasterPort &physicalLayer, const MasterDLModeHandler &modeHandler);
+            MessageHandler(DataLinkLayer &parentDL, IOLMasterPort &physicalLayer, MasterDLModeHandler &modeHandler);
             ~MessageHandler();
             void stepFSM();
             void mhInfo(MHInfo &mhInfo);
@@ -323,7 +343,7 @@ namespace openiolink
         // Member declaration of class DataLinkLayer itself
         //**********************************************************************
 
-        DataLinkLayer(const IOLMasterPort &PL, const ApplicationLayer &AL);
+        DataLinkLayer(IOLMasterPort &PL, ApplicationLayer &AL);
         ~DataLinkLayer();
         void stepFSM();
         inline void mode(RealMode &realMode);
@@ -343,13 +363,13 @@ namespace openiolink
         inline void setPortHandler(const SystemManagement::PortHandler &portHandler);
 
     private:
-        /*const*/ ApplicationLayer &mAL; // cannot be const because access to non-const member functions is needed
+        /*const*/ IOLMasterPort &mPL;
+        /*const*/ ApplicationLayer &mAL;             // cannot be const because access to non-const member functions is needed
         SystemManagement::PortHandler *mPortHandler; // PortHandler (SM) is receiver of the service DL_Mode
         MasterDLModeHandler mModeHandler;
         MessageHandler mMessageHandler;
         PDHandler mPDHandler;
         ODHandler mODHandler;
-        const IOLMasterPort &mPL;
         inline void mode() const;
         inline void control() const;
         inline void event() const;
@@ -1173,7 +1193,6 @@ namespace openiolink
         mPortHandler->handleDLMode();
     }
 
-    
     //!*************************************************************************
     //! \brief  Initiates the Service DL_Control in the case it is used in the
     //!         direction from the DL to the AL.
