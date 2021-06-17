@@ -6,7 +6,7 @@
 
 int main(int argc, char const *argv[])
 {
-    namespace iol = openiolinklibrary;
+    namespace iol = openiolink;
     //using iol::IOLMessage;
     HardwareRaspberry hwraspi;
     uint8_t buffer[10];
