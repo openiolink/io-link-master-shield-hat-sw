@@ -304,15 +304,43 @@ namespace openiolink
         class MessageHandler
         {
         public:
+            //!*********************************************************************
+            //! \brief  read or write direction for IO-Link messages
+            //!
+            //! \note   see IO-Link Specification V1.1.3 par. 7.2.2.2
+            //!
+            //!*********************************************************************
+            enum class RWDirection
+            {
+                READ, // Read operation
+                WRITE // Write operation
+            };
+
+            //!*********************************************************************
+            //! \brief  the four communication channels in the IO-Link protocol
+            //!
+            //! \note   see IO-Link Specification V1.1.3 table A.1
+            //!
+            //!*********************************************************************
+            enum class ComChannel
+            {
+                //PROCESS = 0,
+                PAGE = 1,
+                DIAGNOSIS = 2,
+                ISDU = 3
+            };
+
             MessageHandler(IOLMasterPort &physicalLayer, DataLinkLayer::MasterDLModeHandler &modeHandler);
             ~MessageHandler();
             void stepFSM();
             void mhInfo(MHInfo &mhInfo);
-            ErrorCode OD(const RWDirection &rwDirection, const ComChannel &comChannel, const int addressCtrl, uint8_t *data, int &length);
+            ErrorCode OD(const RWDirection rwDirection, const ComChannel comChannel, const int addressCtrl,
+                         OctetString &data, int &length);
             inline void odTrig(int &dataLength) const;
             inline void pdInStatus(PDStatus &status);
             inline void eventFlag(bool &flag);
-            ErrorCode PD(const uint8_t *pdOut, const int pdOutAddress, const int pdOutLength, uint8_t *pdIn, int &pdInAddress, int &pdInLength);
+            ErrorCode PD(const OctetString pdOut, const int pdOutAddress, const int pdOutLength,
+                         OctetString &pdIn, int &pdInAddress, int &pdInLength);
             inline void pdTrig(int &dataLength) const;
             inline void setODHandler(ODHandler *value);
             inline void setPDHandler(PDHandler *value);

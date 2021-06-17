@@ -291,19 +291,92 @@ namespace openiolink
         //TODO: call the step() function of sub-FSMs if present
     }
 
-    //Specification 7.2.2.6 MHInfo
+    //!*************************************************************************
+    //! \brief  Service MHInfo. Signal an exceptional operation within the
+    //!         message handler.
+    //!
+    //! \param mhInfo [out] indicates the exception
+    //!
+    //! \note   see IO-Link Specification V1.1.3 par. 7.2.2.6
+    //!         This method is not implemented yet.
+    //!
+    //! \todo   implement according to the Specification
+    //!
+    //!*************************************************************************
     void DataLinkLayer::MessageHandler::mhInfo(MHInfo &mhInfo)
     {
     }
 
-    //Set up the On-request Data for the next message to be sent. In 1266 turn, the confirmation of the service contains the data from the receiver.
-    //\note "data" and "length" are only valid, when ErrorCode::NO_ERROR is returned!
-    ErrorCode DataLinkLayer::MessageHandler::OD(const RWDirection &rwDirection, const ComChannel &comChannel, const int addressCtrl, uint8_t *data, int &length)
+    //!*************************************************************************
+    //! \brief  Service OD. Exchange On-request Data. // TODO improve
+    //!
+    //! "Set up the On-request Data for the next message to be sent. In turn,
+    //! the confirmation of the service contains the data from the receiver."
+    //!
+    //! \param rwDirection [in] READ or WRITE
+    //!
+    //! \param comChannel [in]  communication channel
+    //!
+    //! \param addressCtrl [in] address or flow control value (see A.1.2)
+    //!
+    //! \param data [in, out]   data to transmit, will be overwritten with the received data
+    //!
+    //! \param length [in, out] length of the data to transmit, will be overwritten with the length of the received data (bytes)
+    //!
+    //! \return error info, one of the following (see enum class ErrorCode):
+    //!             NO_ERROR, NO_COMM, STATE_CONFLICT
+    //!
+    //! \note   "data" and "length" are only valid, when NO_ERROR is returned!
+    //!
+    //! \note   see IO-Link Specification V1.1.3 par. 7.2.2.2
+    //!
+    //! \todo   TODO implement
+    //!
+    //!*************************************************************************
+    ErrorCode DataLinkLayer::MessageHandler::OD(const RWDirection rwDirection,
+                                                const ComChannel comChannel,
+                                                const int addressCtrl,
+                                                OctetString &data,
+                                                int &length)
     {
     }
 
-    //Setup the Process Data to be sent through the process communication channel. The confirmation of the service contains the data from the receiver.
-    ErrorCode DataLinkLayer::MessageHandler::PD(const uint8_t *pdOut, const int pdOutAddress, const int pdOutLength, uint8_t *pdIn, int &pdInAddress, int &pdInLength)
+    //!*************************************************************************
+    //! \brief  Service PD. Exchange Process Data. // TODO improve
+    //!
+    //! "Setup the Process Data to be sent through the process communication
+    //! channel. The confirmation of the service contains the data from the
+    //! receiver."
+    //!
+    //! \param pdInAddress [in]     address of the requested PD (see 7.3.4.2)
+    //!
+    //! \param pdInLength [in]      length of the requested PD {0..32}(bytes)
+    //!
+    //! \param pdOut [in]           output Process Data (Master -> Device)
+    //!
+    //! \param pdOutAddress [in]    address of the output PD (see 7.3.4.2)
+    //!
+    //! \param pdOutLength [in]     address of the output PD {0..32}(bytes)
+    //!
+    //! \param pdIn [out]           received input PD (Device -> Master)
+    //!
+    //! \return error info, one of the following (see enum class ErrorCode):
+    //!             NO_ERROR, NO_COMM, STATE_CONFLICT
+    //!
+    //! \note   "pdIn" is only valid, when NO_ERROR is returned!
+    //!
+    //! \note   see IO-Link Specification V1.1.3 par. 7.2.2.3
+    //!
+    //! \todo   TODO implement
+    //!
+    //!*************************************************************************
+    //
+    ErrorCode DataLinkLayer::MessageHandler::PD(const OctetString pdOut,
+                                                const int pdOutAddress,
+                                                const int pdOutLength,
+                                                OctetString &pdIn,
+                                                int &pdInAddress,
+                                                int &pdInLength)
     {
     }
 
