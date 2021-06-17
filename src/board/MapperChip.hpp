@@ -76,7 +76,7 @@ namespace openiolink
         using SPI = shield_hat::MapperChip::SPI;
         static constexpr int CSPinNr = platform::MapperChip::CSPinNr;
         static constexpr int IRQPinNr = platform::MapperChip::IRQPinNr;
-    }
+    };
 
     // TODO Doc
     //TODO make sure that MapperIOLPort<Ch1IOLPortNr>::ChipNr == MapperIOLPort<Ch2IOLPortNr>::ChipNr == ChipNr

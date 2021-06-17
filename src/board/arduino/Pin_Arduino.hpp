@@ -6,8 +6,10 @@
 //! \brief  Abstraction of input-GPIOs and output-GPIOs of an Arduino DUE
 //!
 //!         This module contains the following classes:
-//!         PinBase, OutputPin and InputPin
-//!         They are not intended to be instantiated.
+//!             - class PinBase
+//!             - class OutputPin
+//!             - class InputPin
+//!         They are NOT intended to be instantiated!
 //!
 //! \date   2021-06-02
 //!
