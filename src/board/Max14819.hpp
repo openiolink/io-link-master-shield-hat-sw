@@ -7,7 +7,7 @@
 //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
 //!         MAX14819
 //!
-//! \date   2020-11-18
+//! \date   2021-06-17
 //!
 //!
 //! *****************************************************************************
@@ -35,18 +35,21 @@
 #include "protocol/IOLMasterPort.hpp"
 #include "protocol/IOLMessage.hpp"
 #include "protocol/IOLinkConfig.hpp"
+#include "MapperChip.hpp"
+#include "Max14819_Port.hpp"
 
-//namespace openiolink // TODO ::PCB?
-//{
-
+namespace openiolink // TODO ::PCB?
+{
 //!*****************************************************************************
 //! \brief Class for the maxim integrated Dual IO-Link Master Transceiver
 //!        MAX14819
 //!
 //!*****************************************************************************
-//template <int ChipNr, class SPI = MapperChip<ChipNr>::SPI, int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr, int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
-//class Max14819
-class Max14819 : public std::enable_shared_from_this<Max14819>
+template <int ChipNr,
+            class SPI = typename MapperChip<ChipNr>::SPI,
+            int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr,
+            int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
+class Max14819
 {
 public:
     //! \name Error define
@@ -68,8 +71,8 @@ public:
 
     //! \name Timing constexprants for Max14819
     //!\{
-    static constexpr uint32_t INIT_POWER_OFF_DELAY	= 1000u;	//!< Delay in ms for disable duration of sensor power when startup
-    static constexpr uint32_t INIT_BOOTUP_DELAY    = 300u;	//!< Delay after switch-to-operational-command
+    static constexpr uint32_t INIT_POWER_OFF_DELAY = 1000u; //!< Delay in ms for disable duration of sensor power when startup
+    static constexpr uint32_t INIT_BOOTUP_DELAY    = 300u;  //!< Delay after switch-to-operational-command
     static constexpr uint32_t INIT_WURQ_TIMEOUT    = 80u;   //!< Timeout in ms for abort WURQ request (2x retry after 10ms, 3x tries a 20ms)
     //!\}
 
@@ -84,9 +87,9 @@ public:
     static constexpr uint8_t TxErrorB      = 0x20u; //!< register definition
     static constexpr uint8_t TxErrorA      = 0x10u; //!< register definition
     static constexpr uint8_t RxErrorB      = 0x08u; //!< register definition
-    static constexpr uint8_t RxErrorA    	= 0x04u; //!< register definition
+    static constexpr uint8_t RxErrorA      = 0x04u; //!< register definition
     static constexpr uint8_t RxDataRdyB    = 0x02u; //!< register definition
-    static constexpr uint8_t RxDataRdyA   	= 0x01u; //!< register definition
+    static constexpr uint8_t RxDataRdyA    = 0x01u; //!< register definition
 
     static constexpr uint8_t InterruptEn   = 0x03u; //!< register definition
     static constexpr uint8_t StatusIntEn   = 0x80u; //!< register definition
@@ -98,8 +101,8 @@ public:
     static constexpr uint8_t RxDaRdyIntEnB = 0x02u; //!< register definition
     static constexpr uint8_t RxDaRdyIntEnA = 0x01u; //!< register definition
 
-    static constexpr uint8_t RxFIFOLvlA 	= 0x04u; //!< register definition
-    static constexpr uint8_t RxFIFOLvlB 	= 0x05u; //!< register definition
+    static constexpr uint8_t RxFIFOLvlA    = 0x04u; //!< register definition
+    static constexpr uint8_t RxFIFOLvlB    = 0x05u; //!< register definition
 
     static constexpr uint8_t CQCtrlA       = 0x06u; //!< register definition
     static constexpr uint8_t CQCtrlB       = 0x07u; //!< register definition
@@ -118,7 +121,7 @@ public:
     static constexpr uint8_t TCyclErr      = 0x40u; //!< register definition
     static constexpr uint8_t TChksmEr      = 0x20u; //!< register definition
     static constexpr uint8_t TSizeErr      = 0x10u; //!< register definition
-    static constexpr uint8_t RChksmEr	    = 0x08u; //!< register definition
+    static constexpr uint8_t RChksmEr      = 0x08u; //!< register definition
     static constexpr uint8_t RSizeErr      = 0x04u; //!< register definition
     static constexpr uint8_t FrameErr      = 0x02u; //!< register definition
     static constexpr uint8_t ParityErr     = 0x01u; //!< register definition
@@ -138,15 +141,15 @@ public:
     static constexpr uint8_t ChanStatB     = 0x0Du; //!< register definition
     static constexpr uint8_t Rst           = 0x80u; //!< register definition
     static constexpr uint8_t FramerEn      = 0x40u; //!< register definition
-    static constexpr uint8_t LCLimCOR 	    = 0x20u; //!< register definition
-    static constexpr uint8_t CQFaultCOR 	= 0x10u; //!< register definition
+    static constexpr uint8_t LCLimCOR      = 0x20u; //!< register definition
+    static constexpr uint8_t CQFaultCOR    = 0x10u; //!< register definition
     static constexpr uint8_t LCLim         = 0x08u; //!< register definition
     static constexpr uint8_t UVL           = 0x04u; //!< register definition
     static constexpr uint8_t CQFault       = 0x02u; //!< register definition
 
     static constexpr uint8_t LEDCtrl       = 0x0Eu; //!< register definition
     static constexpr uint8_t LEDEn2B       = 0x80u; //!< register definition
-    static constexpr uint8_t RxErrEnB 	    = 0x40u; //!< register definition
+    static constexpr uint8_t RxErrEnB      = 0x40u; //!< register definition
     static constexpr uint8_t LEDEn1B       = 0x20u; //!< register definition
     static constexpr uint8_t RxRdyEnB      = 0x10u; //!< register definition
     static constexpr uint8_t LEDEn2A       = 0x08u; //!< register definition
@@ -165,13 +168,13 @@ public:
     static constexpr uint8_t IEC3Th        = 0x80u; //!< register definition
     static constexpr uint8_t SourceSink    = 0x40u; //!< register definition
     static constexpr uint8_t SinkSel1      = 0x20u; //!< register definition
-    static constexpr uint8_t SinkSel0 	    = 0x10u; //!< register definition
+    static constexpr uint8_t SinkSel0      = 0x10u; //!< register definition
     static constexpr uint8_t NPN           = 0x08u; //!< register definition
     static constexpr uint8_t PushPul       = 0x04u; //!< register definition
     static constexpr uint8_t DrvDis        = 0x02u; //!< register definition
     static constexpr uint8_t CQFilterEn    = 0x01u; //!< register definition
 
-    static constexpr uint8_t CyclTmrA 	    = 0x12u; //!< register definition
+    static constexpr uint8_t CyclTmrA      = 0x12u; //!< register definition
     static constexpr uint8_t CyclTmrB      = 0x12u; //!< register definition
     static constexpr uint8_t TCyclBs1      = 0x80u; //!< register definition
     static constexpr uint8_t TCyclBs0      = 0x40u; //!< register definition
@@ -264,213 +267,25 @@ public:
 
     static constexpr uint8_t MAX_MSG_LENGTH= 64; //!< maximal number of bytes to send (according to max14819 FIFO length)
 
-    //!*****************************************************************************
-    //! \brief Abstract class for io pins
-    //!
-    //!        This is an abstract class which is needed to set pins from the
-    //!        max14819 class itself.
-    //!
-    //! \note  This abstract class must be implemented for the used hardware.
-    //!
-    //!*****************************************************************************
-    class PIN
-    {
-    private:
-        /* data */
-    public:
-        PIN(/* args */){};
-        virtual ~PIN(){};
+    // class member functions
 
-        //!*****************************************************************************
-        //! \brief Sets the state of an IO-Pin
-        //!
-        //!
-        //! \param state set to this
-        //!
-        //!*****************************************************************************
-        virtual void set(bool state){};
-        // ev. virtual void clear() {};
-    };
-
-    //!*****************************************************************************
-    //! \brief Abstract class for SPI Communication
-    //!
-    //!        To communicate with the MAX14819 chip a SPI interface is needed.
-    //!
-    //! \note  This abstract class must be implemented for the used hardware.
-    //!
-    //!*****************************************************************************
-    class SPI_Max14819
-    {
-    private:
-        /* data */
-    public:
-        SPI_Max14819(/* args */){};
-        virtual ~SPI_Max14819(){};
-
-        //!*****************************************************************************
-        //! \brief Reads and writes data
-        //!
-        //!        Sends the data with the specified length and writes the answer to
-        //!        the source location of the data
-        //!
-        //! \param data    Pointer to the data to send. It will be overwritten with
-        //!                the answer
-        //!
-        //! \param length  Length of the data to send and receive.
-        //!
-        //!*****************************************************************************
-        virtual void DataRW(uint8_t *data, uint8_t length) = 0;
-    };
-
-    //!*****************************************************************************
-    //! \brief Abstract class of an output to write strings
-    //!
-    //!        The MAX14819 class needs an oportunity to wait some ms.
-    //!
-    //! \note This abstract class must be implemented for the used hardware.
-    //!
-    //!*****************************************************************************
-    class DebugOut
-    {
-    private:
-        /* data */
-    public:
-        DebugOut(/* args */){};
-        virtual ~DebugOut(){};
-
-        //!*****************************************************************************
-        //! \brief Printout a string
-        //!
-        //!
-        //! \param buf pointer to an string
-        //!
-        //!*****************************************************************************
-        virtual void print(char const *buf){};
-    };
-
-    //!*****************************************************************************
-    //! \brief Abstract class to wait some time
-    //!
-    //!
-    //!*****************************************************************************
-    class Wait
-    {
-    private:
-        /* data */
-    public:
-        Wait(){};
-        virtual ~Wait(){};
-
-        //!*****************************************************************************
-        //! \brief Blocking function to wait the given time in ms
-        //!
-        //!
-        //! \param ms  time to wait in ms
-        //!
-        //!*****************************************************************************
-        virtual void ms(uint32_t ms){};
-    };
+    static void init();
+    static void initPorts();
+    static uint8_t reset();
+    static uint8_t readRegister(uint8_t reg);
+    static uint8_t writeRegister(uint8_t reg, uint8_t data);
+    static Max14819_Port &getPort(Max14819_Port::PortNr port); // ()
 
 private:
-    std::shared_ptr<PIN> ErrLED = nullptr;
-    std::shared_ptr<PIN> StatLED = nullptr;
-    std::shared_ptr<SPI_Max14819> spi_interface;
-    std::shared_ptr<DebugOut> debug_interface;
-    std::shared_ptr<Wait> wait;
+    typedef Max14819_Port<ChAPortNr> ChannelA;
+    typedef Max14819_Port<ChBPortNr> ChannelB;
+    typedef HW::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin;
+    typedef HW::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;
+    static ChannelA *mPortA;
+    static ChannelB *mPortB;
+    static bool mInitDone = false;
 
-    uint8_t spi_address;
+}; // class Max14819
 
-    std::shared_ptr<Max14819_Port> PORTA;
-    std::shared_ptr<Max14819_Port> PORTB;
-
-    //// TODO
-    //typedef Max14819_Port<ChAPortNr> ChannelA;
-    //typedef Max14819_Port<ChBPortNr> ChannelB;
-    //typedef HW::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin;
-    //typedef HW::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;
-    //ChannelA *mPortA;
-    //ChannelB *mPortB;
-    //bool mInitDone = false;
-
-public:
-    //!*****************************************************************************
-    //! \brief Construct a new Max14819 object
-    //!
-    //!
-    //! \param debugout_ Interface to printout text
-    //!
-    //! \param spi_interface_ SPI interface where the chip is connected
-    //!
-    //! \param spi_address_ The SPI address of the chip
-    //!
-    //! \param wait_ Class to be able to wait some time
-    //!
-    //!*****************************************************************************
-    // TODO remove (use as type only)
-    Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI_Max14819> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_);
-
-    //!*****************************************************************************
-    //! \brief Destroy the Max14819 object
-    //!
-    //!
-    //!*****************************************************************************
-    // TODO remove (use as type only)
-    ~Max14819();
-
-    //!*****************************************************************************
-    //! \brief Initializes both ports of the chip
-    //!
-    //!
-    //!*****************************************************************************
-    void initPorts();
-    void init(); //TODO take care that each chip is initialized at most once.
-
-    //!*****************************************************************************
-    //! \brief Resets the whole chip
-    //!
-    //!
-    //! \return uint8_t 0 if success
-    //!
-    //!*****************************************************************************
-    uint8_t reset();
-
-    //!*****************************************************************************
-    //! \brief Writes data into an register
-    //!
-    //!
-    //! \param reg register definition
-    //!
-    //! \param data byte to write
-    //!
-    //! \return uint8_t 0 if success
-    //!
-    //!*****************************************************************************
-    uint8_t writeRegister(uint8_t reg, uint8_t data);
-
-    //!*****************************************************************************
-    //! \brief Reads data from register
-    //!
-    //!
-    //! \param reg register definition
-    //!
-    //! \return uint8_t byte read from the register
-    //!
-    //!*****************************************************************************
-    uint8_t readRegister(uint8_t reg);
-
-    //!*****************************************************************************
-    //! \brief Get one of the ports
-    //!
-    //!
-    //! \param port defines the port to return, either PORTA or PORTB
-    //!
-    //! \return std::shared_ptr<Max14819_Port> pointer to the port
-    //!
-    //!*****************************************************************************
-    std::shared_ptr<Max14819_Port> getPort(Max14819_Port::PortNr port); // ()
-
-}; // class max14819
-
-//} // namespace openiolink // TODO ::PCB?
+} // namespace openiolink // TODO ::PCB?
 #endif //MAX14819_HPP_INCLUDED

@@ -32,6 +32,7 @@
 #include "protocol/IOLMasterPort.hpp"
 
 #include "Max14819.hpp"
+#include "Max14819_Port.hpp"
 
 #ifdef ARDUINO
 #include <stdint.h>
@@ -41,42 +42,43 @@
 #include <cstdio>
 #endif
 
-//namespace openiolink // TODO ::PCB?
-//{
+namespace openiolink // TODO ::PCB?
+{
 
 //! \name Commands to read or write registers
 //!\{
-constexpr uint8_t read = 0b00000001;  //!< read command
-constexpr uint8_t write = 0b01111111; //!< write command
+static constexpr uint8_t read = 0b00000001;  //!< read command
+static constexpr uint8_t write = 0b01111111; //!< write command
 //!\}
 
-Max14819::Max14819(std::shared_ptr<DebugOut> debugout_, std::shared_ptr<SPI_Max14819> spi_interface_, uint8_t spi_address_, std::shared_ptr<Wait> wait_) : debug_interface(debugout_), spi_interface(spi_interface_), spi_address(spi_address_), wait(wait_)
-{
-    debug_interface->print("Initialize Max");
-}
-
-Max14819::~Max14819()
-{
-}
-
-//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-//inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::initPorts()
-void Max14819::initPorts() // todo transform this to get ports
+template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::initPorts() // todo ev. transform this to get ports
 {
     char buffer[30];
     PORTA = std::make_shared<Max14819_Port>(Max14819_Port(Max14819_Port::PortNr::PORTA, shared_from_this()));
     PORTB = std::make_shared<Max14819_Port>(Max14819_Port(Max14819_Port::PortNr::PORTB, shared_from_this()));
 }
 
-////TODO take care that each chip is initialized at most once.
-//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-//void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::init()
-//{
-//}
+//!*****************************************************************************
+//! \brief Initializes both ports of the chip
+//!
+//!
+//!*****************************************************************************
+//TODO take care that each chip is initialized at most once.
+template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::init()
+{
+}
 
-//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-//inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::reset()
-uint8_t Max14819::reset()
+//!*****************************************************************************
+//! \brief Resets the whole chip
+//!
+//!
+//! \return uint8_t 0 if success
+//!
+//!*****************************************************************************
+template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::reset()
 {
     uint8_t retValue = SUCCESS;
     // Reset all max14819 registers
@@ -90,9 +92,17 @@ uint8_t Max14819::reset()
     return retValue;
 }
 
-//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-//inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::readRegister()
-uint8_t Max14819::readRegister(uint8_t reg)
+//!*****************************************************************************
+//! \brief Reads data from register
+//!
+//!
+//! \param reg register definition
+//!
+//! \return uint8_t byte read from the register
+//!
+//!*****************************************************************************
+template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::readRegister(uint8_t reg)
 {
     uint8_t channel = 0;
     uint8_t buf[2];
@@ -117,9 +127,19 @@ uint8_t Max14819::readRegister(uint8_t reg)
     return buf[1];
 }
 
-//template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-//inline Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::writeRegister()
-uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data)
+//!*****************************************************************************
+//! \brief Writes data into an register
+//!
+//!
+//! \param reg register definition
+//!
+//! \param data byte to write
+//!
+//! \return uint8_t 0 if success
+//!
+//!*****************************************************************************
+template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::writeRegister(uint8_t reg, uint8_t data)
 {
     uint8_t retValue = SUCCESS;
     uint8_t buf[2];
@@ -143,7 +163,16 @@ uint8_t Max14819::writeRegister(uint8_t reg, uint8_t data)
     return retValue;
 }
 
-std::shared_ptr<Max14819::Max14819_Port> Max14819::getPort(Max14819_Port::PortNr port)
+//!*****************************************************************************
+//! \brief Get one of the ports
+//!
+//!
+//! \param port defines the port to return, either PORTA or PORTB
+//!
+//! \return reference to the port
+//!
+//!*****************************************************************************
+Max14819_Port &Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::getPort(Max14819_Port::PortNr port)
 {
     switch (port)
     {
@@ -159,4 +188,5 @@ std::shared_ptr<Max14819::Max14819_Port> Max14819::getPort(Max14819_Port::PortNr
         break;
     }
 }
-//} // namespace openiolink // TODO ::PCB?
+
+} // namespace openiolink // TODO ::PCB?
