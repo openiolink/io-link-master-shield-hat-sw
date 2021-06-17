@@ -5,7 +5,7 @@
 //! 
 //! \brief  Struct template to configure associations to a Transceiver chip
 //! 
-//! \date   2021-06-02
+//! \date   2021-06-15
 //! 
 //! 
 //! ****************************************************************************

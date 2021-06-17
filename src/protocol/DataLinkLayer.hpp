@@ -262,7 +262,7 @@ namespace openiolink
         class MasterDLModeHandler
         {
         public:
-            MasterDLModeHandler(DataLinkLayer &parentDL);
+            MasterDLModeHandler(IOLMasterPort &physicalLyer, DataLinkLayer &parentDL);
             ~MasterDLModeHandler();
             void stepFSM();
             inline ErrorCode setMode(const Mode mode, const OperatingParam &valueList);
@@ -286,6 +286,7 @@ namespace openiolink
                 Retry_9
             };
 
+            IOLMasterPort &mPL;              // lower layer: Physical Layer (PL)
             DataLinkLayer &mDL;              // encapsulating DL object
             MessageHandler *mMessageHandler; //
             Mode mRequestedMode;             // the DL is requested to go to this mode
@@ -330,6 +331,11 @@ namespace openiolink
                 ISDU = 3
             };
 
+            // argument type for configure()
+            // TODO use exact definition (RealMode has some entries that are not
+            // allowed for configure()).
+            using ConfigCommand = RealMode;
+
             MessageHandler(IOLMasterPort &physicalLayer, DataLinkLayer::MasterDLModeHandler &modeHandler);
             ~MessageHandler();
             void stepFSM();
@@ -346,11 +352,38 @@ namespace openiolink
             inline void setPDHandler(PDHandler *value);
             inline void handlePLTransfer_ind();
 
+            inline void configure(ConfigCommand command);
+
         private:
-            IOLMasterPort &mPL;
+            //! States of the message handler state machine
+            //! See IO-Link Specification V1.1.3 table 46
+            enum class MessageHandlerState
+            {
+                Inactive_0,
+                AwaitReply_1,
+                Startup_2,
+                Response_3,
+                AwaitReply_4,    // sub FSM
+                ErrorHandling_5, // sub FSM
+                Preoperate_6,
+                GetOD_7,
+                Response_8,
+                AwaitReply_9,     // sub FSM
+                ErrorHandling_10, // sub FSM
+                CheckHandler_11,
+                Operate_12,
+                GetPD_13,
+                GetOD_14,
+                Response_15,
+                AwaitReply_16,   // sub FSM
+                ErrorHandling_17 // sub FSM
+            };
+
+            IOLMasterPort &mPL;                // lower layer: Physical Layer (PL)
             MasterDLModeHandler &mModeHandler; // neccessary to provide the service MHInfo
             ODHandler *mODHandler;             // upper layer: DL-B (must be known to be able to provide the services OD.cnf, ODTrig, PDInStatus and EventFlag)
             PDHandler *mPDHandler;             // upper layer DL-B (must be known in order to be able to provide the services PD.cnf and PDTrig)
+            MessageHandlerState state;         // current state of the FSM
 
             inline void od_cnf() const;
             inline void odTrig() const;
@@ -844,6 +877,19 @@ namespace openiolink
     inline void DataLinkLayer::MessageHandler::handlePLTransfer_ind()
     {
         //TODO implementation: react on /IRQ from MAX14819, call readIOLData()
+    }
+
+    //!*************************************************************************
+    //! \brief  This method implements the MH_Conf_ calls that appear in the FSM
+    //!         definition of the message handler. 
+    //!         ee IO-Link Specification V1.1.3 figure 40
+    //!
+    //! \todo   TODO implement
+    //!
+    //!*************************************************************************
+    inline void DataLinkLayer::MessageHandler::configure(ConfigCommand command)
+    {
+        // STAND
     }
 
     //!*************************************************************************

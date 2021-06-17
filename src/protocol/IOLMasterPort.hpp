@@ -85,7 +85,7 @@ namespace openiolink
         //!  \note This abstract function must be implemented for the used hardware
         //!
         //!*****************************************************************************
-        virtual void wakeUpRequest(){}; // todo move to private // TODO pure virtual
+        virtual void wakeUpRequest(){}; // todo move to private // TODO pure virtual // TODO rename to establishCommunication() (also in class Max14819_Port)
 
         virtual void setMode(const Mode &targetMode);                             // TODO pure virtual
         virtual uint8_t sendIOLData(const openiolink::IOLMessage &msg);           // TODO pure virtual

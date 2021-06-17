@@ -161,8 +161,9 @@ namespace openiolink
     //! \param parentDL [in]    the DL object encapsulating this ODHandler
     //!
     //!*************************************************************************
-    DataLinkLayer::MasterDLModeHandler::MasterDLModeHandler(DataLinkLayer &parentDL)
-        : mDL{parentDL},                                                  // reference
+    DataLinkLayer::MasterDLModeHandler::MasterDLModeHandler(IOLMasterPort &physicalLyer,
+                                                            DataLinkLayer &parentDL)
+        : mPL{physicalLyer}, mDL{parentDL},                               // references
           mMessageHandler{nullptr},                                       // pointer
           mRequestedMode{Mode::INACTIVE}, state{ModeHandlerState::Idle_0} // attributes
     {
@@ -196,9 +197,9 @@ namespace openiolink
             break;
 
         case ModeHandlerState::EstablishComm_1:
-            // FIXME ERROR "a nonstatic member reference must be relative to a specific object"
-            mPL.wakeupRequest();
+            mPL.wakeUpRequest();
             // TODO: when done:
+            mMessageHandler->conf(STARTUP);// not conforme to the Spec
             state = ModeHandlerState::Startup_2; // replaces T2, T3 and T4
             // TODO: on error:
             state = ModeHandlerState::Idle_0; // TOOD: T5
@@ -266,9 +267,57 @@ namespace openiolink
     DataLinkLayer::MessageHandler::MessageHandler(IOLMasterPort &physicalLayer,
                                                   DataLinkLayer::MasterDLModeHandler &modeHandler)
         : mPL{physicalLayer}, mModeHandler{modeHandler}, // references
-          mODHandler{nullptr}, mPDHandler{nullptr}       // pointers
+          mODHandler{nullptr}, mPDHandler{nullptr},      // pointers
+          state{MessageHandlerState::Inactive_0}         // attribute
     {
         // NOTE: mODHandler and mPDHandler must be initialized later via setXDHandler()
+
+        switch (state)
+        {
+        case MessageHandlerState::Inactive_0:
+            break;
+            // states Inactive_0 and AwaitReply_1 have to be combined because 
+            // there are no MH_Conf_COMx calls because the transceiver handles 
+            // the "establish communication" sequence autonomously.
+        case MessageHandlerState::AwaitReply_1: // during establish communication
+            break;
+        case MessageHandlerState::Startup_2:
+            break;
+        case MessageHandlerState::Response_3:
+            [[falltrough]]; // enter sub-FSM
+        case MessageHandlerState::AwaitReply_4:
+            break;
+        case MessageHandlerState::ErrorHandling_5:
+            break;
+        case MessageHandlerState::Preoperate_6:
+            break;
+        case MessageHandlerState::GetOD_7:
+            break;
+        case MessageHandlerState::Response_8:
+            [[falltrough]]; // enter sub-FSM
+        case MessageHandlerState::AwaitReply_9:
+            break;
+        case MessageHandlerState::ErrorHandling_10:
+            break;
+        case MessageHandlerState::CheckHandler_11:
+            break;
+        case MessageHandlerState::Operate_12:
+            break;
+        case MessageHandlerState::GetPD_13:
+            break;
+        case MessageHandlerState::GetOD_14:
+            break;
+        case MessageHandlerState::Response_15:
+            [[falltrough]]; // enter sub-FSM
+        case MessageHandlerState::AwaitReply_16:
+            break;
+        case MessageHandlerState::ErrorHandling_17:
+            break;
+        default:
+            static_assert(false);
+            std::terminate();
+            break;
+        }
     }
 
     //!*************************************************************************
@@ -395,7 +444,7 @@ namespace openiolink
     DataLinkLayer::DataLinkLayer(IOLMasterPort &PL, ApplicationLayer &AL)
         : mPL{PL}, mAL{AL},                                                      // references
           mPortHandler{nullptr},                                                 // pointer
-          mModeHandler{*this}, mMessageHandler{PL, mModeHandler},                // attributes
+          mModeHandler{PL, *this}, mMessageHandler{PL, mModeHandler},            // attributes
           mPDHandler{*this, mMessageHandler}, mODHandler{*this, mMessageHandler} // attributes
     {
         // NOTE: mPortHandler must be initialized later with setPortHandler()
