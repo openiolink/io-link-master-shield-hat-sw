@@ -49,14 +49,18 @@ namespace openiolink // TODO ::PCB?
     //!\{
     static constexpr uint8_t read = 0b00000001;  //!< read command
     static constexpr uint8_t write = 0b01111111; //!< write command
-    //!\}
+                                                 //!\}
+
+    // -------------------------------------------------------------------------
+    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+    Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::Max14819(PortA &portA, PortB &portB)
+        : mPortA{portA}, mPortB{portB}
+    {
+    }
 
     template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::initPorts() // todo ev. transform this to get ports
+    Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::~Max14819()
     {
-        char buffer[30];
-        PORTA = std::make_shared<Max14819_Port>(Max14819_Port(Max14819_Port::PortNr::PORTA, shared_from_this()));
-        PORTB = std::make_shared<Max14819_Port>(Max14819_Port(Max14819_Port::PortNr::PORTB, shared_from_this()));
     }
 
     //!*****************************************************************************
@@ -64,9 +68,8 @@ namespace openiolink // TODO ::PCB?
     //!
     //!
     //!*****************************************************************************
-    //TODO take care that each chip is initialized at most once.
     template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::init()
+    void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::init() 
     {
     }
 
@@ -163,30 +166,29 @@ namespace openiolink // TODO ::PCB?
         return retValue;
     }
 
-    //!*****************************************************************************
-    //! \brief Get one of the ports
-    //!
-    //!
-    //! \param port defines the port to return, either PORTA or PORTB
-    //!
-    //! \return reference to the port
-    //!
-    //!*****************************************************************************
-    Max14819_Port &Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::getPort(Max14819_Port::PortNr port)
-    {
-        switch (port)
-        {
-        case Max14819_Port::PortNr::PORTA:
-            return PORTA;
-            break;
-        case Max14819_Port::PortNr::PORTB:
-            return PORTB;
-            break;
-
-        default:
-            return nullptr;
-            break;
-        }
-    }
+    ////!*****************************************************************************
+    ////! \brief Get one of the ports
+    ////!
+    ////! \param port defines the port to return, either PORTA or PORTB
+    ////!
+    ////! \return reference to the port
+    ////!
+    ////!*****************************************************************************
+    //Max14819_Port &Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::getPort(Max14819_Port::PortNr port)
+    //{
+    //    switch (port)
+    //    {
+    //    case Max14819_Port::PortNr::PORTA:
+    //        return PORTA;
+    //        break;
+    //    case Max14819_Port::PortNr::PORTB:
+    //        return PORTB;
+    //        break;
+    //
+    //    default:
+    //        return nullptr;
+    //        break;
+    //    }
+    //}
 
 } // namespace openiolink // TODO ::PCB?

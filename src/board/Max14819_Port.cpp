@@ -49,16 +49,48 @@ namespace openiolink // TODO ::PCB?
     //!\{
     constexpr uint8_t read = 0b00000001;  //!< read command
     constexpr uint8_t write = 0b01111111; //!< write command
+
     //!\}
 
+    //--------------------------------------------------------------------------
+
+    //!*****************************************************************************
+    //! \brief Construct a new Max14819_Port object
+    //!
+    //!*****************************************************************************
+    Max14819_Port<IOLPortNr, ChipNr>::Max14819_Port() : detectedCOM{0U, 0U}
+    {
+    }
+
+    //!*****************************************************************************
+    //! \brief Destroy the Max14819_Port object
+    //!
+    //!*****************************************************************************
+    Max14819_Port<IOLPortNr, ChipNr>::~Max14819_Port()
+    {
+    }
+
+    //!*****************************************************************************
+    //! \brief Sends data over IO-Link
+    //!
+    //!
+    //! \param data pointer to the data to send
+    //!
+    //! \param sizeofdata length of the data to send
+    //!
+    //! \param sizeofanswer length of the expected answer
+    //!
+    //! \return uint8_t 0 if success
+    //!
+    //!*****************************************************************************
     //template <int IOLPortNr, int ChipNr>
     //Max14819_Port<IOLPortNr, ChipNr>::writeIOLData()
-    uint8_t Max14819_Port::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
+    uint8_t Max14819_Port<IOLPortNr, ChipNr>::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
     {
         uint8_t retValue = SUCCESS;
         uint8_t offset = 0;
         // Todo remove offset and replace with enum
-        if (port == Port::PORTB)
+        if (channelNr == Port::PORTB)
         {
             offset = 1; // PORTB Registers are 1 address higher than PORTA Register
         }
@@ -74,8 +106,19 @@ namespace openiolink // TODO ::PCB?
         return retValue;
     }
 
+    //!*****************************************************************************
+    //! \brief Reads data from IO-Link
+    //!
+    //!
+    //! \param data pointer to the destination of the data
+    //!
+    //! \param sizeofdata length of the expected data
+    //!
+    //! \return uint8_t 0 if success
+    //!
+    //!*****************************************************************************
     template <int IOLPortNr, int ChipNr>
-    Max14819_Port<IOLPortNr, ChipNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
+    uint8_t Max14819_Port<IOLPortNr, ChipNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
     {
         uint8_t bufferRegister;
         uint8_t retValue = SUCCESS;
@@ -105,12 +148,23 @@ namespace openiolink // TODO ::PCB?
         return retValue;
     }
 
+    //!*****************************************************************************
+    //! \brief Set the port to this mode
+    //!
+    //!
+    //!*****************************************************************************
     template <int IOLPortNr, int ChipNr>
     void Max14819_Port<IOLPortNr, ChipNr>::setMode(const Modes &targetMode)
     {
         // TODO set mode
     }
 
+    //!*****************************************************************************
+    //! \brief Sends an WURQ over IO-Link
+    //!
+    //! \note   Specification 5.2.2.2 (PL_WakeUp.req)
+    //! TODO: rename to establishCom()
+    //!*****************************************************************************
     //Specification 5.2.2.2 (PL_WakeUp.req)
     template <int IOLPortNr, int ChipNr>
     void Max14819_Port<IOLPortNr, ChipNr>::wakeUpRequest()

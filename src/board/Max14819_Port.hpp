@@ -7,7 +7,7 @@
 //! \brief  Class for one port (channel) of the maxim integrated Dual IO-Link
 //!         Master Transceiver MAX14819
 //!
-//! \date   2021-06-02
+//! \date   2021-06-18
 //!
 //!
 //! *****************************************************************************
@@ -32,19 +32,26 @@
 #ifndef MAX14819_PORT_HPP_INCLUDED
 #define MAX14819_PORT_HPP_INCLUDED
 
-#include <memory>
 #include "protocol/IOLMasterPort.hpp"
-#include "protocol/IOLMessage.hpp"
 #include "protocol/IOLinkConfig.hpp"
 #include "MapperIOLPort.hpp"
 #include "Max14819.hpp"
+#include "platform.hpp" // namespace HW
+#include "Pin_Arduino.hpp"
+#include "Pin_Raspberry.hpp"
+#include "BicolorLed.hpp"
 
 namespace openiolink // TODO ::PCB?
 {
     //!*****************************************************************************
-    //! \brief A port of the MAX14819 IO-Link transceiver
+    //! \brief  This class is the implementation of class IOLMasterPort (the
+    //!         abstraction of the Physical Layer PL) for the MAX14819 IO-Link
+    //!         transceiver.
     //!
-    //!        Each MAX14819 chip has two IO-Link ports. This class represents one of them.
+    //! \note   Each MAX14819 chip has two IO-Link ports. This class represents one
+    //!         of them.
+    //!
+    //! \note   Objects of this class will be owned by "IOLMaster", not by "Max14819".
     //!
     //!*****************************************************************************
     template <int IOLPortNr, int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr>
@@ -54,7 +61,6 @@ namespace openiolink // TODO ::PCB?
         //!*****************************************************************************
         //! \brief Saves some information about the communication
         //!
-        //!
         //!*****************************************************************************
         struct CommunicationInfo
         {
@@ -62,94 +68,14 @@ namespace openiolink // TODO ::PCB?
             uint32_t comSpeedBaud; //!< Communication speed in baud
         };
 
-        //!*****************************************************************************
-        //! \brief enumerates PORTA and PORTB
-        //!
-        //!
-        //!*****************************************************************************
-        enum Port
-        {
-            PORTA = 0,
-            PORTB = 1
-        };
-
-    private:
-        typedef Max14819<ChipNr> MyChip;                           //! A Port has to call his Chip for variuos tasks.
-        constexpr Port port = MapperIOLPort<IOLPortNr>::ChannelNr; //!< describes which port of the chip the object is
-        //int channelNr;
-        CommunicationInfo communicationInfo;
-
-    protected:
-        //typedef Max14819<ChipNr> Chip;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin;
-        typedef BicolorLed<IOLPortNr> StateLED;
-
-        //!*****************************************************************************
-        //! \brief Sends data over IO-Link
-        //!
-        //!
-        //! \param data pointer to the data to send
-        //!
-        //! \param sizeofdata length of the data to send
-        //!
-        //! \param sizeofanswer length of the expected answer
-        //!
-        //! \return uint8_t 0 if success
-        //!
-        //!*****************************************************************************
-        uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override; // virtual
-
-        //!*****************************************************************************
-        //! \brief Reads data from IO-Link
-        //!
-        //!
-        //! \param data pointer to the destination of the data
-        //!
-        //! \param sizeofdata length of the expected data
-        //!
-        //! \return uint8_t 0 if success
-        //!
-        //!*****************************************************************************
-        uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override; // virtual
-
-    public:
-        //!*****************************************************************************
-        //! \brief Construct a new Max14819_Port object
-        //!
-        //!
-        //! \param port_ defines if the initialized port is either PORTA or PORTB
-        //!
-        //! \param chip_ pointer to the chip which contains this port
-        //!
-        //!*****************************************************************************
-        Max14819_Port(Port port_, std::shared_ptr<Max14819> chip_) : port(port_), chip(chip_){};
-
-        //!*****************************************************************************
-        //! \brief Destroy the Max14819_Port object
-        //!
-        //!
-        //!*****************************************************************************
-        ~Max14819_Port(){};
-
-        //!*****************************************************************************
-        //! \brief Set the port to this mode
-        //!
-        //!
-        //!*****************************************************************************
+        Max14819_Port();
+        virtual ~Max14819_Port();
+        virtual uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override;
+        virtual uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;
         virtual void setMode(const Modes &targetMode) override;
-
-        //!*****************************************************************************
-        //! \brief Sends an WURQ over IO-Link
-        //!
-        //! \note   Specification 5.2.2.2 (PL_WakeUp.req)
-        //!*****************************************************************************
         virtual void wakeUpRequest() override;
 
-        //TODO public
-        //virtual readIOLData() override;
-        //virtual writeIOLData() override;
+        inline CommunicationInfo getCommunicationInfo();
 
         // TODO enableCyclicSend ??
         // TODO disableCyclicSend
@@ -162,15 +88,47 @@ namespace openiolink // TODO ::PCB?
         // TODO writeCQ
         // TODO writeDI
 
+    private:
         //!*****************************************************************************
-        //! \brief Get the Communication Info object
-        //!
-        //!
-        //! \return CommunicationInfo
+        //! \brief alias for the channel numbers
         //!
         //!*****************************************************************************
-        // = einfache Alternative zu `DL_Mode`
-        CommunicationInfo getCommunicationInfo() { return communicationInfo; };
-    };
+        enum Port
+        {
+            PORTA = 0,
+            PORTB = 1
+        };
+
+        //! chip to wich this port belongs to
+        typedef Max14819<ChipNr> Chip;
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin;
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin;
+        typedef BicolorLed<IOLPortNr> StateLED;
+
+        //! describes which port=channel of the chip the object is
+        static constexpr int channelNr = MapperIOLPort<IOLPortNr>::ChannelNr;
+
+        CommunicationInfo detectedCOM;
+    }; // class Max14819_Port
+
+    //**************************************************************************
+    // Implementation of the inline Methods
+    //**************************************************************************
+
+    //!*****************************************************************************
+    //! \brief Get the Communication Info object
+    //!TODO: change to getDetectedCOM()
+    //! NOTE: to be used to detect success of estab. communic.
+    //!
+    //! \return CommunicationInfo
+    //!
+    //!*****************************************************************************
+    // (= einfache Alternative zu `DL_Mode`)
+    inline Max14819_Port<IOLPortNr, ChipNr>::CommunicationInfo Max14819_Port<IOLPortNr, ChipNr>::getCommunicationInfo()
+    {
+        return detectedCOM;
+    }
+
 } // namespace openiolink
 #endif //MAX14819_PORT_HPP_INCLUDED

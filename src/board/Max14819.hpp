@@ -37,12 +37,16 @@
 #include "protocol/IOLinkConfig.hpp"
 #include "MapperChip.hpp"
 #include "Max14819_Port.hpp"
+#include "typedefs_board.hpp" // BoolSuccess and BoolError
 
 namespace openiolink // TODO ::PCB?
 {
     //!*****************************************************************************
-    //! \brief Class for the maxim integrated Dual IO-Link Master Transceiver
-    //!        MAX14819
+    //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
+    //!         MAX14819
+    //!
+    //! \note   When referencing this class you MUST give the first template
+    //!         parameter (ChipNr) only!
     //!
     //!*****************************************************************************
     template <int ChipNr,
@@ -52,10 +56,15 @@ namespace openiolink // TODO ::PCB?
     class Max14819
     {
     public:
+        // NOTE: Because the following definitions are static they should not
+        //       take any memory. And thus it is no problem that the compiler
+        //       rewrites the code for this class for each template parameter
+        //       value.
+
         //! \name Error define
         //!\{
-        static constexpr uint8_t ERROR = 1u;   //!< return value for errors
-        static constexpr uint8_t SUCCESS = 0u; //!< return value for success
+        static constexpr uint8_t ERROR = static_cast<uint8_t>(BoolError);     //!< return value for errors
+        static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
         //!\}
 
         //! \name MAX14819 DI Init defines
@@ -268,24 +277,34 @@ namespace openiolink // TODO ::PCB?
         static constexpr uint8_t MAX_MSG_LENGTH = 64; //!< maximal number of bytes to send (according to max14819 FIFO length)
 
         // class member functions
+        // the class signature is (just to remind):
+        // template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr> class Max14819
 
-        static void init();
-        static void initPorts();
-        static uint8_t reset();
-        static uint8_t readRegister(uint8_t reg);
-        static uint8_t writeRegister(uint8_t reg, uint8_t data);
-        static Max14819_Port &getPort(Max14819_Port::PortNr port); // ()
+        typedef Max14819_Port<ChAPortNr> PortA;
+        typedef Max14819_Port<ChBPortNr> PortB;
+
+        Max14819(PortA &portA, PortB &portB);
+        ~Max14819();
+        void init();     // private
+        uint8_t reset(); // private
+        uint8_t readRegister(uint8_t reg);
+        uint8_t writeRegister(uint8_t reg, uint8_t data);
+        //auto &getPort(Max14819_Port::PortNr port);-> Max14819_Port<port> // ()
 
     private:
-        typedef Max14819_Port<ChAPortNr> ChannelA;
-        typedef Max14819_Port<ChBPortNr> ChannelB;
         typedef HW::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin;
         typedef HW::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;
-        static ChannelA *mPortA;
-        static ChannelB *mPortB;
-        static bool mInitDone = false;
+
+        PortA &mPortA;
+        PortB &mPortB;
 
     }; // class Max14819
+
+    template <int ChipNr>
+    using Max14819Alias = Max14819<ChipNr,
+                                   class SPI = typename MapperChip<ChipNr>::SPI,
+                                   int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr,
+                                   int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
 
 } // namespace openiolink // TODO ::PCB?
 #endif //MAX14819_HPP_INCLUDED
