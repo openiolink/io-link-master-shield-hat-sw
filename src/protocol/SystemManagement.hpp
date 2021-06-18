@@ -146,7 +146,7 @@ namespace openiolink
             //constructor
             //TODO call mDL = mAL->getDL();
             //TODO call mDL.setPortHandler(this);
-            PortHandler(const IOLMasterPort &PL, const DataLinkLayer &DL, const GenericIOLDevice &AL);
+            PortHandler(IOLMasterPort &PL, DataLinkLayer &DL, GenericIOLDevice &AL, SystemManagement &SM);
             void stepFSM();
             setPortConfig(); // TODO Interface wie bei äusserer Klasse
             getPortConfig(); // TODO Interface wie bei äusserer Klasse
@@ -155,13 +155,17 @@ namespace openiolink
             inline void handleDLMode();
 
         private:
-            SystemManagement *mSM;
-            ApplicationLayer *mAL; // PortHandler (SM) uses the service Read of the Application Layer (AL)
-            DataLinkLayer *mDL;    // PortHandler (SM) needs some services of the DL
-            IOLMasterPort *mPL;    // PortHandler (SM) uses the service SetMode of the Physical Layer (PL)
+            IOLMasterPort &mPL;    // PortHandler (SM) uses the service SetMode of the Physical Layer (PL)
+            DataLinkLayer &mDL;    // PortHandler (SM) needs some services of the DL
+            ApplicationLayer &mAL; // PortHandler (SM) uses the service Read of the Application Layer (AL)
+            SystemManagement &mSM; // reference to the encapsulating System Management object
+            
             inline void portMode() const;
         };
 
+        SystemManagement(IOLMasterPort &PL0, IOLMasterPort &PL1, IOLMasterPort &PL2, IOLMasterPort &PL3,
+                         DataLinkLayer &DL, GenericIOLDevice &AL);
+        ~SystemManagement();
         inline void stepFSM();
         inline ErrorCode setPortConfig(int &PortNumber, const SMRequestedConfig &ParameterList);
         inline ErrorCode getPortConfig(const int PortNumber, SMRealConfig &ParameterList);
