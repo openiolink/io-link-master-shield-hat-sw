@@ -37,7 +37,9 @@ namespace openiolink
     //! \brief  Initializes both MAX14819 IO-Link Transceiver chips
     //!
     //! \todo   Move the code to initialize a single chip to the method
-    //!         Max14819::init().
+    //!         Max14819::configure().
+    //!
+    //! \note   This method was written by Janik Lehmann (CrazyGecko)
     //!
     //!*************************************************************************
     void OpeniolinkShieldHat::configureBothMax14819()

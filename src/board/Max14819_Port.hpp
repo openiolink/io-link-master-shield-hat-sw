@@ -99,17 +99,19 @@ namespace openiolink // TODO ::PCB?
             PORTB = 1
         };
 
-        //! chip to wich this port belongs to
-        typedef Max14819<ChipNr> Chip;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin;
-        typedef BicolorLed<IOLPortNr> StateLED;
+        typedef Max14819<ChipNr> Chip; //! chip to wich this port belongs to
+
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;       //!< Digital Input
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin; //!< Rx Ready (LED)
+        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin; //!< Rx Error (LED)
+        typedef BicolorLed<IOLPortNr> StateLED;                              //! multicolor state LED
 
         //! describes which port=channel of the chip the object is
         static constexpr int channelNr = MapperIOLPort<IOLPortNr>::ChannelNr;
 
         CommunicationInfo detectedCOM;
+
+        void initGPIOs();
     }; // class Max14819_Port
 
     //**************************************************************************

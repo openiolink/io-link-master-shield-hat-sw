@@ -7,7 +7,7 @@
 //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
 //!         MAX14819
 //!
-//! \date   2021-06-17
+//! \date   2021-06-18
 //!
 //!
 //! *****************************************************************************
@@ -31,7 +31,6 @@
 #ifndef MAX14819_HPP_INCLUDED
 #define MAX14819_HPP_INCLUDED
 
-#include <memory>
 #include "protocol/IOLMasterPort.hpp"
 #include "protocol/IOLMessage.hpp"
 #include "protocol/IOLinkConfig.hpp"
@@ -280,26 +279,34 @@ namespace openiolink // TODO ::PCB?
         // the class signature is (just to remind):
         // template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr> class Max14819
 
-        typedef Max14819_Port<ChAPortNr> PortA;
-        typedef Max14819_Port<ChBPortNr> PortB;
-
-        Max14819(PortA &portA, PortB &portB);
+        Max14819(Max14819_Port<ChAPortNr> &portA, Max14819_Port<ChBPortNr> &portB);
         ~Max14819();
-        void init();     // private
-        uint8_t reset(); // private
         uint8_t readRegister(uint8_t reg);
         uint8_t writeRegister(uint8_t reg, uint8_t data);
-        //auto &getPort(Max14819_Port::PortNr port);-> Max14819_Port<port> // ()
+        //auto &getPort(Max14819_Port::PortNr port);-> Max14819_Port<port>
+        // would be complicated because parametrized. If getPort() is necessary,
+        // (A) split it to seperate methods for each port/channel or (B) return a IOLMasterPort reference.
 
     private:
-        typedef HW::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin;
-        typedef HW::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;
+        static constexpr uint8_t spi_address = MapperChip<ChipNr>::SPIAddress;
 
-        PortA &mPortA;
-        PortB &mPortB;
+        typedef HW::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin; //!< Interrupt
+        typedef HW::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;  //!< ChipSelect
+
+        Max14819_Port<ChAPortNr> &mPortA;
+        Max14819_Port<ChBPortNr> &mPortB;
+
+        void initGPIOs();
+        void configure();
+        uint8_t reset();
 
     }; // class Max14819
 
+    //!*****************************************************************************
+    //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
+    //!         MAX14819 (alias)
+    //!
+    //!*****************************************************************************
     template <int ChipNr>
     using Max14819Alias = Max14819<ChipNr,
                                    class SPI = typename MapperChip<ChipNr>::SPI,

@@ -40,6 +40,7 @@ namespace raspberry
 
     private:
         static bool mInitDone = false;
+        static constexpr int spi_speed = 500000;
     };
 
     template <int SpiPort>

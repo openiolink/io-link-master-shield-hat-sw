@@ -26,12 +26,21 @@ namespace openiolink
             ORANGE
         };
 
+        static inline void init();
         static inline void setColor(const LedColor Color);
 
     private:
         typedef HW::OutputPin<MapperIOLPort<IOLPortNr>::GreenLedPinNr> GreenLedPin;
         typedef HW::OutputPin<MapperIOLPort<IOLPortNr>::RedLedPinNr> RedLedPin;
     };
+
+    template <int IOLPortNr>
+    inline void BicolorLed<IOLPortNr>::init()
+    {
+        GreenLedPin::init();
+        RedLedPin::init();
+        setColor(LedColor::OFF);
+    }
 
     template <int IOLPortNr>
     inline void BicolorLed<IOLPortNr>::setColor(const LedColor Color)

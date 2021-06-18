@@ -60,6 +60,7 @@ namespace openiolink // TODO ::PCB?
     //!*****************************************************************************
     Max14819_Port<IOLPortNr, ChipNr>::Max14819_Port() : detectedCOM{0U, 0U}
     {
+        initGPIOs();
     }
 
     //!*****************************************************************************
@@ -165,7 +166,6 @@ namespace openiolink // TODO ::PCB?
     //! \note   Specification 5.2.2.2 (PL_WakeUp.req)
     //! TODO: rename to establishCom()
     //!*****************************************************************************
-    //Specification 5.2.2.2 (PL_WakeUp.req)
     template <int IOLPortNr, int ChipNr>
     void Max14819_Port<IOLPortNr, ChipNr>::wakeUpRequest()
     {
@@ -229,4 +229,18 @@ namespace openiolink // TODO ::PCB?
         chip->debug_interface->print("wurq done");
         // return SUCCESS;
     }
+    
+    //!*****************************************************************************
+    //! \brief  Initializes the GPIOs that are associated to the port.
+    //!
+    //!*****************************************************************************
+    template <int IOLPortNr, int ChipNr>
+    void Max14819_Port<IOLPortNr, ChipNr>::initGPIOs() 
+    {
+        DIPin::init();
+        RxRdyPin::init();
+        RxErrPin::init();
+        StateLED::init();
+    }
+
 } // namespace openiolink
