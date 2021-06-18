@@ -27,6 +27,9 @@ namespace openiolink
         };
 
         ApplicationLayer();
+        ~ApplicationLayer();
+
+        void stepFSM();
 
         //read On-request Data from a Device connected to a specific port
         //Specification 8.2.2.1
