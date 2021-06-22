@@ -140,7 +140,7 @@ namespace openiolink
         template <int GpioNr>
         inline void OutputPin<GpioNr>::setLow()
         {
-            digitalWrite(mGpioNr, 0);
+            digitalWrite(GpioNr, 0);
         }
 
         //!*************************************************************************
@@ -150,7 +150,7 @@ namespace openiolink
         template <int GpioNr>
         inline void OutputPin<GpioNr>::setHigh()
         {
-            digitalWrite(mGpioNr, 1);
+            digitalWrite(GpioNr, 1);
         }
 
         ////////////////////////////////////////////////////////////////////////////

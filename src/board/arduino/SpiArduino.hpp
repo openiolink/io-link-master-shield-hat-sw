@@ -36,10 +36,10 @@ namespace arduino
     {
     public:
         static bool init();
-        static bool DataRW(uint8_t *data, const int length) const;
+        static bool DataRW(uint8_t *data, const int length);
 
     private:
-        static bool mInitDone = false;
+        static bool mInitDone;
     };
 
 } // namespace arduino

@@ -81,7 +81,8 @@ namespace openiolink
         //!*************************************************************************
         inline void PinBase::init(const int gpioNr, const PinModes mode)
         {
-            pinMode(gpioNr, mode); // pinMode() is part of the Arduino library.
+            // pinMode() is part of the Arduino library
+            pinMode(static_cast<uint32_t>(gpioNr), static_cast<uint32_t>(mode));
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -120,7 +121,7 @@ namespace openiolink
         template <int GpioNr>
         inline void OutputPin<GpioNr>::setLow()
         {
-            digitalWrite(mGpioNr, 0);
+            digitalWrite(GpioNr, 0);
         }
 
         //!*************************************************************************
@@ -130,7 +131,7 @@ namespace openiolink
         template <int GpioNr>
         inline void OutputPin<GpioNr>::setHigh()
         {
-            digitalWrite(mGpioNr, 1);
+            digitalWrite(GpioNr, 1);
         }
 
         ////////////////////////////////////////////////////////////////////////////

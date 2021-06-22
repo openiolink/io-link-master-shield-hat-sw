@@ -27,14 +27,17 @@
 //!
 //!*****************************************************************************
 
-#include "SpiArduino.hpp"     // the header of this class
+#include "SpiArduino.hpp"        // the header of this class
 #include "../typedefs_board.hpp" //
-#include <Arduino.h>          // Arduino library
-#include <SPI.h>              // SPI for Arduino
-#include <iostream>           // for uint8_t
+#include <Arduino.h>             // Arduino library
+#include <SPI.h>                 // SPI for Arduino
+#include <iostream>              // for uint8_t
 
 namespace arduino
 {
+    template <int SpiPort>
+    bool SPI<SpiPort>::mInitDone = false;
+
     // NOTE: Arduino DUE has only one SPI port
     /*
     TODO Documentation
@@ -47,6 +50,8 @@ namespace arduino
     }
     /*
     TODO Documentation
+    TODO deinit() mit SPI.endTransaction() und SPI.end()
+    https://www.arduino.cc/en/Reference/SPI
     */
     template <>
     bool SPI<0>::init()
@@ -64,10 +69,10 @@ namespace arduino
     TODO Documentation
     */
     template <int SpiPort>
-    bool DataRW(uint8_t *data, const int length) const
+    bool DataRW(uint8_t *data, const int length)
     {
         // Arduino DUE has only one SPI port, make sure only this one is used
-        static_assert(SpiPort==0);
+        static_assert(SpiPort == 0, "The library assumes that the Arduino has only one SPI port.");
 
         // simultaneously transmit and receive each byte
         // TODO Isn't a buffer transceive operation also possible (see https://www.arduino.cc/en/Reference/SPITransfer)?
