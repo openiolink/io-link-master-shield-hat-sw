@@ -31,57 +31,60 @@
 #ifndef ARDUINO_MAPPERIOLPORT_HPP
 #define ARDUINO_MAPPERIOLPORT_HPP
 
-namespace openiolink::arduino
+namespace openiolink
 {
-    template <int IOLPortNr>
-    struct MapperIOLPort
+    namespace arduino
     {
-    };
+        template <int IOLPortNr>
+        struct MapperIOLPort
+        {
+        };
 
-    // Settings for IO-Link-Port 0 ("PORT0")
-    template <>
-    struct MapperIOLPort<0>
-    {
-        static constexpr int DIPinNr = 55u;
-        static constexpr int GreenLedPinNr = 2u;
-        static constexpr int RedLedPinNr = 3u;
-        static constexpr int RxErrPinNr = 61u;
-        static constexpr int RxRdyPinNr = 60u;
-    };
+        // Settings for IO-Link-Port 0 ("PORT0")
+        template <>
+        struct MapperIOLPort<0>
+        {
+            static constexpr int DIPinNr = 55u;
+            static constexpr int GreenLedPinNr = 2u;
+            static constexpr int RedLedPinNr = 3u;
+            static constexpr int RxErrPinNr = 61u;
+            static constexpr int RxRdyPinNr = 60u;
+        };
 
-    // Settings for IO-Link-Port 1 ("PORT1")
-    template <>
-    struct MapperIOLPort<1>
-    {
-        static constexpr int DIPinNr = 54u;
-        static constexpr int GreenLedPinNr = 56u;
-        static constexpr int RedLedPinNr = 57u;
-        static constexpr int RxErrPinNr = 58u;
-        static constexpr int RxRdyPinNr = 59u;
-    };
+        // Settings for IO-Link-Port 1 ("PORT1")
+        template <>
+        struct MapperIOLPort<1>
+        {
+            static constexpr int DIPinNr = 54u;
+            static constexpr int GreenLedPinNr = 56u;
+            static constexpr int RedLedPinNr = 57u;
+            static constexpr int RxErrPinNr = 58u;
+            static constexpr int RxRdyPinNr = 59u;
+        };
 
-    // Settings for IO-Link-Port 2 ("PORT2")
-    template <>
-    struct MapperIOLPort<2>
-    {
-        static constexpr int DIPinNr = 14u;
-        static constexpr int GreenLedPinNr = 6u;
-        static constexpr int RedLedPinNr = 7u;
-        static constexpr int RxErrPinNr = 9u;
-        static constexpr int RxRdyPinNr = 8u;
-    };
+        // Settings for IO-Link-Port 2 ("PORT2")
+        template <>
+        struct MapperIOLPort<2>
+        {
+            static constexpr int DIPinNr = 14u;
+            static constexpr int GreenLedPinNr = 6u;
+            static constexpr int RedLedPinNr = 7u;
+            static constexpr int RxErrPinNr = 9u;
+            static constexpr int RxRdyPinNr = 8u;
+        };
 
-    // Settings for IO-Link-Port 3 ("PORT3")
-    template <>
-    struct MapperIOLPort<3>
-    {
-        static constexpr int DIPinNr = 15u;
-        static constexpr int GreenLedPinNr = 71u;
-        static constexpr int RedLedPinNr = 70u;
-        static constexpr int RxErrPinNr = 13u;
-        static constexpr int RxRdyPinNr = 12u;
-    };
+        // Settings for IO-Link-Port 3 ("PORT3")
+        template <>
+        struct MapperIOLPort<3>
+        {
+            static constexpr int DIPinNr = 15u;
+            static constexpr int GreenLedPinNr = 71u;
+            static constexpr int RedLedPinNr = 70u;
+            static constexpr int RxErrPinNr = 13u;
+            static constexpr int RxRdyPinNr = 12u;
+        };
 
-} // namespace arduino
+    } // namespace arduino
+} // namespace openiolink
 
 #endif // ARDUINO_MAPPERIOLPORT_HPP

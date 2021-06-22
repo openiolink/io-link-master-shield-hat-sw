@@ -32,30 +32,33 @@
 #ifndef MAPPERCHIP_RASPBERRY_HPP
 #define MAPPERCHIP_RASPBERRY_HPP
 
-namespace openiolink::raspberry
+namespace openiolink
 {
-    // TODO Doc
-    template <int ChipNr>
-    struct MapperChip
+    namespace raspberry
     {
-    };
+        // TODO Doc
+        template <int ChipNr>
+        struct MapperChip
+        {
+        };
 
-    // Configuration for chip 0
-    template <>
-    struct MapperChip<0>
-    {
-        static constexpr int CSPinNr = 31u;
-        static constexpr int IRQPinNr = 0u;
-    };
+        // Configuration for chip 0
+        template <>
+        struct MapperChip<0>
+        {
+            static constexpr int CSPinNr = 31u;
+            static constexpr int IRQPinNr = 0u;
+        };
 
-    // Configuration for chip 1
-    template <>
-    struct MapperChip<1>
-    {
-        static constexpr int CSPinNr = 31u;
-        static constexpr int IRQPinNr = 4u;
-    };
+        // Configuration for chip 1
+        template <>
+        struct MapperChip<1>
+        {
+            static constexpr int CSPinNr = 31u;
+            static constexpr int IRQPinNr = 4u;
+        };
 
-} // namespace openiolink::raspberry
+    } // namespace raspberry
+} // namespace openiolink
 
 #endif // MAPPERCHIP_RASPBERRY_HPP
