@@ -28,7 +28,7 @@
 //!*****************************************************************************
 
 #include "SpiRaspberry.hpp"     // the header of this class
-#include "typedefs_board.hpp"
+#include "../typedefs_board.hpp"
 #include <wiringPi.h>
 #include <wiringPiSPI.h>		// Needed for SPI communication
 #include <fcntl.h>   			// Needed for SPI port

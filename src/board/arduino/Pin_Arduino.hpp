@@ -36,7 +36,7 @@
 #ifndef PIN_ARDUINO_HPP
 #define PIN_ARDUINO_HPP
 
-#include "typedefs_board.hpp" // boolean return codes
+#include "../typedefs_board.hpp" // boolean return codes
 #include <Arduino.h>
 
 namespace openiolink::arduino
