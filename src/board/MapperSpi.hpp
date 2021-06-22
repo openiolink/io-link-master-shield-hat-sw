@@ -32,8 +32,8 @@
 #ifndef MAPPERSPI_HPP
 #define MAPPERSPI_HPP
 
-//#include "arduino/SpiArduino.hpp"     // TODO replace these two lines with one: #include "Spi.hpp"
-//#include "raspberry/SpiRaspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
+#include "arduino/SpiArduino.hpp"     // TODO replace these two lines with one: #include "Spi.hpp"
+#include "raspberry/SpiRaspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
 #include "platform.hpp"
 
 namespace openiolink

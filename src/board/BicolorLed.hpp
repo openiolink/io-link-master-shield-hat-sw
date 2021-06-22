@@ -30,7 +30,8 @@
 #ifndef OPENIOLINK_BICOLORLED_HPP
 #define OPENIOLINK_BICOLORLED_HPP
 
-//#include "Pin_Arduino.hpp"
+#include "Pin_Arduino.hpp"
+#include "Pin_Raspberry.hpp"
 #include "platform.hpp"
 #include "MapperIOLPort.hpp"
 

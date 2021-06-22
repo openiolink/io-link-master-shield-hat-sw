@@ -37,7 +37,8 @@
 #include "MapperIOLPort.hpp"
 #include "Max14819.hpp"
 #include "platform.hpp" // namespace platform
-//#include "arduino/Pin_Arduino.hpp"
+#include "arduino/Pin_Arduino.hpp"
+#include "raspberry/Pin_Raspberry.hpp"
 #include "BicolorLed.hpp"
 
 namespace openiolink // TODO ::PCB?
