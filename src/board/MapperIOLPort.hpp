@@ -31,9 +31,9 @@
 #ifndef MAPPERIOLPORT_HPP
 #define MAPPERIOLPORT_HPP
 
-#include "../platform.hpp"
-#include "arduino/MapperIOLPort_Arduino.hpp"     // TODO replace these two lines with one: #include "MapperIOLPort.hpp"
-#include "raspberry/MapperIOLPort_Raspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
+#include "platform.hpp"
+//#include "arduino/MapperIOLPort_Arduino.hpp"     // TODO replace these two lines with one: #include "MapperIOLPort.hpp"
+//#include "raspberry/MapperIOLPort_Raspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
 
 namespace openiolink
 {

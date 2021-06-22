@@ -34,9 +34,9 @@
 
 #include <iostream>
 #include "MapperSpi.hpp"
-#include "arduino/MapperChip_Arduino.hpp"     // TODO replace these two lines with one: #include "MapperChip.hpp"
-#include "raspberry/MapperChip_Raspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
-#include "../platform.hpp"
+//#include "arduino/MapperChip_Arduino.hpp"     // TODO replace these two lines with one: #include "MapperChip.hpp"
+//#include "raspberry/MapperChip_Raspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
+#include "platform.hpp"
 
 namespace openiolink
 {
