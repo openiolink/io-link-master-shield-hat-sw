@@ -32,8 +32,8 @@
 #ifndef MAPPERSPI_HPP
 #define MAPPERSPI_HPP
 
-#include "SpiArduino.hpp"
-#include "SpiRaspberry.hpp"
+#include "arduino/SpiArduino.hpp"     // TODO replace these two lines with one: #include "Spi.hpp"
+#include "raspberry/SpiRaspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
 #include "platform.hpp"
 
 namespace openiolink
@@ -44,8 +44,8 @@ namespace openiolink
         using SPI = platform::SPI<SPINr>;
 
         // If your Board Support Package library for SPI needs GPIO numbers for
-        // MISO, MOSI, SCK, ... you should define them in 
-        //      yourplatform::MapperSpi 
+        // MISO, MOSI, SCK, ... you should define them in
+        //      yourplatform::MapperSpi
         // and then access them from here like this:
         //      static constexpr int MISOPinNr = platform::MapperSpi::MISOPinNr
         // DO NOT write hardcoded pinnumbers in this file (MapperSpi.hpp).
