@@ -29,8 +29,8 @@
 //!
 //!*****************************************************************************
 
-#ifndef MAPPERCHIP_SHIELDHAT_H
-#define MAPPERCHIP_SHIELDHAT_H
+#ifndef MAPPERCHIP_SHIELDHAT_HPP
+#define MAPPERCHIP_SHIELDHAT_HPP
 
 #include <iostream>
 #include "MapperSpi.hpp"
@@ -40,7 +40,7 @@
 
 namespace openiolink
 {
-    namespace shield_hat
+    namespace shield_hat_x // TODO make unnamed namespace to avoid access from any other translation unit
     {
         // TODO Doc
         template <int ChipNr>
@@ -71,11 +71,11 @@ namespace openiolink
     template <int ChipNr>
     struct MapperChip
     {
-        static constexpr uint8_t SPIAddress = shield_hat::MapperChip::SPIAddress;
-        static constexpr int SPINr = shield_hat::MapperChip::SPINr;
-        using SPI = shield_hat::MapperChip::SPI;
-        static constexpr int CSPinNr = platform::MapperChip::CSPinNr;
-        static constexpr int IRQPinNr = platform::MapperChip::IRQPinNr;
+        static constexpr uint8_t SPIAddress = shield_hat_x::MapperChip<ChipNr>::SPIAddress;
+        static constexpr int SPINr = shield_hat_x::MapperChip<ChipNr>::SPINr;
+        using SPI = shield_hat_x::MapperChip<ChipNr>::SPI;
+        static constexpr int CSPinNr = platform::MapperChip<ChipNr>::CSPinNr;
+        static constexpr int IRQPinNr = platform::MapperChip<ChipNr>::IRQPinNr;
     };
 
     // TODO Doc
@@ -103,4 +103,4 @@ namespace openiolink
 
 } // namespace openiolink
 
-#endif // MAPPERCHIP_SHIELDHAT_H
+#endif // MAPPERCHIP_SHIELDHAT_HPP

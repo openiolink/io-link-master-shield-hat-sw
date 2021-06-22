@@ -28,8 +28,8 @@
 //!
 //!*****************************************************************************
 
-#ifndef ARDUINO_MAPPERIOLPORT_H
-#define ARDUINO_MAPPERIOLPORT_H
+#ifndef ARDUINO_MAPPERIOLPORT_HPP
+#define ARDUINO_MAPPERIOLPORT_HPP
 
 namespace openiolink::arduino
 {
@@ -84,4 +84,4 @@ namespace openiolink::arduino
 
 } // namespace arduino
 
-#endif // ARDUINO_MAPPERIOLPORT_H
+#endif // ARDUINO_MAPPERIOLPORT_HPP

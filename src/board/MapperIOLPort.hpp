@@ -37,7 +37,7 @@
 
 namespace openiolink
 {
-    namespace shield_hat
+    namespace shield_hat // TODO make unnamed namespace to avoid access from any other translation unit
     {
         //!  ***********************************************************************
         //!

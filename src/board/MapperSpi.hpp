@@ -47,7 +47,7 @@ namespace openiolink
         // MISO, MOSI, SCK, ... you should define them in
         //      yourplatform::MapperSpi
         // and then access them from here like this:
-        //      static constexpr int MISOPinNr = platform::MapperSpi::MISOPinNr
+        //      static constexpr int MISOPinNr = platform::MapperSpi<SPINr>::MISOPinNr
         // DO NOT write hardcoded pinnumbers in this file (MapperSpi.hpp).
     };
 

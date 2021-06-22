@@ -18,14 +18,14 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
                             board/arduino/HardwareArduino.hpp
                             board/arduino/HardwareArduino.cpp
                             #TODO complete or change
-                            #board/arduino/MapperChip_Arduino.hpp
-                            #board/arduino/MapperIOLPort_Arduino.hpp
-                            #board/arduino/Pin_Arduino.hpp
-                            #board/arduino/Pin_Arduino.cpp
-                            #board/PrintAndWait.hpp
-                            #board/arduino/PrintAndWait.cpp
-                            #board/arduino/SpiArduino.hpp
-                            #board/arduino/SpiArduino.cpp
+                            board/arduino/MapperChip_Arduino.hpp
+                            board/arduino/MapperIOLPort_Arduino.hpp
+                            board/arduino/Pin_Arduino.hpp
+                            board/arduino/Pin_Arduino.cpp
+                            board/PrintAndWait.hpp
+                            board/arduino/PrintAndWait.cpp
+                            board/arduino/SpiArduino.hpp
+                            board/arduino/SpiArduino.cpp
                             )
     target_link_arduino_libraries(arduionohw PRIVATE SPI core)
     target_link_libraries(arduionohw PRIVATE openiolink)

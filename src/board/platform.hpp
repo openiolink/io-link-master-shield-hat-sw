@@ -1,7 +1,7 @@
 
 namespace openiolink
 {
-    // "declare" namespaces to be sure their names ar known below
+    // "declare" namespaces to be sure their names are known below
     namespace arduino
     {
     };
