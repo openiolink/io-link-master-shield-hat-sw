@@ -28,7 +28,7 @@
 //!*****************************************************************************
 
 #include "SpiArduino.hpp"     // the header of this class
-#include "typedefs_board.hpp" //
+#include "../typedefs_board.hpp" //
 #include <Arduino.h>          // Arduino library
 #include <SPI.h>              // SPI for Arduino
 #include <iostream>           // for uint8_t
