@@ -38,9 +38,9 @@ namespace openiolink
     class OpeniolinkShieldHat
     {
     public:
-        // members not in initializer list: default initialization: https://en.cppreference.com/w/cpp/language/default_initialization
-        OpeniolinkShieldHat(){};
-        ~OpeniolinkShieldHat(){};
+        // note: members not in initializer list: default initialization: https://en.cppreference.com/w/cpp/language/default_initialization
+        OpeniolinkShieldHat();
+        ~OpeniolinkShieldHat();
         void configureBothMax14819();
 
     protected:
@@ -48,9 +48,10 @@ namespace openiolink
         typedef Max14819<1> Chip1;
 
     private:
-        Chip0 mChip0;
-        Chip1 mChip1;
+        Chip0 mChip0; //!< the first IO-Link chip on the PCB
+        Chip1 mChip1; //!< the second IO-Link chip on the PCB
 
+        // TODO make configurable how many and which ports should be activated
         //static constexpr int mMaxPortCount = 4;
     };
 

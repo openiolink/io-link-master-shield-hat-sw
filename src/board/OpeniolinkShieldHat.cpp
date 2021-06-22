@@ -32,6 +32,27 @@
 
 namespace openiolink
 {
+    //!*************************************************************************
+    //! \brief  Construct a new OpeniolinkShieldHat object
+    //!
+    //! \note   To be compatible with the template template parameter of
+    //!         IOLMasterClass, the constructor of OpeniolinkShieldHat must not
+    //!         take any arguments.
+    //!
+    //!*************************************************************************
+    OpeniolinkShieldHat::OpeniolinkShieldHat()
+    {
+        // TODO
+    }
+
+    //!*************************************************************************
+    //! \brief  Destruct the OpeniolinkShieldHat object
+    //!
+    //!*************************************************************************
+    OpeniolinkShieldHat::~OpeniolinkShieldHat()
+    {
+        // TODO
+    }
 
     //!*************************************************************************
     //! \brief  Initializes both MAX14819 IO-Link Transceiver chips
