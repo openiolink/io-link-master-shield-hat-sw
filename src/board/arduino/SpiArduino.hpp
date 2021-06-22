@@ -32,7 +32,7 @@
 namespace arduino
 {
     template <int SpiPort>
-    class SPI
+    class SPIClass
     {
     public:
         static bool init();

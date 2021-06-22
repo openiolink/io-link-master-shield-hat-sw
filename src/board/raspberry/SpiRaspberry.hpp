@@ -32,7 +32,7 @@
 namespace raspberry
 {
     template <int SpiPort>
-    class SPI
+    class SPIClass
     {
     public:
         static bool init();
@@ -44,7 +44,7 @@ namespace raspberry
     };
 
     template <int SpiPort>
-    inline bool SPI<SpiPort>::DataRW(uint8_t *data, const int length)
+    inline bool SPIClass<SpiPort>::DataRW(uint8_t *data, const int length)
     {
         int retval = wiringPiSPIDataRW(SpiPort, data, length);
         return static_cast<bool>(retval);

@@ -36,17 +36,17 @@
 namespace arduino
 {
     template <int SpiPort>
-    bool SPI<SpiPort>::mInitDone = false;
+    bool SPIClass<SpiPort>::mInitDone = false;
 
     // NOTE: Arduino DUE has only one SPI port
     /*
     TODO Documentation
     */
     template <int SpiPort>
-    bool SPI<SpiPort>::init()
+    bool SPIClass<SpiPort>::init()
     {
         return BoolError;
-        //return SPI<0>::init();
+        //return SPIClass<0>::init();
     }
     /*
     TODO Documentation
@@ -54,7 +54,7 @@ namespace arduino
     https://www.arduino.cc/en/Reference/SPI
     */
     template <>
-    bool SPI<0>::init()
+    bool SPIClass<0>::init()
     {
         if (!mInitDone)
         {

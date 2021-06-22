@@ -41,7 +41,7 @@ namespace openiolink
     template <int SPINr>
     struct MapperSpi
     {
-        using SPI = platform::SPI<SPINr>;
+        using SPI = platform::SPIClass<SPINr>;
 
         // If your Board Support Package library for SPI needs GPIO numbers for
         // MISO, MOSI, SCK, ... you should define them in

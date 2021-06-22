@@ -27,23 +27,23 @@
 //!
 //!*****************************************************************************
 
-#include "SpiRaspberry.hpp"     // the header of this class
+#include "SpiRaspberry.hpp" // the header of this class
 #include "../typedefs_board.hpp"
 #include <wiringPi.h>
-#include <wiringPiSPI.h>		// Needed for SPI communication
-#include <fcntl.h>   			// Needed for SPI port
-#include <sys/ioctl.h>			// Needed for SPI port
-#include <linux/spi/spidev.h>	// Needed for SPI port
+#include <wiringPiSPI.h>      // Needed for SPI communication
+#include <fcntl.h>            // Needed for SPI port
+#include <sys/ioctl.h>        // Needed for SPI port
+#include <linux/spi/spidev.h> // Needed for SPI port
 
 namespace raspberry
 {
     template <int SpiPort>
-    bool SPI<SpiPort>::mInitDone = false;
+    bool SPIClass<SpiPort>::mInitDone = false;
 
     // NOTE: on Raspberry Pi, we use both SPI channels that are available
 
     template <int SpiPort>
-    bool SPI<SpiPort>::init()
+    bool SPIClass<SpiPort>::init()
     {
         static_assert(SpiPort == 0 || SpiPort == 1);
 
