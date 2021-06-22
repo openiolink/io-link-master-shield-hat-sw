@@ -69,9 +69,9 @@ namespace openiolink
 
     private:
         //! the GPIO for the red LED
-        typedef HW::OutputPin<MapperIOLPort<IOLPortNr>::GreenLedPinNr> GreenLedPin;
+        typedef platform::OutputPin<MapperIOLPort<IOLPortNr>::GreenLedPinNr> GreenLedPin;
         //! the GPIO for the green LED
-        typedef HW::OutputPin<MapperIOLPort<IOLPortNr>::RedLedPinNr> RedLedPin;
+        typedef platform::OutputPin<MapperIOLPort<IOLPortNr>::RedLedPinNr> RedLedPin;
     };
 
     //**************************************************************************

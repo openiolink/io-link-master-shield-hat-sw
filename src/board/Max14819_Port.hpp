@@ -36,7 +36,7 @@
 #include "protocol/IOLinkConfig.hpp"
 #include "MapperIOLPort.hpp"
 #include "Max14819.hpp"
-#include "platform.hpp" // namespace HW
+#include "platform.hpp" // namespace platform
 #include "arduino/Pin_Arduino.hpp"
 #include "raspberry/Pin_Raspberry.hpp"
 #include "BicolorLed.hpp"
@@ -100,10 +100,10 @@ namespace openiolink // TODO ::PCB?
             PORTB = 1
         };
 
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;       //!< Digital Input
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin; //!< Rx Ready (LED)
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin; //!< Rx Error (LED)
-        typedef BicolorLed<IOLPortNr> StateLED;                              //! multicolor state LED
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;       //!< Digital Input
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin; //!< Rx Ready (LED)
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin; //!< Rx Error (LED)
+        typedef BicolorLed<IOLPortNr> StateLED;                                    //! multicolor state LED
 
         static constexpr int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr;
         typedef Max14819<ChipNr> Chip; //!< the chip to wich this port belongs to

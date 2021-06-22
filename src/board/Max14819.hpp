@@ -290,8 +290,8 @@ namespace openiolink // TODO ::PCB?
     private:
         static constexpr uint8_t spi_address = MapperChip<ChipNr>::SPIAddress;
 
-        typedef HW::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin; //!< Interrupt
-        typedef HW::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;  //!< ChipSelect
+        typedef platform::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin; //!< Interrupt
+        typedef platform::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;  //!< ChipSelect
 
         Max14819_Port<ChAPortNr> &mPortA;
         Max14819_Port<ChBPortNr> &mPortB;
