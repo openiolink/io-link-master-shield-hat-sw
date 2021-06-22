@@ -55,10 +55,16 @@ namespace openiolink // TODO ::PCB?
     //--------------------------------------------------------------------------
 
     //!*****************************************************************************
-    //! \brief Construct a new Max14819_Port object
+    //! \brief  Construct a new Max14819_Port object
+    //!
+    //! \note   To be compatible with the template template parameter of
+    //!         IOLMasterClass, the constructor of Max14819_Port must not take any
+    //!         arguments.
     //!
     //!*****************************************************************************
-    Max14819_Port<IOLPortNr, ChipNr>::Max14819_Port() : detectedCOM{0U, 0U}
+    template <int IOLPortNr>
+    //Max14819_Port<IOLPortNr, ChipNr>::Max14819_Port() : detectedCOM{0U, 0U}
+    Max14819_Port<IOLPortNr>::Max14819_Port() : detectedCOM{0U, 0U}
     {
         initGPIOs();
     }
@@ -67,7 +73,9 @@ namespace openiolink // TODO ::PCB?
     //! \brief Destroy the Max14819_Port object
     //!
     //!*****************************************************************************
-    Max14819_Port<IOLPortNr, ChipNr>::~Max14819_Port()
+    template <int IOLPortNr>
+    //Max14819_Port<IOLPortNr, ChipNr>::~Max14819_Port()
+    Max14819_Port<IOLPortNr>::~Max14819_Port()
     {
     }
 
@@ -86,7 +94,9 @@ namespace openiolink // TODO ::PCB?
     //!*****************************************************************************
     //template <int IOLPortNr, int ChipNr>
     //Max14819_Port<IOLPortNr, ChipNr>::writeIOLData()
-    uint8_t Max14819_Port<IOLPortNr, ChipNr>::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
+    template <int IOLPortNr>
+    //uint8_t Max14819_Port<IOLPortNr, ChipNr>::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
+    uint8_t Max14819_Port<IOLPortNr>::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
     {
         uint8_t retValue = SUCCESS;
         uint8_t offset = 0;
@@ -118,8 +128,10 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t 0 if success
     //!
     //!*****************************************************************************
-    template <int IOLPortNr, int ChipNr>
-    uint8_t Max14819_Port<IOLPortNr, ChipNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
+    //template <int IOLPortNr, int ChipNr>
+    //uint8_t Max14819_Port<IOLPortNr, ChipNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
+    template <int IOLPortNr>
+    uint8_t Max14819_Port<IOLPortNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
     {
         uint8_t bufferRegister;
         uint8_t retValue = SUCCESS;
@@ -154,8 +166,10 @@ namespace openiolink // TODO ::PCB?
     //!
     //!
     //!*****************************************************************************
-    template <int IOLPortNr, int ChipNr>
-    void Max14819_Port<IOLPortNr, ChipNr>::setMode(const Modes &targetMode)
+    //template <int IOLPortNr, int ChipNr>
+    //void Max14819_Port<IOLPortNr, ChipNr>::setMode(const Modes &targetMode)
+    template <int IOLPortNr>
+    void Max14819_Port<IOLPortNr>::setMode(const Modes &targetMode)
     {
         // TODO set mode
     }
@@ -166,8 +180,8 @@ namespace openiolink // TODO ::PCB?
     //! \note   Specification 5.2.2.2 (PL_WakeUp.req)
     //! TODO: rename to establishCom()
     //!*****************************************************************************
-    template <int IOLPortNr, int ChipNr>
-    void Max14819_Port<IOLPortNr, ChipNr>::wakeUpRequest()
+    template <int IOLPortNr>
+    void Max14819_Port<IOLPortNr>::wakeUpRequest()
     {
         uint8_t retValue = 0;
         uint8_t comReqRunning = 0;
@@ -229,13 +243,13 @@ namespace openiolink // TODO ::PCB?
         chip->debug_interface->print("wurq done");
         // return SUCCESS;
     }
-    
+
     //!*****************************************************************************
     //! \brief  Initializes the GPIOs that are associated to the port.
     //!
     //!*****************************************************************************
-    template <int IOLPortNr, int ChipNr>
-    void Max14819_Port<IOLPortNr, ChipNr>::initGPIOs() 
+    template <int IOLPortNr>
+    void Max14819_Port<IOLPortNr>::initGPIOs()
     {
         DIPin::init();
         RxRdyPin::init();

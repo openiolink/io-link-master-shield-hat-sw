@@ -54,7 +54,7 @@ namespace openiolink // TODO ::PCB?
     //! \note   Objects of this class will be owned by "IOLMaster", not by "Max14819".
     //!
     //!*****************************************************************************
-    template <int IOLPortNr, int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr>
+    template <int IOLPortNr>                   //, int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr>
     class Max14819_Port : public IOLMasterPort // TODO nachdem alle Klassen im namespace opeinolink sind: unnötige ns-Qualifizierer entfernen.
     {
     public:
@@ -70,12 +70,13 @@ namespace openiolink // TODO ::PCB?
 
         Max14819_Port();
         virtual ~Max14819_Port();
-        virtual uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override;
-        virtual uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;
-        virtual void setMode(const Modes &targetMode) override;
-        virtual void wakeUpRequest() override;
+        virtual uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override; // TODO static_assert(mChip!=nullptr)
+        virtual uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;                       // TODO static_assert(mChip!=nullptr)
+        virtual void setMode(const Modes &targetMode) override;                                        // TODO static_assert(mChip!=nullptr)
+        virtual void wakeUpRequest() override;                                                         // TODO static_assert(mChip!=nullptr)
 
         inline CommunicationInfo getCommunicationInfo();
+        inline void setChip(Max14819<ChipNr> *chip);
 
         // TODO enableCyclicSend ??
         // TODO disableCyclicSend
@@ -99,12 +100,14 @@ namespace openiolink // TODO ::PCB?
             PORTB = 1
         };
 
-        typedef Max14819<ChipNr> Chip; //! chip to wich this port belongs to
-
         typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;       //!< Digital Input
         typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin; //!< Rx Ready (LED)
         typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin; //!< Rx Error (LED)
         typedef BicolorLed<IOLPortNr> StateLED;                              //! multicolor state LED
+
+        static constexpr int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr;
+        typedef Max14819<ChipNr> Chip; //!< the chip to wich this port belongs to
+        Chip *mChip = nullptr;         //!< the chip to wich this port belongs to
 
         //! describes which port=channel of the chip the object is
         static constexpr int channelNr = MapperIOLPort<IOLPortNr>::ChannelNr;
@@ -118,18 +121,32 @@ namespace openiolink // TODO ::PCB?
     // Implementation of the inline Methods
     //**************************************************************************
 
-    //!*****************************************************************************
+    //!*************************************************************************
     //! \brief Get the Communication Info object
     //!TODO: change to getDetectedCOM()
     //! NOTE: to be used to detect success of estab. communic.
     //!
     //! \return CommunicationInfo
     //!
-    //!*****************************************************************************
+    //!*************************************************************************
     // (= einfache Alternative zu `DL_Mode`)
-    inline Max14819_Port<IOLPortNr, ChipNr>::CommunicationInfo Max14819_Port<IOLPortNr, ChipNr>::getCommunicationInfo()
+    template <int IOLPortNr>
+    //inline Max14819_Port<IOLPortNr, ChipNr>::CommunicationInfo Max14819_Port<IOLPortNr, ChipNr>::getCommunicationInfo()
+    inline Max14819_Port<IOLPortNr>::CommunicationInfo Max14819_Port<IOLPortNr, ChipNr>::getCommunicationInfo()
     {
         return detectedCOM;
+    }
+
+    //!*************************************************************************
+    //! \brief  set the pointer to the chip to wich this port belongs to
+    //!
+    //!*************************************************************************
+    template <int IOLPortNr>
+    //inline void Max14819_Port<IOLPortNr, ChipNr>::setChip(Max14819<ChipNr> *chip)
+    inline void Max14819_Port<IOLPortNr>::setChip(Max14819<ChipNr> *chip)
+    {
+        static_assert(mChip == nullptr, "Max14819_Port: chip was already set!");
+        mChip = chip;
     }
 
 } // namespace openiolink
