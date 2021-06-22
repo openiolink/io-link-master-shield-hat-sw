@@ -36,17 +36,18 @@ namespace raspberry
     {
     public:
         static bool init();
-        static inline bool DataRW(uint8_t *data, const int length) const;
+        static inline bool DataRW(uint8_t *data, const int length);
 
     private:
-        static bool mInitDone = false;
+        static bool mInitDone;
         static constexpr int spi_speed = 500000;
     };
 
     template <int SpiPort>
-    inline bool SPI<SpiPort>::DataRW(uint8_t *data, const int length) const
+    inline bool SPI<SpiPort>::DataRW(uint8_t *data, const int length)
     {
-        wiringPiSPIDataRW(SpiPort, data, length);
+        int retval = wiringPiSPIDataRW(SpiPort, data, length);
+        return static_cast<bool>(retval);
     }
 
 } // namespace raspberry

@@ -37,6 +37,9 @@
 
 namespace raspberry
 {
+    template <int SpiPort>
+    bool SPI<SpiPort>::mInitDone = false;
+
     // NOTE: on Raspberry Pi, we use both SPI channels that are available
 
     template <int SpiPort>
@@ -52,4 +55,4 @@ namespace raspberry
         return BoolSuccess;
     }
 
-    } // namespace raspberry
+} // namespace raspberry
