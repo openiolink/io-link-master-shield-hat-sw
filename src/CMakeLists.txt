@@ -32,6 +32,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
     target_link_libraries(openiolink arduionohw)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
+    add_compile_definitions(RASPBERRY) #for platform specific header inclusion control
         add_library(raspberrypihw
                                 board/Max14819.hpp
                                 board/Max14819.cpp
