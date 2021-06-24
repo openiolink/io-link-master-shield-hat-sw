@@ -35,24 +35,27 @@
 #include <sys/ioctl.h>        // Needed for SPI port
 #include <linux/spi/spidev.h> // Needed for SPI port
 
-namespace raspberry
+namespace openiolink
 {
-    template <int SpiPort>
-    bool SPIClass<SpiPort>::mInitDone = false;
-
-    // NOTE: on Raspberry Pi, we use both SPI channels that are available
-
-    template <int SpiPort>
-    bool SPIClass<SpiPort>::init()
+    namespace raspberry
     {
-        static_assert(SpiPort == 0 || SpiPort == 1);
+        template <int SpiPort>
+        bool SPIClass<SpiPort>::mInitDone = false;
 
-        if (!mInitDone)
+        // NOTE: on Raspberry Pi, we use both SPI channels that are available
+
+        template <int SpiPort>
+        bool SPIClass<SpiPort>::init()
         {
-            wiringPiSPISetup(SpiPort, spi_speed);
-            mInitDone = true;
-        }
-        return BoolSuccess;
-    }
+            static_assert(SpiPort == 0 || SpiPort == 1);
 
-} // namespace raspberry
+            if (!mInitDone)
+            {
+                wiringPiSPISetup(SpiPort, spi_speed);
+                mInitDone = true;
+            }
+            return BoolSuccess;
+        }
+
+    } // namespace raspberry
+} // namespace openiolink

@@ -29,17 +29,20 @@
 
 #include <iostream>
 
-namespace arduino
+namespace openiolink
 {
-    template <int SpiPort>
-    class SPIClass
+    namespace arduino
     {
-    public:
-        static bool init();
-        static bool DataRW(uint8_t *data, const int length);
+        template <int SpiPort>
+        class SPIClass
+        {
+        public:
+            static bool init();
+            static bool DataRW(uint8_t *data, const int length);
 
-    private:
-        static bool mInitDone;
-    };
+        private:
+            static bool mInitDone;
+        };
 
-} // namespace arduino
+    } // namespace arduino
+} // namespace openiolink

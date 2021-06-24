@@ -5,7 +5,7 @@
 //!
 //! \brief  Abstraction of input-GPIOs and output-GPIOs of an Arduino DUE
 //!
-//!         This module contains the following classes: 
+//!         This module contains the following classes:
 //!         PinBase, OutputPin and InputPin
 //!         They are not intended to be instantiated.
 //!
@@ -33,7 +33,9 @@
 
 #include "Pin_Arduino.hpp"
 
-namespace arduino
+namespace openiolink
 {
-
-} // namespace arduino
+    namespace arduino
+    {
+    } // namespace arduino
+} // namespace openiolink

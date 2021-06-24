@@ -5,7 +5,7 @@
 //!
 //! \brief  Abstraction of input-GPIOs and output-GPIOs of an Raspberry Pi 3
 //!
-//!         This module contains the following classes: 
+//!         This module contains the following classes:
 //!         PinBase, OutputPin and InputPin
 //!         They are not intended to be instantiated.
 //!
@@ -33,7 +33,9 @@
 
 #include "Pin_Raspberry.hpp"
 
-namespace raspberry
+namespace openiolink
 {
-
-} // namespace raspberry
+    namespace raspberry
+    {
+    } // namespace raspberry
+} // namespace openiolink

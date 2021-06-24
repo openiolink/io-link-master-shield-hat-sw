@@ -33,54 +33,57 @@
 #include <SPI.h>                 // SPI for Arduino
 #include <iostream>              // for uint8_t
 
-namespace arduino
+namespace openiolink
 {
-    template <int SpiPort>
-    bool SPIClass<SpiPort>::mInitDone = false;
+    namespace arduino
+    {
+        template <int SpiPort>
+        bool SPIClass<SpiPort>::mInitDone = false;
 
-    // NOTE: Arduino DUE has only one SPI port
-    /*
+        // NOTE: Arduino DUE has only one SPI port
+        /*
     TODO Documentation
     */
-    template <int SpiPort>
-    bool SPIClass<SpiPort>::init()
-    {
-        return BoolError;
-        //return SPIClass<0>::init();
-    }
-    /*
+        template <int SpiPort>
+        bool SPIClass<SpiPort>::init()
+        {
+            return BoolError;
+            //return SPIClass<0>::init();
+        }
+        /*
     TODO Documentation
     TODO deinit() mit SPI.endTransaction() und SPI.end()
     https://www.arduino.cc/en/Reference/SPI
     */
-    template <>
-    bool SPIClass<0>::init()
-    {
-        if (!mInitDone)
+        template <>
+        bool SPIClass<0>::init()
         {
-            SPI.begin();
-            SPI.beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE0));
-            mInitDone = true;
+            if (!mInitDone)
+            {
+                SPI.begin();
+                SPI.beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE0));
+                mInitDone = true;
+            }
+            return BoolSuccess;
         }
-        return BoolSuccess;
-    }
 
-    /*
+        /*
     TODO Documentation
     */
-    template <int SpiPort>
-    bool DataRW(uint8_t *data, const int length)
-    {
-        // Arduino DUE has only one SPI port, make sure only this one is used
-        static_assert(SpiPort == 0, "The library assumes that the Arduino has only one SPI port.");
-
-        // simultaneously transmit and receive each byte
-        // TODO Isn't a buffer transceive operation also possible (see https://www.arduino.cc/en/Reference/SPITransfer)?
-        for (int i = 0; i < length; i++)
+        template <int SpiPort>
+        bool DataRW(uint8_t *data, const int length)
         {
-            data[i] = SPI.transfer(data[i]);
-        }
-        return BoolSuccess;
-    }
+            // Arduino DUE has only one SPI port, make sure only this one is used
+            static_assert(SpiPort == 0, "The library assumes that the Arduino has only one SPI port.");
 
-} // namespace arduino
+            // simultaneously transmit and receive each byte
+            // TODO Isn't a buffer transceive operation also possible (see https://www.arduino.cc/en/Reference/SPITransfer)?
+            for (int i = 0; i < length; i++)
+            {
+                data[i] = SPI.transfer(data[i]);
+            }
+            return BoolSuccess;
+        }
+
+    } // namespace arduino
+} // namespace openiolink

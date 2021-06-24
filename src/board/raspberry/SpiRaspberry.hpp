@@ -29,25 +29,28 @@
 
 #include <iostream>
 
-namespace raspberry
+namespace openiolink
 {
-    template <int SpiPort>
-    class SPIClass
+    namespace raspberry
     {
-    public:
-        static bool init();
-        static inline bool DataRW(uint8_t *data, const int length);
+        template <int SpiPort>
+        class SPIClass
+        {
+        public:
+            static bool init();
+            static inline bool DataRW(uint8_t *data, const int length);
 
-    private:
-        static bool mInitDone;
-        static constexpr int spi_speed = 500000;
-    };
+        private:
+            static bool mInitDone;
+            static constexpr int spi_speed = 500000;
+        };
 
-    template <int SpiPort>
-    inline bool SPIClass<SpiPort>::DataRW(uint8_t *data, const int length)
-    {
-        int retval = wiringPiSPIDataRW(SpiPort, data, length);
-        return static_cast<bool>(retval);
-    }
+        template <int SpiPort>
+        inline bool SPIClass<SpiPort>::DataRW(uint8_t *data, const int length)
+        {
+            int retval = wiringPiSPIDataRW(SpiPort, data, length);
+            return static_cast<bool>(retval);
+        }
 
-} // namespace raspberry
+    } // namespace raspberry
+} // namespace openiolink
