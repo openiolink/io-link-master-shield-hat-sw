@@ -44,45 +44,59 @@ static_assert(false, "no known platform defined");
 
 // generic (other) headers
 #include <iostream> // uint8_t
+//#include <cstdio>   // snprintf()
 #include "MapperSpi.hpp"
 #include "platform.hpp" // namespace platform
 
 namespace openiolink
 {
-    namespace shield_hat_x // TODO make unnamed namespace to avoid access from any other translation unit
+    //namespace shield_hat // (TODO make unnamed namespace to avoid access from any other translation unit)
+    //{
+    // TODO Doc
+    template <int ChipNr>
+    struct ShieldHatMapperChip
     {
-        // TODO Doc
-        template <int ChipNr>
-        struct MapperChip
-        {
-        };
+        // TODO for all templates where the non-specialized template is not valid
+        // FIXME warum schlägt dieses trap an?
+        //static_assert(false, "MapperChip: Invalid ChipNr");
+        //static constexpr char errMsg[40] = ::snprintf("MapperChip: Invalid ChipNr %d", 40, ChipNr);
+        using SPI = double; // be sure type SPI is defined (DEBUG)
+    };
 
-        // Configuration for chip 0
-        template <>
-        struct MapperChip<0>
-        {
-            static constexpr uint8_t SPIAddress = 0x00;
-            static constexpr int SPINr = 0;
-            using SPI = MapperSpi<SPINr>::SPI;
-        };
+    // Configuration for chip 0
+    template <>
+    struct ShieldHatMapperChip<0>
+    {
+        static constexpr uint8_t SPIAddress = 0x00;
+        static constexpr int SPINr = 0;
+        //using SPI = MapperSpi<SPINr>::SPI;
+        using SPI = float;
+        //typedef ::openiolink::MapperSpi<SPINr>::SPI SPI;
+        //typedef MapperSpi<SPINr>::SPI SPI;
+    };
 
-        // Configuration for chip 1
-        template <>
-        struct MapperChip<1>
-        {
-            static constexpr uint8_t SPIAddress = 0x02;
-            static constexpr int SPINr = 1;
-            using SPI = MapperSpi<SPINr>::SPI;
-        };
-    }
+    // Configuration for chip 1
+    template <>
+    struct ShieldHatMapperChip<1>
+    {
+        static constexpr uint8_t SPIAddress = 0x02;
+        static constexpr int SPINr = 1;
+        //using SPI = MapperSpi<SPINr>::SPI;
+        using SPI = uint32_t;
+        //typedef MapperSpi<SPINr>::SPI SPI;
+    };
+
+    //typedef int hoi_t;
+    //}
 
     // TODO Doc
     template <int ChipNr>
     struct MapperChip
     {
-        static constexpr uint8_t SPIAddress = shield_hat_x::MapperChip<ChipNr>::SPIAddress;
-        static constexpr int SPINr = shield_hat_x::MapperChip<ChipNr>::SPINr;
-        using SPI = shield_hat_x::MapperChip<ChipNr>::SPI;
+        static constexpr uint8_t SPIAddress = ShieldHatMapperChip<ChipNr>::SPIAddress;
+        static constexpr int SPINr = ShieldHatMapperChip<ChipNr>::SPINr;
+        //using SPI = ShieldHatMapperChip<ChipNr>::SPI;
+        using SPI = uint16_t;
         static constexpr int CSPinNr = platform::MapperChip<ChipNr>::CSPinNr;
         static constexpr int IRQPinNr = platform::MapperChip<ChipNr>::IRQPinNr;
     };
