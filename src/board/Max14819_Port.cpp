@@ -167,9 +167,9 @@ namespace openiolink // TODO ::PCB?
     //!
     //!*****************************************************************************
     //template <int IOLPortNr, int ChipNr>
-    //void Max14819_Port<IOLPortNr, ChipNr>::setMode(const Modes &targetMode)
+    //void Max14819_Port<IOLPortNr, ChipNr>::setMode(const Mode &targetMode)
     template <int IOLPortNr>
-    void Max14819_Port<IOLPortNr>::setMode(const Modes &targetMode)
+    void Max14819_Port<IOLPortNr>::setMode(const Mode &targetMode)
     {
         // TODO set mode
     }

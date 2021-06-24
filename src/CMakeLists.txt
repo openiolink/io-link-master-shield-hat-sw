@@ -15,8 +15,8 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
     add_library(arduionohw  #FIXME typo!
                             board/Max14819.hpp
                             board/Max14819.cpp
-                            board/arduino/HardwareArduino.hpp
-                            board/arduino/HardwareArduino.cpp
+                            #board/arduino/HardwareArduino.hpp
+                            #board/arduino/HardwareArduino.cpp
                             #TODO complete or change
                             board/arduino/MapperChip_Arduino.hpp
                             board/arduino/MapperIOLPort_Arduino.hpp
@@ -36,8 +36,8 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
         add_library(raspberrypihw
                                 board/Max14819.hpp
                                 board/Max14819.cpp
-                                board/raspberry/HardwareRaspberry.hpp
-                                board/raspberry/HardwareRaspberry.cpp
+                                #board/raspberry/HardwareRaspberry.hpp
+                                #board/raspberry/HardwareRaspberry.cpp
                                 board/raspberry/MapperChip_Raspberry.hpp
                                 board/raspberry/MapperIOLPort_Raspberry.hpp
                                 board/raspberry/Pin_Raspberry.hpp

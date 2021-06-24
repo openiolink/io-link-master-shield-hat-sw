@@ -27,29 +27,10 @@
 //!*****************************************************************************
 
 //!**** Header-Files ***********************************************************
-#include "../src/IOLMasterStackDriver.hpp"
 
 //!**** Macros *****************************************************************
 
 //!**** Data types *************************************************************
-class mainClass : public openiolink::PortModeHandler, public openiolink::DeviceHandler
-{
-public:
-	mainClass(/* args */);
-	~mainClass();
-
-private:
-	openiolink::IOLMasterStackDriver mIOLMasterStack;
-	openiolink::GenericIOLDevice device0;
-};
-
-mainClass::mainClass(/* args */)
-{
-}
-
-mainClass::~mainClass()
-{
-}
 
 //!**** Function prototypes ****************************************************
 

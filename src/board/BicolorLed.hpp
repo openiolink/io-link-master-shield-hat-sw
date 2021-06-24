@@ -43,6 +43,7 @@ static_assert(false, "no known platform defined");
 // generic (other) headers
 #include "platform.hpp" // namespace platform
 #include "MapperIOLPort.hpp"
+#include "assert.h" // assert()
 
 namespace openiolink
 {
@@ -127,7 +128,7 @@ namespace openiolink
             RedLedPin::setHigh();
             break;
         default:
-            static_assert(false, "Unsupported color for the BicolorLed requested!");
+            assert(false); // "Unsupported color for the BicolorLed requested!"
             break;
         }
     }
