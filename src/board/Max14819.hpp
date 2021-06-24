@@ -48,10 +48,10 @@ namespace openiolink // TODO ::PCB?
     //!         parameter (ChipNr) only!
     //!
     //!*****************************************************************************
-    template <int ChipNr,
-              class SPI = typename MapperChip<ChipNr>::SPI,
-              int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr,
-              int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
+    template <int ChipNr> //,
+                          //class SPI = typename MapperChip<ChipNr>::SPI,
+                          //int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr,
+                          //int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
     class Max14819
     {
     public:
@@ -277,8 +277,13 @@ namespace openiolink // TODO ::PCB?
 
         // class member functions
         // the class signature is (just to remind):
-        // template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr> class Max14819
+        //// template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr> class Max14819
+        // template <int ChipNr> class Max14819
+    private:
+        static constexpr int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr; // was defaulted template parameter
+        static constexpr int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr; // was defaulted template parameter
 
+    public:
         Max14819(Max14819_Port<ChAPortNr> &portA, Max14819_Port<ChBPortNr> &portB);
         ~Max14819();
         uint8_t readRegister(uint8_t reg);
@@ -288,10 +293,11 @@ namespace openiolink // TODO ::PCB?
         // (A) split it to seperate methods for each port/channel or (B) return a IOLMasterPort reference.
 
     private:
+        using SPI = typename MapperChip<ChipNr>::SPI; // was defaulted template parameter
         static constexpr uint8_t spi_address = MapperChip<ChipNr>::SPIAddress;
 
-        typedef platform::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin; //!< Interrupt
-        typedef platform::OutputPin<MapperSpi<SPIPort>::CSPinNr> CSPin;  //!< ChipSelect
+        typedef platform::InputPin<MapperChip<ChipNr>::IRQPinNr> IRQPin;                  //!< Interrupt
+        typedef platform::OutputPin<MapperSpi<MapperChip<ChipNr>::SpiNr>::CSPinNr> CSPin; //!< ChipSelect
 
         Max14819_Port<ChAPortNr> &mPortA;
         Max14819_Port<ChBPortNr> &mPortB;
@@ -302,16 +308,16 @@ namespace openiolink // TODO ::PCB?
 
     }; // class Max14819
 
-    //!*****************************************************************************
-    //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
-    //!         MAX14819 (alias)
-    //!
-    //!*****************************************************************************
-    template <int ChipNr>
-    using Max14819Alias = Max14819<ChipNr,
-                                   class SPI = typename MapperChip<ChipNr>::SPI,
-                                   int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr,
-                                   int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
+    ////!*****************************************************************************
+    ////! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
+    ////!         MAX14819 (alias)
+    ////!
+    ////!*****************************************************************************
+    //template <int ChipNr>
+    //using Max14819Alias = Max14819<ChipNr,
+    //                               class SPI = typename MapperChip<ChipNr>::SPI,
+    //                               int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr,
+    //                               int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
 
 } // namespace openiolink // TODO ::PCB?
 #endif //MAX14819_HPP_INCLUDED
