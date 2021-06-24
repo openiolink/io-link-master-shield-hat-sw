@@ -32,12 +32,22 @@
 #ifndef MAX14819_PORT_HPP_INCLUDED
 #define MAX14819_PORT_HPP_INCLUDED
 
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/Pin_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/Pin_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
 #include "protocol/IOLMasterPort.hpp"
 #include "protocol/IOLinkConfig.hpp"
 #include "MapperIOLPort.hpp"
 #include "Max14819.hpp"
-#include "arduino/Pin_Arduino.hpp"
-#include "raspberry/Pin_Raspberry.hpp"
 #include "platform.hpp" // namespace platform
 #include "BicolorLed.hpp"
 

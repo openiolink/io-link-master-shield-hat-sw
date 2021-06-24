@@ -14,9 +14,12 @@ namespace openiolink
     namespace platform = arduino;
     constexpr char Platform[] = "Arduino";
 #else
+#ifdef RASPBERRY
     namespace platform = raspberry;
     constexpr char Platform[] = "Raspberry";
-
+#else
+    static_assert(false, "no known platform defined");
+#endif
 #endif
 
 } // namespace openiolink

@@ -30,9 +30,19 @@
 #ifndef OPENIOLINK_BICOLORLED_HPP
 #define OPENIOLINK_BICOLORLED_HPP
 
-#include "Pin_Arduino.hpp"
-#include "Pin_Raspberry.hpp"
-#include "platform.hpp"
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/Pin_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/Pin_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
+#include "platform.hpp" // namespace platform
 #include "MapperIOLPort.hpp"
 
 namespace openiolink

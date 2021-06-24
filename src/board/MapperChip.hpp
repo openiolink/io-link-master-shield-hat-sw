@@ -32,11 +32,21 @@
 #ifndef MAPPERCHIP_SHIELDHAT_HPP
 #define MAPPERCHIP_SHIELDHAT_HPP
 
-#include <iostream>
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/MapperChip_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/MapperChip_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
+#include <iostream> // uint8_t
 #include "MapperSpi.hpp"
-#include "arduino/MapperChip_Arduino.hpp"     // TODO replace these two lines with one: #include "MapperChip.hpp"
-#include "raspberry/MapperChip_Raspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
-#include "platform.hpp"
+#include "platform.hpp" // namespace platform
 
 namespace openiolink
 {

@@ -32,9 +32,19 @@
 #ifndef MAPPERSPI_HPP
 #define MAPPERSPI_HPP
 
-#include "arduino/SpiArduino.hpp"     // TODO replace these two lines with one: #include "Spi.hpp"
-#include "raspberry/SpiRaspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
-#include "platform.hpp"
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/SpiArduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/SpiRaspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
+#include "platform.hpp" // namespace platform
 
 namespace openiolink
 {

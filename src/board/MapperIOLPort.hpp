@@ -31,9 +31,19 @@
 #ifndef MAPPERIOLPORT_HPP
 #define MAPPERIOLPORT_HPP
 
-#include "arduino/MapperIOLPort_Arduino.hpp"     // TODO replace these two lines with one: #include "MapperIOLPort.hpp"
-#include "raspberry/MapperIOLPort_Raspberry.hpp" // TODO adjust board/CMakeLists.txt to add only one of the subdirectories of board/
-#include "platform.hpp"
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/MapperIOLPort_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/MapperIOLPort_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
+#include "platform.hpp" // namespace platform
 
 namespace openiolink
 {
