@@ -28,7 +28,6 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAPPERCHIP_RASPBERRY_HPP
 #define MAPPERCHIP_RASPBERRY_HPP
 

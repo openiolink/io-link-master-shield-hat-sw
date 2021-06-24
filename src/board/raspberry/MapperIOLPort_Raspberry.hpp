@@ -27,7 +27,6 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef RASPBERRY_MAPPERIOLPORT_HPP
 #define RASPBERRY_MAPPERIOLPORT_HPP
 

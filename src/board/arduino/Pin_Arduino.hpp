@@ -32,7 +32,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef PIN_ARDUINO_HPP
 #define PIN_ARDUINO_HPP
 

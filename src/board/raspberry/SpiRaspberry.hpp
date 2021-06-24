@@ -26,6 +26,8 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
+#ifndef SPI_RASPBERRY_HPP
+#define SPI_RASPBERRY_HPP
 
 #include <iostream>
 
@@ -54,3 +56,4 @@ namespace openiolink
 
     } // namespace raspberry
 } // namespace openiolink
+#endif

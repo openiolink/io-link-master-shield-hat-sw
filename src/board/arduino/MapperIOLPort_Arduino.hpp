@@ -27,7 +27,6 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef ARDUINO_MAPPERIOLPORT_HPP
 #define ARDUINO_MAPPERIOLPORT_HPP
 

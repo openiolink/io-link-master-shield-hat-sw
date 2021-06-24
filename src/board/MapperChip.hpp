@@ -28,9 +28,8 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
-#ifndef MAPPERCHIP_SHIELDHAT_HPP
-#define MAPPERCHIP_SHIELDHAT_HPP
+#ifndef MAPPERCHIP_HPP
+#define MAPPERCHIP_HPP
 
 // platform-specific headers
 #ifdef ARDUINO
@@ -113,4 +112,4 @@ namespace openiolink
 
 } // namespace openiolink
 
-#endif // MAPPERCHIP_SHIELDHAT_HPP
+#endif // MAPPERCHIP_HPP

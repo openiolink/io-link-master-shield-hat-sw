@@ -26,7 +26,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef OPENIOLINK_IOLMASTER_HPP
 #define OPENIOLINK_IOLMASTER_HPP
 

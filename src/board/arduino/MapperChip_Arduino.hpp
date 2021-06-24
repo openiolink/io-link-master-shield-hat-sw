@@ -28,7 +28,6 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAPPERCHIP_ARDUINO_HPP
 #define MAPPERCHIP_ARDUINO_HPP
 

@@ -26,6 +26,8 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
+#ifndef SPI_ARDUINO_HPP
+#define SPI_ARDUINO_HPP
 
 #include <iostream>
 
@@ -46,3 +48,4 @@ namespace openiolink
 
     } // namespace arduino
 } // namespace openiolink
+#endif

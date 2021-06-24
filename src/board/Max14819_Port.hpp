@@ -28,7 +28,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAX14819_PORT_HPP_INCLUDED
 #define MAX14819_PORT_HPP_INCLUDED
 

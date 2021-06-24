@@ -28,7 +28,6 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAPPERSPI_HPP
 #define MAPPERSPI_HPP
 

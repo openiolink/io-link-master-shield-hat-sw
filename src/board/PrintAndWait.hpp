@@ -31,7 +31,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef PRINTANDWAIT_HPP
 #define PRINTANDWAIT_HPP
 

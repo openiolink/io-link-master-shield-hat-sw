@@ -28,7 +28,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef OPENIOLINK_ALSERVICEOBSERVER_HPP
 #define OPENIOLINK_ALSERVICEOBSERVER_HPP
 

@@ -26,7 +26,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef OPENIOLINK_BICOLORLED_HPP
 #define OPENIOLINK_BICOLORLED_HPP
 

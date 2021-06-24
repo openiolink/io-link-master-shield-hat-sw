@@ -27,7 +27,6 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAPPERIOLPORT_HPP
 #define MAPPERIOLPORT_HPP
 

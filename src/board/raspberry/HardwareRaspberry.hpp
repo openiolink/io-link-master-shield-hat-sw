@@ -27,7 +27,6 @@
 //!  limitations under the License.
 //!  
 //!*****************************************************************************
-
 #ifndef HARDWARRASPBERRY_HPP_INCLUDED
 #define HARDWARRASPBERRY_HPP_INCLUDED
 

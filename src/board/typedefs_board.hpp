@@ -26,8 +26,12 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
+#ifndef TYPEDEFS_BOARD_HPP
+#define TYPEDEFS_BOARD_HPP
 
 #include <iostream>
 
 static constexpr bool BoolError = true;
 static constexpr bool BoolSuccess = false;
+
+#endif

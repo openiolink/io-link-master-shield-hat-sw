@@ -27,7 +27,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef DATALINKLAYER_HPP
 #define DATALINKLAYER_HPP
 

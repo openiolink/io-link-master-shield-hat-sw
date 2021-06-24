@@ -32,7 +32,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef PIN_RASPBERRY_HPP
 #define PIN_RASPBERRY_HPP
 
