@@ -31,10 +31,10 @@
 
 //#include "SystemManagement.hpp"
 //#include "ApplicationLayer.hpp"
-#include "OpeniolinkShieldHat.hpp"
+#include "board/OpeniolinkShieldHat.hpp"
 
 //#include "IOLinkConfig.hpp"
-#include "Max14819_Port.hpp" // TODO remove (see end of this file)
+#include "board/Max14819_Port.hpp" // TODO remove (see end of this file)
 
 //#include "GenericIOLDevice.hpp"
 namespace openiolink
