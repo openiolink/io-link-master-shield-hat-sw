@@ -1,15 +1,15 @@
 //!*****************************************************************************
 //!  \file IOLinkConfig.hpp
-//!  
+//!
 //!  \author Janik Lehmann (CrazyGecko) (xxthegeckoxx@gmail.com)
-//!  
+//!
 //!  \brief configurations for the library can be done within this file
-//!  
+//!
 //!  \date 2020-11-05
-//!  
-//!  
+//!
+//!
 //!  *****************************************************************************
-//!  
+//!
 //!  \copyright
 //!  Copyright 2020 Bern University of Applied Sciences and Balluff AG
 //!  \n\n
@@ -24,7 +24,7 @@
 //!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //!  See the License for the specific language governing permissions and
 //!  limitations under the License.
-//!  
+//!
 //!*****************************************************************************
 #ifndef IOLINK_CONFIG_HPP_INCLUDED
 #define IOLINK_CONFIG_HPP_INCLUDED
@@ -34,8 +34,13 @@ namespace openiolink
     namespace config
     {
         static constexpr int MAX_IOL_MESSAGE_LENGTH = 10; //!< maximum expected length of an IO-Link message
+
+        // TODO typename of the class that implements the abstract IOLMasterPort
+
+        // TODO how many and which IO-Link ports on the Master should be used
+
     } // namespace config
-    
+
 } // namespace openiolink
 
 #endif // IOLINK_CONFIG_HPP_INCLUDED

@@ -26,7 +26,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef GLOBAL_PROTOCOL_HPP
 #define GLOBAL_PROTOCOL_HPP
 

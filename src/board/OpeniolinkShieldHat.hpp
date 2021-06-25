@@ -26,7 +26,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef OPENIOLINK_OPENIOLINKSHIELDHAT_HPP
 #define OPENIOLINK_OPENIOLINKSHIELDHAT_HPP
 

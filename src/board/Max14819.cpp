@@ -62,9 +62,11 @@ namespace openiolink // TODO ::PCB?
     //! \param portB    reference to the second Max14819_Port object
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::Max14819(Max14819_Port<ChAPortNr> &portA,
-                                                          Max14819_Port<ChBPortNr> &portB)
+    //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+    //Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::Max14819(Max14819_Port<ChAPortNr> &portA,
+    template <int ChipNr>
+    Max14819<ChipNr>::Max14819(Max14819_Port<ChAPortNr> &portA,
+                               Max14819_Port<ChBPortNr> &portB)
         : mPortA{portA}, mPortB{portB}
     {
         initGPIOs();
@@ -76,8 +78,10 @@ namespace openiolink // TODO ::PCB?
     //! \brief  Destruct the Max14819 object
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::~Max14819()
+    //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+    //Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::~Max14819()
+    template <int ChipNr>
+    Max14819<ChipNr>::~Max14819()
     {
     }
 
@@ -90,8 +94,10 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t byte read from the register
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::readRegister(uint8_t reg)
+    //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+    //uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::readRegister(uint8_t reg)
+    template <int ChipNr>
+    uint8_t Max14819<ChipNr>::readRegister(uint8_t reg)
     {
         uint8_t channel = 0;
         uint8_t buf[2];
@@ -99,7 +105,8 @@ namespace openiolink // TODO ::PCB?
         // Check if register address is in the correct range
         if (reg > MAX_REG)
         {
-            debug_interface->print("Registeraddress out of range");
+            // FIXME
+            //debug_interface->print("Registeraddress out of range");
             return ERROR;
         }
         // Mask read register with the read cmd and set spi address of the max14819
@@ -127,8 +134,10 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t 0 if success
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::writeRegister(uint8_t reg, uint8_t data)
+    //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+    //uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::writeRegister(uint8_t reg, uint8_t data)
+    template <int ChipNr>
+    uint8_t Max14819<ChipNr>::writeRegister(uint8_t reg, uint8_t data)
     {
         uint8_t retValue = SUCCESS;
         uint8_t buf[2];
@@ -136,7 +145,8 @@ namespace openiolink // TODO ::PCB?
         // Check if register address is in the correct range
         if (reg > MAX_REG)
         {
-            debug_interface->print("Registeraddress out of range");
+            // FIXME
+            //debug_interface->print("Registeraddress out of range");
             return ERROR;
         }
         // Set write bit in register command
@@ -156,8 +166,10 @@ namespace openiolink // TODO ::PCB?
     //! \brief  Initializes the GPIOs that are associated to the chip.
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::initGPIOs()
+    //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+    //void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::initGPIOs()
+    template <int ChipNr>
+    void Max14819<ChipNr>::initGPIOs()
     {
         IRQPin::init();
         CSPin::init();
@@ -169,8 +181,10 @@ namespace openiolink // TODO ::PCB?
     //! \todo   Move code from OpeniolinkShieldHat::configureBothMax14819() to here.
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::configure()
+    //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+    //void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::configure()
+    template <int ChipNr>
+    void Max14819<ChipNr>::configure()
     {
     }
 
@@ -180,8 +194,10 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t 0 if success
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::reset()
+    //template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
+    //uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::reset()
+    template <int ChipNr>
+    uint8_t Max14819<ChipNr>::reset()
     {
         uint8_t retValue = SUCCESS;
         // Reset all max14819 registers

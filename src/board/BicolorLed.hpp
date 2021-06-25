@@ -26,14 +26,24 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef OPENIOLINK_BICOLORLED_HPP
 #define OPENIOLINK_BICOLORLED_HPP
 
-#include "Pin_Arduino.hpp"
-#include "Pin_Raspberry.hpp"
-#include "../platform.hpp"
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/Pin_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/Pin_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
+#include "platform.hpp" // namespace platform
 #include "MapperIOLPort.hpp"
+#include "assert.h" // assert()
 
 namespace openiolink
 {
@@ -69,9 +79,9 @@ namespace openiolink
 
     private:
         //! the GPIO for the red LED
-        typedef HW::OutputPin<MapperIOLPort<IOLPortNr>::GreenLedPinNr> GreenLedPin;
+        typedef platform::OutputPin<MapperIOLPort<IOLPortNr>::GreenLedPinNr> GreenLedPin;
         //! the GPIO for the green LED
-        typedef HW::OutputPin<MapperIOLPort<IOLPortNr>::RedLedPinNr> RedLedPin;
+        typedef platform::OutputPin<MapperIOLPort<IOLPortNr>::RedLedPinNr> RedLedPin;
     };
 
     //**************************************************************************
@@ -118,7 +128,7 @@ namespace openiolink
             RedLedPin::setHigh();
             break;
         default:
-            static_assert(false, "Unsupported color for the BicolorLed requested!");
+            assert(false); // "Unsupported color for the BicolorLed requested!"
             break;
         }
     }

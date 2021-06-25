@@ -27,9 +27,9 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef ERRORCODE_HPP
 #define ERRORCODE_HPP
+
 namespace openiolink
 {
     //!*************************************************************************

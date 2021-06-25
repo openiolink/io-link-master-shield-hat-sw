@@ -28,18 +28,33 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAX14819_PORT_HPP_INCLUDED
 #define MAX14819_PORT_HPP_INCLUDED
 
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/Pin_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/Pin_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
 #include "protocol/IOLMasterPort.hpp"
 #include "protocol/IOLinkConfig.hpp"
 #include "MapperIOLPort.hpp"
-#include "Max14819.hpp"
-#include "platform.hpp" // namespace HW
-#include "Pin_Arduino.hpp"
-#include "Pin_Raspberry.hpp"
+#include "platform.hpp" // namespace platform
 #include "BicolorLed.hpp"
+//#include "Max14819.hpp"
+namespace openiolink
+{
+    // forward declaration to avoid including "Max14819.hpp" (which would result in a cyrcle dependency)
+    template <int ChipNr> //, class SPI, int ChAPortNr, int ChBPortNr>
+    class Max14819;
+} // namespace openiolink
 
 namespace openiolink // TODO ::PCB?
 {
@@ -57,6 +72,10 @@ namespace openiolink // TODO ::PCB?
     template <int IOLPortNr>                   //, int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr>
     class Max14819_Port : public IOLMasterPort // TODO nachdem alle Klassen im namespace opeinolink sind: unnötige ns-Qualifizierer entfernen.
     {
+    private: // FIXME ok to define this private? do users know wich chipnr to take!?
+        //!< the number of the chip to which this port belongs to
+        static constexpr int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr; // was defaulted template parameter
+
     public:
         //!*****************************************************************************
         //! \brief Saves some information about the communication
@@ -72,7 +91,7 @@ namespace openiolink // TODO ::PCB?
         virtual ~Max14819_Port();
         virtual uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override; // TODO static_assert(mChip!=nullptr)
         virtual uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;                       // TODO static_assert(mChip!=nullptr)
-        virtual void setMode(const Modes &targetMode) override;                                        // TODO static_assert(mChip!=nullptr)
+        virtual void setMode(const Mode &targetMode) override;                                         // TODO static_assert(mChip!=nullptr)
         virtual void wakeUpRequest() override;                                                         // TODO static_assert(mChip!=nullptr)
 
         inline CommunicationInfo getCommunicationInfo();
@@ -100,14 +119,13 @@ namespace openiolink // TODO ::PCB?
             PORTB = 1
         };
 
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;       //!< Digital Input
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin; //!< Rx Ready (LED)
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin; //!< Rx Error (LED)
-        typedef BicolorLed<IOLPortNr> StateLED;                              //! multicolor state LED
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;       //!< Digital Input
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin; //!< Rx Ready (LED)
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin; //!< Rx Error (LED)
+        typedef BicolorLed<IOLPortNr> StateLED;                                    //! multicolor state LED
 
-        static constexpr int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr;
-        typedef Max14819<ChipNr> Chip; //!< the chip to wich this port belongs to
-        Chip *mChip = nullptr;         //!< the chip to wich this port belongs to
+        typedef Max14819<ChipNr> Chip; //!< the chip to which this port belongs to
+        Chip *mChip = nullptr;         //!< the chip to which this port belongs to
 
         //! describes which port=channel of the chip the object is
         static constexpr int channelNr = MapperIOLPort<IOLPortNr>::ChannelNr;
@@ -132,7 +150,7 @@ namespace openiolink // TODO ::PCB?
     // (= einfache Alternative zu `DL_Mode`)
     template <int IOLPortNr>
     //inline Max14819_Port<IOLPortNr, ChipNr>::CommunicationInfo Max14819_Port<IOLPortNr, ChipNr>::getCommunicationInfo()
-    inline Max14819_Port<IOLPortNr>::CommunicationInfo Max14819_Port<IOLPortNr, ChipNr>::getCommunicationInfo()
+    inline typename Max14819_Port<IOLPortNr>::CommunicationInfo Max14819_Port<IOLPortNr>::getCommunicationInfo()
     {
         return detectedCOM;
     }

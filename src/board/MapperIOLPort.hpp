@@ -27,17 +27,26 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAPPERIOLPORT_HPP
 #define MAPPERIOLPORT_HPP
 
-#include "../platform.hpp"
-#include "MapperIOLPort_Arduino.hpp"
-#include "MapperIOLPort_Raspberry.hpp"
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/MapperIOLPort_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/MapperIOLPort_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
+#include "platform.hpp" // namespace platform
 
 namespace openiolink
 {
-    namespace shield_hat
+    namespace shield_hat // TODO make unnamed namespace to avoid access from any other translation unit
     {
         //!  ***********************************************************************
         //!

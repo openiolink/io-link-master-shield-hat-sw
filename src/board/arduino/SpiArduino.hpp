@@ -26,20 +26,26 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
+#ifndef SPI_ARDUINO_HPP
+#define SPI_ARDUINO_HPP
 
 #include <iostream>
 
-namespace arduino
+namespace openiolink
 {
-    template <int SpiPort>
-    class SPI
+    namespace arduino
     {
-    public:
-        static bool init();
-        static bool DataRW(uint8_t *data, const int length) const;
+        template <int SpiPort>
+        class SPIClass
+        {
+        public:
+            static bool init();
+            static bool DataRW(uint8_t *data, const int length);
 
-    private:
-        static bool mInitDone = false;
-    };
+        private:
+            static bool mInitDone;
+        };
 
-} // namespace arduino
+    } // namespace arduino
+} // namespace openiolink
+#endif

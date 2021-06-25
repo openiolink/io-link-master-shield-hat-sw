@@ -35,7 +35,7 @@ namespace openiolink
     //!  \brief Construct a new IOLMasterPort object
     //!
     //!*****************************************************************************
-    IOLMasterPort::IOLMasterPort() : state(State::PowerDown), mode(Mode::PowerDown) {}
+    IOLMasterPort::IOLMasterPort() : state(State::PowerDown), mode(Mode::INACTIVE) {}
 
     //!*****************************************************************************
     //!  \brief Destroy the IOLMasterPort object
@@ -63,26 +63,26 @@ namespace openiolink
     void IOLMasterPort::setMode(const Mode &targetMode)
     {
         this->mode = targetMode;
-        switch (targetMode)
-        {
-        case Mode::SIO:
-            // TODO: set to SIO Mode
-            state = State::SIO;
-            break;
-
-        case Mode::PowerDown:
-            // TODO: Powerdown device
-            state = State::PowerDown;
-            break;
-
-        case Mode::IOLink:
-            // TODO: Set Device to IOLink Mode and start with wakeUp requests
-            state = State::IOLink_disconnected;
-            break;
-
-        default:
-            break;
-        }
+        //switch (targetMode)
+        //{
+        //case Mode::SIO:
+        //    // TODO: set to SIO Mode
+        //    state = State::SIO;
+        //    break;
+        //
+        //case Mode::PowerDown:
+        //    // TODO: Powerdown device
+        //    state = State::PowerDown;
+        //    break;
+        //
+        //case Mode::IOLink:
+        //    // TODO: Set Device to IOLink Mode and start with wakeUp requests
+        //    state = State::IOLink_disconnected;
+        //    break;
+        //
+        //default:
+        //    break;
+        //}
     }
 
     //!*****************************************************************************

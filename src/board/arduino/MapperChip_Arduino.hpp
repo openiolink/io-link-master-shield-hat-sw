@@ -28,34 +28,36 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAPPERCHIP_ARDUINO_HPP
 #define MAPPERCHIP_ARDUINO_HPP
 
-namespace openiolink::arduino
+namespace openiolink
 {
-    // TODO Doc
-    template <int ChipNr>
-    struct MapperChip
+    namespace arduino
     {
-    };
+        // TODO Doc
+        template <int ChipNr>
+        struct MapperChip
+        {
+        };
 
-    // Configuration for chip 0
-    template <>
-    struct MapperChip<0>
-    {
-        static constexpr int CSPinNr = 10u;
-        static constexpr int IRQPinNr = 5u;
-    };
+        // Configuration for chip 0
+        template <>
+        struct MapperChip<0>
+        {
+            static constexpr int CSPinNr = 10u;
+            static constexpr int IRQPinNr = 5u;
+        };
 
-    // Configuration for chip 1
-    template <>
-    struct MapperChip<1>
-    {
-        static constexpr int CSPinNr = 4u;
-        static constexpr int IRQPinNr = 11u;
-    };
+        // Configuration for chip 1
+        template <>
+        struct MapperChip<1>
+        {
+            static constexpr int CSPinNr = 4u;
+            static constexpr int IRQPinNr = 11u;
+        };
 
-} // namespace openiolink::arduino
+    } // namespace arduino
+} // namespace openiolink
 
 #endif // MAPPERCHIP_ARDUINO_HPP

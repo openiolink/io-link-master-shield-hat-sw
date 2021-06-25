@@ -27,61 +27,63 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef RASPBERRY_MAPPERIOLPORT_HPP
 #define RASPBERRY_MAPPERIOLPORT_HPP
 
-namespace openiolink::raspberry
+namespace openiolink
 {
-    template <int IOLPortNr>
-    struct MapperIOLPort
+    namespace raspberry
     {
-    };
+        template <int IOLPortNr>
+        struct MapperIOLPort
+        {
+        };
 
-    // Settings for IO-Link-Port 0 ("PORT0")
-    template <>
-    struct MapperIOLPort<0>
-    {
-        static constexpr int DIPinNr = 7u;
-        static constexpr int GreenLedPinNr = 9u;
-        static constexpr int RedLedPinNr = 8u;
-        static constexpr int RxErrPinNr = 23u;
-        static constexpr int RxRdyPinNr = 24u;
-    };
+        // Settings for IO-Link-Port 0 ("PORT0")
+        template <>
+        struct MapperIOLPort<0>
+        {
+            static constexpr int DIPinNr = 7u;
+            static constexpr int GreenLedPinNr = 9u;
+            static constexpr int RedLedPinNr = 8u;
+            static constexpr int RxErrPinNr = 23u;
+            static constexpr int RxRdyPinNr = 24u;
+        };
 
-    // Settings for IO-Link-Port 1 ("PORT1")
-    template <>
-    struct MapperIOLPort<1>
-    {
-        static constexpr int DIPinNr = 15u;
-        static constexpr int GreenLedPinNr = 21u;
-        static constexpr int RedLedPinNr = 22u;
-        static constexpr int RxErrPinNr = 2u;
-        static constexpr int RxRdyPinNr = 3u;
-    };
+        // Settings for IO-Link-Port 1 ("PORT1")
+        template <>
+        struct MapperIOLPort<1>
+        {
+            static constexpr int DIPinNr = 15u;
+            static constexpr int GreenLedPinNr = 21u;
+            static constexpr int RedLedPinNr = 22u;
+            static constexpr int RxErrPinNr = 2u;
+            static constexpr int RxRdyPinNr = 3u;
+        };
 
-    // Settings for IO-Link-Port 2 ("PORT2")
-    template <>
-    struct MapperIOLPort<2>
-    {
-        static constexpr int DIPinNr = 16u;
-        static constexpr int GreenLedPinNr = 25u;
-        static constexpr int RedLedPinNr = 1u;
-        static constexpr int RxErrPinNr = 27u;
-        static constexpr int RxRdyPinNr = 26u;
-    };
+        // Settings for IO-Link-Port 2 ("PORT2")
+        template <>
+        struct MapperIOLPort<2>
+        {
+            static constexpr int DIPinNr = 16u;
+            static constexpr int GreenLedPinNr = 25u;
+            static constexpr int RedLedPinNr = 1u;
+            static constexpr int RxErrPinNr = 27u;
+            static constexpr int RxRdyPinNr = 26u;
+        };
 
-    // Settings for IO-Link-Port 3 ("PORT3")
-    template <>
-    struct MapperIOLPort<3>
-    {
-        static constexpr int DIPinNr = 30u;
-        static constexpr int GreenLedPinNr = 29u;
-        static constexpr int RedLedPinNr = 5u;
-        static constexpr int RxErrPinNr = 6u;
-        static constexpr int RxRdyPinNr = 28u;
-    };
+        // Settings for IO-Link-Port 3 ("PORT3")
+        template <>
+        struct MapperIOLPort<3>
+        {
+            static constexpr int DIPinNr = 30u;
+            static constexpr int GreenLedPinNr = 29u;
+            static constexpr int RedLedPinNr = 5u;
+            static constexpr int RxErrPinNr = 6u;
+            static constexpr int RxRdyPinNr = 28u;
+        };
 
-} // namespace raspberry
+    } // namespace raspberry
+} // namespace openiolink
 
 #endif // RASPBERRY_MAPPERIOLPORT_HPP

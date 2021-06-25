@@ -27,29 +27,35 @@
 //!
 //!*****************************************************************************
 
-#include "SpiRaspberry.hpp"     // the header of this class
-#include "typedefs_board.hpp"
+#include "SpiRaspberry.hpp" // the header of this class
+#include "../typedefs_board.hpp"
 #include <wiringPi.h>
-#include <wiringPiSPI.h>		// Needed for SPI communication
-#include <fcntl.h>   			// Needed for SPI port
-#include <sys/ioctl.h>			// Needed for SPI port
-#include <linux/spi/spidev.h>	// Needed for SPI port
+#include <wiringPiSPI.h>      // Needed for SPI communication
+#include <fcntl.h>            // Needed for SPI port
+#include <sys/ioctl.h>        // Needed for SPI port
+#include <linux/spi/spidev.h> // Needed for SPI port
 
-namespace raspberry
+namespace openiolink
 {
-    // NOTE: on Raspberry Pi, we use both SPI channels that are available
-
-    template <int SpiPort>
-    bool SPI<SpiPort>::init()
+    namespace raspberry
     {
-        static_assert(SpiPort == 0 || SpiPort == 1);
+        template <int SpiPort>
+        bool SPIClass<SpiPort>::mInitDone = false;
 
-        if (!mInitDone)
+        // NOTE: on Raspberry Pi, we use both SPI channels that are available
+
+        template <int SpiPort>
+        bool SPIClass<SpiPort>::init()
         {
-            wiringPiSPISetup(SpiPort, spi_speed);
-            mInitDone = true;
+            static_assert(SpiPort == 0 || SpiPort == 1);
+
+            if (!mInitDone)
+            {
+                wiringPiSPISetup(SpiPort, spi_speed);
+                mInitDone = true;
+            }
+            return BoolSuccess;
         }
-        return BoolSuccess;
-    }
 
     } // namespace raspberry
+} // namespace openiolink

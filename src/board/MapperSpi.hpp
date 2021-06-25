@@ -28,26 +28,35 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAPPERSPI_HPP
 #define MAPPERSPI_HPP
 
-#include "SpiArduino.hpp"
-#include "SpiRaspberry.hpp"
-#include "platform.hpp"
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/SpiArduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/SpiRaspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
+#include "platform.hpp" // namespace platform
 
 namespace openiolink
 {
     template <int SPINr>
     struct MapperSpi
     {
-        using SPI = platform::SPI<SPINr>;
+        using SPI = platform::SPIClass<SPINr>;
 
         // If your Board Support Package library for SPI needs GPIO numbers for
-        // MISO, MOSI, SCK, ... you should define them in 
-        //      yourplatform::MapperSpi 
+        // MISO, MOSI, SCK, ... you should define them in
+        //      yourplatform::MapperSpi
         // and then access them from here like this:
-        //      static constexpr int MISOPinNr = platform::MapperSpi::MISOPinNr
+        //      static constexpr int MISOPinNr = platform::MapperSpi<SPINr>::MISOPinNr
         // DO NOT write hardcoded pinnumbers in this file (MapperSpi.hpp).
     };
 
