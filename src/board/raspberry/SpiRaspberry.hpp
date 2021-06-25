@@ -30,6 +30,8 @@
 #define SPI_RASPBERRY_HPP
 
 #include <iostream>
+#include <wiringPi.h>
+#include <wiringPiSPI.h> // Needed for SPI communication
 
 namespace openiolink
 {

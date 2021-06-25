@@ -110,7 +110,7 @@ namespace openiolink
         template <int GpioNr>
         inline void OutputPin<GpioNr>::init()
         {
-            init(GpioNr, PinModes::out);
+            PinBase::init(GpioNr, PinModes::out);
         }
 
         //!*************************************************************************
@@ -158,7 +158,7 @@ namespace openiolink
         template <int GpioNr>
         inline void InputPin<GpioNr>::init()
         {
-            init(GpioNr, PinModes::in_pullup); // TODO: is pullup neccessary?
+            PinBase::init(GpioNr, PinModes::in_pullup); // TODO: is pullup neccessary?
         }
 
         //!*************************************************************************
