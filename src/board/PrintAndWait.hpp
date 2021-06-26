@@ -3,12 +3,12 @@
 //!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
-//! \brief  Function declarations to 
+//! \brief  Function declarations to
 //!             - print a message to the console
 //!             - wait some time in ms
 //!
-//! \note   There shall be an implementation (PrintAndWait.cpp) for each 
-//!         platform in the corresponding subdirectory.
+//! \note   Each platform has its own implementation (PrintAndWait.cpp) of these
+//!         functions in its own subdirectory.
 //!
 //! \date   2021-06-18
 //!
@@ -34,14 +34,14 @@
 #ifndef PRINTANDWAIT_HPP
 #define PRINTANDWAIT_HPP
 
-#include <iostream>
+#include <iostream> // uint32_t
 
 namespace openiolink
 {
 
     void print(char const *buf);
     void print(const int number);
-    void wait(uint32_t ms);
+    void wait_ms(uint32_t ms);
 
 } // namespace openiolink
 
