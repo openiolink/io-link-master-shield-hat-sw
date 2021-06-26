@@ -29,12 +29,13 @@
 #ifndef OPENIOLINK_IOLMASTER_HPP
 #define OPENIOLINK_IOLMASTER_HPP
 
-//#include "SystemManagement.hpp"
-//#include "ApplicationLayer.hpp"
+//! Include the header file with the class describing the IO-Link Master PCB here!
 #include "board/OpeniolinkShieldHat.hpp"
 
-//#include "IOLinkConfig.hpp"
-#include "board/Max14819_Port.hpp" // TODO remove (see end of this file)
+#include "IOLinkConfig.hpp"
+
+//#include "SystemManagement.hpp"
+//#include "ApplicationLayer.hpp"
 
 //#include "GenericIOLDevice.hpp"
 namespace openiolink
@@ -76,7 +77,7 @@ namespace openiolink
         //ApplicationLayer mAL; //!< the "application layer" (part of the IO-Link stack)
         //SystemManagement mSM; //!< the "system management" (part of the IO-Link stack)
 
-        OpeniolinkShieldHat mPCB; //!< the shield or hat
+        config::IOLMasterPCB mPCB; //!< the shield or hat
 
         //! \brief  currently connected IO-Link Devices
         //! \note   provided by user via connectDevice()
@@ -115,11 +116,8 @@ namespace openiolink
     //! \note   The user application must instantiate this class once per
     //!         IO-Link-Master in use.
     //!
-    //! \todo   Max14819_Port von config-header beziehen, nicht hardcodiert hier.
-    //!
     //!*************************************************************************
-    using IOLMaster = IOLMasterClass<Max14819_Port>;
-    //typedef IOLMasterClass<Max14819_Port> IOLMaster; // this would say the same
+    using IOLMaster = IOLMasterClass<config::IOLMasterPortImplementation>;
 
 } // namespace openiolink
 

@@ -39,6 +39,8 @@
 
 #include "IOLMessage.hpp"
 //#include "GenericIOLDevice.hpp"
+#include <assert.h>
+#include <iostream> // for DEBUG (std::cout)
 
 namespace openiolink
 {
