@@ -32,163 +32,178 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef PIN_RASPBERRY_HPP
 #define PIN_RASPBERRY_HPP
 
-#include <wiringpi.h>
+#include <wiringPi.h>
 
-namespace openiolink::raspberry
+namespace openiolink
 {
-    //!*************************************************************************
-    //! \brief  Available possibilities of modes of a pin (GPIO)
-    //!
-    //! \note   OUTPUT and INPUT are part of the WiringPi library.
-    //!
-    //!*************************************************************************
-    enum class PinModes
+    namespace raspberry
     {
-        out = OUTPUT,
-        in = INPUT,
-        in_pullup,
-        in_pulldown
-    };
-
-    ////////////////////////////////////////////////////////////////////////////
-    //!*************************************************************************
-    //! \brief  Base class for pin classes to avoid multiple generation of the
-    //!         init() method (because pin classes are templates).
-    //!
-    //! \note   This class is not intended to be instantiated.
-    //!
-    //!*************************************************************************
-    class PinBase
-    {
-    protected:
-        static inline void init(const int gpioNr, const PinModes mode);
-    };
-
-    //!*************************************************************************
-    //! \brief  Initializes the pin
-    //!
-    //! \param name the enumerated pinname
-    //!
-    //! \param mode mode of the pin
-    //!
-    //! \note   refer to http://wiringpi.com/reference/core-functions/
-    //!
-    //!*************************************************************************
-    inline void PinBase::init(const int gpioNr, const PinModes mode) // TODO make non-inline?
-    {
-        if (mode == PinModes::out)
+        //!*************************************************************************
+        //! \brief  Available possibilities of modes of a pin (GPIO)
+        //!
+        //! \note   OUTPUT and INPUT are part of the WiringPi library.
+        //!
+        //!*************************************************************************
+        enum class PinModes
         {
-            pinMode(gpioNr, PinModes::out);
-        }
-        else
+            out = OUTPUT,
+            in = INPUT,
+            in_pullup,
+            in_pulldown
+        };
+
+        ////////////////////////////////////////////////////////////////////////////
+        //!*************************************************************************
+        //! \brief  Base class for pin classes to avoid multiple generation of the
+        //!         init() method (because pin classes are templates).
+        //!
+        //! \note   This class is not intended to be instantiated.
+        //!
+        //!*************************************************************************
+        class PinBase
         {
-            pinMode(gpioNr, PinModes::in);
-            if (mode == PinModes::in_pullup)
+        protected:
+            static inline void init(const int gpioNr, const PinModes mode);
+        };
+
+        //!*************************************************************************
+        //! \brief  Initializes the pin
+        //!
+        //! \param name the enumerated pinname
+        //!
+        //! \param mode mode of the pin
+        //!
+        //! \note   refer to http://wiringpi.com/reference/core-functions/
+        //!
+        //!*************************************************************************
+        inline void PinBase::init(const int gpioNr, const PinModes mode) // TODO make non-inline?
+        {
+            if (mode == PinModes::out)
             {
-                pullUpDnControl(gpioNr, PUD_UP);
-            }
-            else if (mode == PinModes::in_pulldown)
-            {
-                pullUpDnControl(gpioNr, PUD_DOWN);
+                pinMode(gpioNr, static_cast<int>(PinModes::out));
             }
             else
             {
-                pullUpDnControl(gpioNr, PUD_OFF);
+                pinMode(gpioNr, static_cast<int>(PinModes::in));
+                if (mode == PinModes::in_pullup)
+                {
+                    pullUpDnControl(gpioNr, PUD_UP);
+                }
+                else if (mode == PinModes::in_pulldown)
+                {
+                    pullUpDnControl(gpioNr, PUD_DOWN);
+                }
+                else
+                {
+                    pullUpDnControl(gpioNr, PUD_OFF);
+                }
             }
         }
-    }
 
-    ////////////////////////////////////////////////////////////////////////////
-    //!*************************************************************************
-    //! \brief  This class can be used to access an output GPIO.
-    //!
-    //! \note   This class is not intended to be instantiated.
-    //!
-    //!*************************************************************************
-    template <int GpioNr>
-    class OutputPin : public PinBase
-    {
-    public:
-        static inline void init();
-        static inline void setLow();
-        static inline void setHigh();
+        ////////////////////////////////////////////////////////////////////////////
+        //!*************************************************************************
+        //! \brief  This class can be used to access an output GPIO.
+        //!
+        //! \note   This class is not intended to be instantiated.
+        //!
+        //!*************************************************************************
+        template <int GpioNr>
+        class OutputPin : public PinBase
+        {
+        public:
+            static inline void init();
+            static inline void setLow();
+            static inline void setHigh();
 
-    private:
-        //static constexpr int mGpioNr = GpioNr;
-    };
+        private:
+            //static constexpr int mGpioNr = GpioNr;
+        };
 
-    //!*************************************************************************
-    //! \brief  Initializes the pin as output
-    //!
-    //!*************************************************************************
-    template <int GpioNr>
-    inline void OutputPin<GpioNr>::init()
-    {
-        init(GpioNr, PinModes::out);
-    }
+        //!*************************************************************************
+        //! \brief  Initializes the pin as output
+        //!
+        //!*************************************************************************
+        template <int GpioNr>
+        inline void OutputPin<GpioNr>::init()
+        {
+            PinBase::init(GpioNr, PinModes::out);
+        }
 
-    //!*************************************************************************
-    //! \brief  Sets the pin to low
-    //!
-    //!*************************************************************************
-    template <int GpioNr>
-    inline void OutputPin<GpioNr>::setLow()
-    {
-        digitalWrite(mGpioNr, 0);
-    }
+        //!*************************************************************************
+        //! \brief  Sets the pin to low
+        //!
+        //!*************************************************************************
+        template <int GpioNr>
+        inline void OutputPin<GpioNr>::setLow()
+        {
+            digitalWrite(GpioNr, 0);
+        }
 
-    //!*************************************************************************
-    //! \brief  Sets the pin to high
-    //!
-    //!*************************************************************************
-    template <int GpioNr>
-    inline void OutputPin<GpioNr>::setHigh()
-    {
-        digitalWrite(mGpioNr, 1);
-    }
+        //!*************************************************************************
+        //! \brief  Sets the pin to high
+        //!
+        //!*************************************************************************
+        template <int GpioNr>
+        inline void OutputPin<GpioNr>::setHigh()
+        {
+            digitalWrite(GpioNr, 1);
+        }
 
-    ////////////////////////////////////////////////////////////////////////////
-    //!*************************************************************************
-    //! \brief  This class can be used to access an input GPIO.
-    //!
-    //! \note   This class is not intended to be instantiated.
-    //!
-    //!*************************************************************************
-    template <int GpioNr>
-    class InputPin : public PinBase
-    {
-    public:
-        static inline void init();
-        static inline bool getState();
+        ////////////////////////////////////////////////////////////////////////////
+        //!*************************************************************************
+        //! \brief  This class can be used to access an input GPIO.
+        //!
+        //! \note   This class is not intended to be instantiated.
+        //!
+        //!*************************************************************************
+        template <int GpioNr>
+        class InputPin : public PinBase
+        {
+        public:
+            static inline void init();
+            static inline bool getState();
 
-    private:
-        //static constexpr int mGpioNr = GpioNr;
-    };
+        private:
+            //static constexpr int mGpioNr = GpioNr;
+        };
 
-    //!*************************************************************************
-    //! \brief  Initializes the pin as input
-    //!
-    //!*************************************************************************
-    template <int GpioNr>
-    inline void InputPin<GpioNr>::init()
-    {
-        init(GpioNr, PinModes::in_pullup); // TODO: is pullup neccessary?
-    }
+        //!*************************************************************************
+        //! \brief  Initializes the pin as input
+        //!
+        //!*************************************************************************
+        template <int GpioNr>
+        inline void InputPin<GpioNr>::init()
+        {
+            PinBase::init(GpioNr, PinModes::in_pullup); // TODO: is pullup neccessary?
+        }
 
-    //!*************************************************************************
-    //! \brief  Returns the current state of the pin
-    //!
-    //!*************************************************************************
-    template <int GpioNr>
-    inline bool InputPin<GpioNr>::getState()
-    {
-        return static_cast<bool>(digitalRead(GpioNr));
-    }
+        //!*************************************************************************
+        //! \brief  Returns the current state of the pin
+        //!
+        //!*************************************************************************
+        template <int GpioNr>
+        inline bool InputPin<GpioNr>::getState()
+        {
+            return static_cast<bool>(digitalRead(GpioNr));
+        }
 
-} // namespace openiolink::raspberry
+    } // namespace raspberry
+} // namespace openiolink
 
+// We need to include "our" .cpp file here. Explanation:
+// Part of the methods of the class template declared in this .hpp file may be
+// defined in the same-named .cpp file. Since these are template methods the
+// compiler won't do anything when compiling the .cpp file, because he does not
+// know the actual template parameter(s) (value or type) that will be given when
+// the template is instatiated.
+// Wherever this class template will be used (i.e. instantiated), the compiler
+// will only have this .hpp at hand (assuming it was included), but lacks the
+// implementation details (the definitions). Those are located in the .cpp and
+// tis is why we include the .cpp file here.
+// (There may be other solutions to this problem, see e.g.
+// https://www.codeproject.com/Articles/48575/How-to-Define-a-Template-Class-in-a-h-File-and-Imp)
+#include "Pin_Raspberry.cpp"
 #endif

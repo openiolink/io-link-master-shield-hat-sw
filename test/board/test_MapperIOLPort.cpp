@@ -9,10 +9,10 @@ namespace openiolink
 {
 #if 1
 #define ARDUINO
-#undef RASPI
+#undef RASPBERRY
 #else
 #undef ARDUINO
-#define RASPI
+#define RASPBERRY
 #endif
 } // namespace openiolink
 

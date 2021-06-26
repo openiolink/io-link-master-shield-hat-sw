@@ -1,5 +1,5 @@
 //!*****************************************************************************
-//! \file   PrintAndWait.cpp
+//! \file   PrintAndWait_Arduino.cpp
 //!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
@@ -31,39 +31,43 @@
 //!
 //!*****************************************************************************
 
-#include "PrintAndWait.hpp"
+#include "../PrintAndWait.hpp"
 #include <Arduino.h>
 #include <stdio.h>
 
-//!*************************************************************************
-//! \brief  Prints a string to the default serial interface.
-//!
-//! \param buf [in] the string to print
-//!
-//!*************************************************************************
-inline void print(char const *buf)
+namespace openiolink
 {
-    printf("%s\n\r", buf);
-}
+    //!*************************************************************************
+    //! \brief  Prints a string to the default serial interface.
+    //!
+    //! \param buf [in] the string to print
+    //!
+    //!*************************************************************************
+    /*inline*/ void print(char const *buf)
+    {
+        printf("%s\n\r", buf);
+    }
 
-//!*************************************************************************
-//! \brief  Prints a number to the default serial interface.
-//!
-//! \param number [in]  the number to print
-//!
-//!*************************************************************************
-inline void print(const int number)
-{
-    printf("%d\n\r", number);
-}
+    //!*************************************************************************
+    //! \brief  Prints a number to the default serial interface.
+    //!
+    //! \param number [in]  the number to print
+    //!
+    //!*************************************************************************
+    /*inline*/ void print(const int number)
+    {
+        printf("%d\n\r", number);
+    }
 
-//!*************************************************************************
-//! \brief  Blocking delay
-//!
-//! \param ms [in]  time to wait in milliseconds
-//!
-//!*************************************************************************
-inline void wait(uint32_t ms)
-{
-    delay(ms);
-}
+    //!*************************************************************************
+    //! \brief  Blocking delay
+    //!
+    //! \param ms [in]  time to wait in milliseconds
+    //!
+    //!*************************************************************************
+    /*inline*/ void wait_ms(uint32_t ms)
+    {
+        delay(ms);
+    }
+
+} // namespace openiolink

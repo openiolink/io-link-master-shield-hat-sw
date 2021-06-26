@@ -29,79 +29,109 @@
 
 #include "OpeniolinkShieldHat.hpp"
 #include "Max14819.hpp"
+#include "PrintAndWait.hpp"
 
 namespace openiolink
 {
+    //!*************************************************************************
+    //! \brief  Construct a new OpeniolinkShieldHat object
+    //!
+    //! \note   To be compatible with the template template parameter of
+    //!         IOLMasterClass, the constructor of OpeniolinkShieldHat must not
+    //!         take any arguments.
+    //!
+    //!*************************************************************************
+    OpeniolinkShieldHat::OpeniolinkShieldHat(Max14819_Port<0> *port0, Max14819_Port<1> *port1,
+                                             Max14819_Port<2> *port2, Max14819_Port<3> *port3)
+        : mChip0{*port0, *port1}, mChip1{*port2, *port3} // FIXME this is a manual assignment independent of the mappers!
+    {
+        // TODO
+    }
+
+    //!*************************************************************************
+    //! \brief  Destruct the OpeniolinkShieldHat object
+    //!
+    //!*************************************************************************
+    OpeniolinkShieldHat::~OpeniolinkShieldHat()
+    {
+        // TODO
+    }
 
     //!*************************************************************************
     //! \brief  Initializes both MAX14819 IO-Link Transceiver chips
     //!
     //! \todo   Move the code to initialize a single chip to the method
-    //!         Max14819::init().
+    //!         ChipDef::configure().
+    //!
+    //! \note   This method was written by Janik Lehmann (CrazyGecko)
+    //!         and refactored by Tobias Gammeter.
     //!
     //!*************************************************************************
     void OpeniolinkShieldHat::configureBothMax14819()
     {
+        //!< alias to access the register definitions
+        using ChipDef = Max14819_Base;
+
         uint8_t shadowReg = 0;
         // Enable extern crystal
-        mChip0->writeRegister(Max14819::Clock, Max14819::TXTXENDis | Max14819::ClkOEn | Max14819::XtalEn); // Frequency is 14.745 MHz
+        mChip0.writeRegister(ChipDef::Clock, ChipDef::TXTXENDis | ChipDef::ClkOEn | ChipDef::XtalEn); // Frequency is 14.745 MHz
 
         // Enable clocking from another max14819
-        mChip1->writeRegister(Max14819::Clock, Max14819::TXTXENDis | Max14819::ExtClkEn | Max14819::ClkDiv0 | Max14819::ClkDiv1); // external OSC enable, 3.686 MHz input frequency
+        mChip1.writeRegister(ChipDef::Clock, ChipDef::TXTXENDis | ChipDef::ExtClkEn | ChipDef::ClkDiv0 | ChipDef::ClkDiv1); // external OSC enable, 3.686 MHz input frequency
 
-        mChip0->reset();
-        mChip1->reset();
+        mChip0.reset();
+        mChip1.reset();
 
         // Wait 1 s for turning on the powersupply for sensor
-        wait_for(Max14819::INIT_POWER_OFF_DELAY);
+        wait_ms(ChipDef::INIT_POWER_OFF_DELAY);
 
-        mChip0->writeRegister(Max14819::DrvrCurrLim, Max14819::CL1 | Max14819::CL0 | Max14819::CLBL1 | Max14819::CLBL0 | Max14819::ArEn); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
-        mChip1->writeRegister(Max14819::DrvrCurrLim, Max14819::CL1 | Max14819::CL0 | Max14819::CLBL1 | Max14819::CLBL0 | Max14819::ArEn); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
+        mChip0.writeRegister(ChipDef::DrvrCurrLim, ChipDef::CL1 | ChipDef::CL0 | ChipDef::CLBL1 | ChipDef::CLBL0 | ChipDef::ArEn); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
+        mChip1.writeRegister(ChipDef::DrvrCurrLim, ChipDef::CL1 | ChipDef::CL0 | ChipDef::CLBL1 | ChipDef::CLBL0 | ChipDef::ArEn); //CQ 500 mA currentlimit, 5 ms min error duration before interrupt
 
         // Initialize the port sepcific registers
         // PortA
-        shadowReg = mChip0->readRegister(Max14819::InterruptEn);
-        mChip0->writeRegister(Max14819::InterruptEn, Max14819::StatusIntEn | Max14819::WURQIntEn | Max14819::TxErrIntEnA | Max14819::RxErrIntEnA | Max14819::RxDaRdyIntEnA | shadowReg);
+        shadowReg = mChip0.readRegister(ChipDef::InterruptEn);
+        mChip0.writeRegister(ChipDef::InterruptEn, ChipDef::StatusIntEn | ChipDef::WURQIntEn | ChipDef::TxErrIntEnA | ChipDef::RxErrIntEnA | ChipDef::RxDaRdyIntEnA | shadowReg);
 
-        shadowReg = mChip1->readRegister(Max14819::InterruptEn);
-        mChip1->writeRegister(Max14819::InterruptEn, Max14819::StatusIntEn | Max14819::WURQIntEn | Max14819::TxErrIntEnA | Max14819::RxErrIntEnA | Max14819::RxDaRdyIntEnA | shadowReg);
+        shadowReg = mChip1.readRegister(ChipDef::InterruptEn);
+        mChip1.writeRegister(ChipDef::InterruptEn, ChipDef::StatusIntEn | ChipDef::WURQIntEn | ChipDef::TxErrIntEnA | ChipDef::RxErrIntEnA | ChipDef::RxDaRdyIntEnA | shadowReg);
 
         // Enable LedRxRdy and RyError LED
-        shadowReg = mChip0->readRegister(Max14819::LEDCtrl);
-        mChip0->writeRegister(Max14819::LEDCtrl, Max14819::RxRdyEnA | Max14819::RxErrEnA | shadowReg);
+        shadowReg = mChip0.readRegister(ChipDef::LEDCtrl);
+        mChip0.writeRegister(ChipDef::LEDCtrl, ChipDef::RxRdyEnA | ChipDef::RxErrEnA | shadowReg);
         // Initialize the Port A register
-        mChip0->writeRegister(Max14819::LCnfgA, Max14819::LRT0 | Max14819::LBL0 | Max14819::LBL1 | Max14819::LClimDis | Max14819::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        mChip0->writeRegister(Max14819::CQCfgA, Max14819::SinkSel0 | Max14819::PushPul);                                                // Int Current Sink, 5 mA, PushPull, Channel Enable
+        mChip0.writeRegister(ChipDef::LCnfgA, ChipDef::LRT0 | ChipDef::LBL0 | ChipDef::LBL1 | ChipDef::LClimDis | ChipDef::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+        mChip0.writeRegister(ChipDef::CQCfgA, ChipDef::SinkSel0 | ChipDef::PushPul);                                             // Int Current Sink, 5 mA, PushPull, Channel Enable
 
-        shadowReg = mChip1->readRegister(Max14819::LEDCtrl);
-        mChip1->writeRegister(Max14819::LEDCtrl, Max14819::RxRdyEnA | Max14819::RxErrEnA | shadowReg);
+        shadowReg = mChip1.readRegister(ChipDef::LEDCtrl);
+        mChip1.writeRegister(ChipDef::LEDCtrl, ChipDef::RxRdyEnA | ChipDef::RxErrEnA | shadowReg);
         // Initialize the Port A register
-        mChip1->writeRegister(Max14819::LCnfgA, Max14819::LRT0 | Max14819::LBL0 | Max14819::LBL1 | Max14819::LClimDis | Max14819::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        mChip1->writeRegister(Max14819::CQCfgA, Max14819::SinkSel0 | Max14819::PushPul);                                                // Int Current Sink, 5 mA, PushPull, Channel Enable
+        mChip1.writeRegister(ChipDef::LCnfgA, ChipDef::LRT0 | ChipDef::LBL0 | ChipDef::LBL1 | ChipDef::LClimDis | ChipDef::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+        mChip1.writeRegister(ChipDef::CQCfgA, ChipDef::SinkSel0 | ChipDef::PushPul);                                             // Int Current Sink, 5 mA, PushPull, Channel Enable
 
         // PortB
         // Set all Interrupts
-        shadowReg = mChip0->readRegister(Max14819::InterruptEn);
-        mChip0->writeRegister(Max14819::InterruptEn, Max14819::StatusIntEn | Max14819::WURQIntEn | Max14819::TxErrIntEnB | Max14819::RxErrIntEnB | Max14819::RxDaRdyIntEnB | shadowReg);
+        shadowReg = mChip0.readRegister(ChipDef::InterruptEn);
+        mChip0.writeRegister(ChipDef::InterruptEn, ChipDef::StatusIntEn | ChipDef::WURQIntEn | ChipDef::TxErrIntEnB | ChipDef::RxErrIntEnB | ChipDef::RxDaRdyIntEnB | shadowReg);
 
-        shadowReg = mChip1->readRegister(Max14819::InterruptEn);
-        mChip1->writeRegister(Max14819::InterruptEn, Max14819::StatusIntEn | Max14819::WURQIntEn | Max14819::TxErrIntEnB | Max14819::RxErrIntEnB | Max14819::RxDaRdyIntEnB | shadowReg);
+        shadowReg = mChip1.readRegister(ChipDef::InterruptEn);
+        mChip1.writeRegister(ChipDef::InterruptEn, ChipDef::StatusIntEn | ChipDef::WURQIntEn | ChipDef::TxErrIntEnB | ChipDef::RxErrIntEnB | ChipDef::RxDaRdyIntEnB | shadowReg);
 
         // Enable LedRxRdy and RyError LED
-        shadowReg = mChip0->readRegister(Max14819::LEDCtrl);
-        mChip0->writeRegister(Max14819::LEDCtrl, Max14819::RxRdyEnB | Max14819::RxErrEnB | shadowReg);
+        shadowReg = mChip0.readRegister(ChipDef::LEDCtrl);
+        mChip0.writeRegister(ChipDef::LEDCtrl, ChipDef::RxRdyEnB | ChipDef::RxErrEnB | shadowReg);
         // Initialize the Channel A register
-        mChip0->writeRegister(Max14819::LCnfgB, Max14819::LRT0 | Max14819::LBL0 | Max14819::LBL1 | Max14819::LClimDis | Max14819::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        mChip0->writeRegister(Max14819::CQCfgB, Max14819::SinkSel0 | Max14819::PushPul);                                                // Int Current Sink, 5 mA, PushPull, Channel Enable
+        mChip0.writeRegister(ChipDef::LCnfgB, ChipDef::LRT0 | ChipDef::LBL0 | ChipDef::LBL1 | ChipDef::LClimDis | ChipDef::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+        mChip0.writeRegister(ChipDef::CQCfgB, ChipDef::SinkSel0 | ChipDef::PushPul);                                             // Int Current Sink, 5 mA, PushPull, Channel Enable
 
-        shadowReg = mChip1->readRegister(Max14819::LEDCtrl);
-        mChip1->writeRegister(Max14819::LEDCtrl, Max14819::RxRdyEnB | Max14819::RxErrEnB | shadowReg);
+        shadowReg = mChip1.readRegister(ChipDef::LEDCtrl);
+        mChip1.writeRegister(ChipDef::LEDCtrl, ChipDef::RxRdyEnB | ChipDef::RxErrEnB | shadowReg);
         // Initialize the Channel A register
-        mChip1->writeRegister(Max14819::LCnfgB, Max14819::LRT0 | Max14819::LBL0 | Max14819::LBL1 | Max14819::LClimDis | Max14819::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        mChip1->writeRegister(Max14819::CQCfgB, Max14819::SinkSel0 | Max14819::PushPul);                                                // Int Current Sink, 5 mA, PushPull, Channel Enable
+        mChip1.writeRegister(ChipDef::LCnfgB, ChipDef::LRT0 | ChipDef::LBL0 | ChipDef::LBL1 | ChipDef::LClimDis | ChipDef::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
+        mChip1.writeRegister(ChipDef::CQCfgB, ChipDef::SinkSel0 | ChipDef::PushPul);                                             // Int Current Sink, 5 mA, PushPull, Channel Enable
 
         // Wait 0.2s for bootup of the device
-        wait_for(Max14819::INIT_BOOTUP_DELAY);
+        wait_ms(ChipDef::INIT_BOOTUP_DELAY);
     }
 
 } // namespace openiolink

@@ -1,11 +1,11 @@
 //!*****************************************************************************
-//! \file   MapperChip.hpp
+//! \file   IOLMaster.hpp
 //! 
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //! 
 //! \brief  Struct template to configure associations to a Transceiver chip
 //! 
-//! \date   2021-06-15
+//! \date   2021-06-22
 //! 
 //! 
 //! ****************************************************************************

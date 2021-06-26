@@ -28,7 +28,6 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef OPENIOLINK_PORTMODEOBSERVER_HPP
 #define OPENIOLINK_PORTMODEOBSERVER_HPP
 

@@ -87,9 +87,9 @@ namespace openiolink
         //!*****************************************************************************
         virtual void wakeUpRequest(){}; // todo move to private // TODO pure virtual // TODO rename to establishCommunication() (also in class Max14819_Port)
 
-        virtual void setMode(const Mode &targetMode);                             // TODO pure virtual
-        virtual uint8_t sendIOLData(const openiolink::IOLMessage &msg);           // TODO pure virtual
-        virtual uint8_t readIOLData(std::shared_ptr<openiolink::IOLMessage> msg); // TODO pure virtual
+        virtual void setMode(const Mode &targetMode); // TODO pure virtual
+        uint8_t sendIOLData(const openiolink::IOLMessage &msg);
+        uint8_t readIOLData(std::shared_ptr<openiolink::IOLMessage> msg);
         State getState();
         Mode getMode();
 

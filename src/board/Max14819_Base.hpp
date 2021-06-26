@@ -1,4 +1,50 @@
+//!*****************************************************************************
+//! \file   Max14819_Base.hpp
+//!
+//! \author Tobias Gammeter (tobias.gammeter@gmail.com)
+//!         based on the work of Janik Lehmann (CrazyGecko) and Pascal Frei (freip2)
+//!
+//! \brief  Base class for the maxim integrated Dual IO-Link Master Transceiver
+//!         MAX14819 containing (only) the timing, DI and register definitions
+//!
+//! \date   2021-06-26
+//!
+//!
+//! *****************************************************************************
+//!
+//! \copyright
+//! Copyright 2020 Bern University of Applied Sciences and Balluff AG
+//! \n\n
+//! Licensed under the Apache License, Version 2.0 (the "License");
+//! you may not use this file except in compliance with the License.
+//! You may obtain a copy of the License at
+//! \n\n
+//!     http://www.apache.org/licenses/LICENSE-2.0
+//! \n\n
+//! Unless required by applicable law or agreed to in writing, software
+//! distributed under the License is distributed on an "AS IS" BASIS,
+//! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//! See the License for the specific language governing permissions and
+//! limitations under the License.
+//!
+//!*****************************************************************************
+#ifndef MAX14819_BASE_HPP_INCLUDED
+#define MAX14819_BASE_HPP_INCLUDED
 
+#include <iostream> // uint8_t
+
+namespace openiolink // TODO ::PCB?
+{
+    //!*****************************************************************************
+    //! \brief  Base class for the MAX14819 containing (only) the  timing, DI and
+    //!         register definitions
+    //!
+    //! \note   It is not useful to have an object of this base class!
+    //!
+    //!*****************************************************************************
+    class Max14819_Base
+    {
+    public:
         //! \name MAX14819 DI Init defines
         //!\{
         static constexpr uint8_t CURRENT_SOURCE    = 0x02u;     //!< DI Init definition current source
@@ -205,3 +251,9 @@
 
         static constexpr uint8_t MAX_REG       = RevID; //!< register definition
         //! \}
+
+    }; // class Max14819_Base
+
+} // namespace openiolink // TODO ::PCB?
+
+#endif //MAX14819_BASE_HPP_INCLUDED

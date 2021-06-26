@@ -28,18 +28,28 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-
 #ifndef MAX14819_PORT_HPP_INCLUDED
 #define MAX14819_PORT_HPP_INCLUDED
 
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/Pin_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/Pin_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
+#include "Max14819.hpp"
 #include "protocol/IOLMasterPort.hpp"
 #include "protocol/IOLinkConfig.hpp"
 #include "MapperIOLPort.hpp"
-#include "Max14819.hpp"
-#include "platform.hpp" // namespace HW
-#include "Pin_Arduino.hpp"
-#include "Pin_Raspberry.hpp"
+#include "platform.hpp" // namespace platform
 #include "BicolorLed.hpp"
+#include "board/typedefs_board.hpp"
 
 namespace openiolink // TODO ::PCB?
 {
@@ -54,9 +64,13 @@ namespace openiolink // TODO ::PCB?
     //! \note   Objects of this class will be owned by "IOLMaster", not by "Max14819".
     //!
     //!*****************************************************************************
-    template <int IOLPortNr, int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr>
-    class Max14819_Port : public IOLMasterPort // TODO nachdem alle Klassen im namespace opeinolink sind: unnötige ns-Qualifizierer entfernen.
+    template <int IOLPortNr>
+    class Max14819_Port : public IOLMasterPort
     {
+    private: // FIXME ok to define this private? do users know wich chipnr to take!?
+        //!< the number of the chip to which this port belongs to
+        static constexpr int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr; // was defaulted template parameter
+
     public:
         //!*****************************************************************************
         //! \brief Saves some information about the communication
@@ -70,12 +84,14 @@ namespace openiolink // TODO ::PCB?
 
         Max14819_Port();
         virtual ~Max14819_Port();
-        virtual uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override;
-        virtual uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;
-        virtual void setMode(const Modes &targetMode) override;
-        virtual void wakeUpRequest() override;
+        virtual uint8_t sendIOLData(const /*FIXME OK?*/ uint8_t *data,
+                                    uint8_t sizeofdata, uint8_t sizeofanswer) override; // TODO static_assert(mChip!=nullptr)
+        virtual uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;        // TODO static_assert(mChip!=nullptr)
+        virtual void setMode(const Mode &targetMode) override;                          // TODO static_assert(mChip!=nullptr)
+        virtual void wakeUpRequest() override;                                          // TODO static_assert(mChip!=nullptr)
 
         inline CommunicationInfo getCommunicationInfo();
+        inline void setChip(Max14819<ChipNr> *chip);
 
         // TODO enableCyclicSend ??
         // TODO disableCyclicSend
@@ -99,36 +115,74 @@ namespace openiolink // TODO ::PCB?
             PORTB = 1
         };
 
-        //! chip to wich this port belongs to
-        typedef Max14819<ChipNr> Chip;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin;
-        typedef HW::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin;
-        typedef BicolorLed<IOLPortNr> StateLED;
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::DIPinNr> DIPin;       //!< Digital Input
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::RxRdyPinNr> RxRdyPin; //!< Rx Ready (LED)
+        typedef platform::InputPin<MapperIOLPort<IOLPortNr>::RxErrPinNr> RxErrPin; //!< Rx Error (LED)
+        typedef BicolorLed<IOLPortNr> StateLED;                                    //! multicolor state LED
+
+        typedef Max14819<ChipNr> Chip; //!< the chip to which this port belongs to
+        Chip *mChip = nullptr;         //!< the chip to which this port belongs to
+
+        //!*****************************************************************************
+        //! \brief alias to access the register definitions
+        //!
+        //!*****************************************************************************
+        using ChipDef = Max14819_Base;
+
+        // FIXME make code using ERROR or SUCCESS use BoolError or BoolSuccess diectly
+        static constexpr uint8_t ERROR = static_cast<uint8_t>(BoolError);     //!< return value for errors
+        static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
 
         //! describes which port=channel of the chip the object is
         static constexpr int channelNr = MapperIOLPort<IOLPortNr>::ChannelNr;
 
         CommunicationInfo detectedCOM;
+
+        void initGPIOs();
     }; // class Max14819_Port
 
     //**************************************************************************
     // Implementation of the inline Methods
     //**************************************************************************
 
-    //!*****************************************************************************
+    //!*************************************************************************
     //! \brief Get the Communication Info object
     //!TODO: change to getDetectedCOM()
     //! NOTE: to be used to detect success of estab. communic.
     //!
     //! \return CommunicationInfo
     //!
-    //!*****************************************************************************
-    // (= einfache Alternative zu `DL_Mode`)
-    inline Max14819_Port<IOLPortNr, ChipNr>::CommunicationInfo Max14819_Port<IOLPortNr, ChipNr>::getCommunicationInfo()
+    //!*************************************************************************
+    template <int IOLPortNr>
+    inline typename Max14819_Port<IOLPortNr>::CommunicationInfo Max14819_Port<IOLPortNr>::getCommunicationInfo()
     {
         return detectedCOM;
     }
 
+    //!*************************************************************************
+    //! \brief  set the pointer to the chip to wich this port belongs to
+    //!
+    //!*************************************************************************
+    template <int IOLPortNr>
+    inline void Max14819_Port<IOLPortNr>::setChip(Max14819<ChipNr> *chip)
+    {
+        static_assert(mChip == nullptr, "Max14819_Port: chip was already set!");
+        mChip = chip;
+    }
+
 } // namespace openiolink
-#endif //MAX14819_PORT_HPP_INCLUDED
+
+// We need to include "our" .cpp file here. Explanation:
+// Part of the methods of the class template declared in this .hpp file may be
+// defined in the same-named .cpp file. Since these are template methods the
+// compiler won't do anything when compiling the .cpp file, because he does not
+// know the actual template parameter(s) (value or type) that will be given when
+// the template is instatiated.
+// Wherever this class template will be used (i.e. instantiated), the compiler
+// will only have this .hpp at hand (assuming it was included), but lacks the
+// implementation details (the definitions). Those are located in the .cpp and
+// tis is why we include the .cpp file here.
+// (There may be other solutions to this problem, see e.g.
+// https://www.codeproject.com/Articles/48575/How-to-Define-a-Template-Class-in-a-h-File-and-Imp)
+#include "Max14819_Port.cpp"
+#endif // MAX14819_PORT_HPP_INCLUDED

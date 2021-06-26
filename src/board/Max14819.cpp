@@ -7,7 +7,7 @@
 //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
 //!         MAX14819
 //!
-//! \date   2020-11-18
+//! \date   2021-06-18
 //!
 //!
 //! *****************************************************************************
@@ -29,11 +29,11 @@
 //!
 //!*****************************************************************************
 
-#include "protocol/IOLMasterPort.hpp"
+// This .cpp file is included by the same-named .hpp file. For explanations see
+// the end of the .hpp file.
+// #include "Max14819.hpp"
 
-#include "Max14819.hpp"
-#include "Max14819_Port.hpp"
-
+// TODO centralize include management
 #ifdef ARDUINO
 #include <stdint.h>
 #include <stdio.h>
@@ -44,7 +44,7 @@
 
 namespace openiolink // TODO ::PCB?
 {
-
+    // TODO removable?
     //! \name Commands to read or write registers
     //!\{
     static constexpr uint8_t read = 0b00000001;  //!< read command
@@ -52,47 +52,32 @@ namespace openiolink // TODO ::PCB?
                                                  //!\}
 
     // -------------------------------------------------------------------------
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::Max14819(PortA &portA, PortB &portB)
+
+    //!*****************************************************************************
+    //! \brief  Construct a new Max14819 object
+    //!
+    //! \param portA    reference to the first Max14819_Port object
+    //!
+    //! \param portB    reference to the second Max14819_Port object
+    //!
+    //!*****************************************************************************
+    template <int ChipNr>
+    Max14819<ChipNr>::Max14819(Max14819_Port<ChAPortNr> &portA,
+                               Max14819_Port<ChBPortNr> &portB)
         : mPortA{portA}, mPortB{portB}
     {
-    }
-
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::~Max14819()
-    {
-    }
-
-    //!*****************************************************************************
-    //! \brief Initializes both ports of the chip
-    //!
-    //!
-    //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    void Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::init() 
-    {
+        initGPIOs();
+        SPI::init();
+        configure(); // needs SPI
     }
 
     //!*****************************************************************************
-    //! \brief Resets the whole chip
-    //!
-    //!
-    //! \return uint8_t 0 if success
+    //! \brief  Destruct the Max14819 object
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::reset()
+    template <int ChipNr>
+    Max14819<ChipNr>::~Max14819()
     {
-        uint8_t retValue = SUCCESS;
-        // Reset all max14819 registers
-        retValue = writeRegister(ChanStatA, Rst);
-        retValue = uint8_t(retValue | writeRegister(ChanStatB, Rst));
-        retValue = uint8_t(retValue | writeRegister(InterruptEn, 0));
-        retValue = uint8_t(retValue | writeRegister(LEDCtrl, 0));
-        retValue = uint8_t(retValue | writeRegister(Trigger, 0));
-        retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, 0));
-        // Return Error state
-        return retValue;
     }
 
     //!*****************************************************************************
@@ -104,8 +89,8 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t byte read from the register
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::readRegister(uint8_t reg)
+    template <int ChipNr>
+    uint8_t Max14819<ChipNr>::readRegister(uint8_t reg)
     {
         uint8_t channel = 0;
         uint8_t buf[2];
@@ -113,7 +98,8 @@ namespace openiolink // TODO ::PCB?
         // Check if register address is in the correct range
         if (reg > MAX_REG)
         {
-            debug_interface->print("Registeraddress out of range");
+            // FIXME
+            //debug_interface->print("Registeraddress out of range");
             return ERROR;
         }
         // Mask read register with the read cmd and set spi address of the max14819
@@ -124,7 +110,7 @@ namespace openiolink // TODO ::PCB?
         buf[1] = 0x00;
 
         // Send the device the register you want to read:
-        spi_interface->DataRW(buf, 2);
+        SPI::DataRW(buf, 2);
 
         // Return Registervalue
         return buf[1];
@@ -141,8 +127,8 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t 0 if success
     //!
     //!*****************************************************************************
-    template <int ChipNr, class SPI, int ChAPortNr, int ChBPortNr>
-    uint8_t Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::writeRegister(uint8_t reg, uint8_t data)
+    template <int ChipNr>
+    uint8_t Max14819<ChipNr>::writeRegister(uint8_t reg, uint8_t data)
     {
         uint8_t retValue = SUCCESS;
         uint8_t buf[2];
@@ -150,7 +136,8 @@ namespace openiolink // TODO ::PCB?
         // Check if register address is in the correct range
         if (reg > MAX_REG)
         {
-            debug_interface->print("Registeraddress out of range");
+            // FIXME
+            //debug_interface->print("Registeraddress out of range");
             return ERROR;
         }
         // Set write bit in register command
@@ -160,35 +147,53 @@ namespace openiolink // TODO ::PCB?
         // Send SPI telegram
         buf[0] = reg;
         buf[1] = data;
-        spi_interface->DataRW(buf, 2);
+        SPI::DataRW(buf, 2);
 
         // Return Error state
         return retValue;
     }
 
-    ////!*****************************************************************************
-    ////! \brief Get one of the ports
-    ////!
-    ////! \param port defines the port to return, either PORTA or PORTB
-    ////!
-    ////! \return reference to the port
-    ////!
-    ////!*****************************************************************************
-    //Max14819_Port &Max14819<ChipNr, SPI, ChAPortNr, ChBPortNr>::getPort(Max14819_Port::PortNr port)
-    //{
-    //    switch (port)
-    //    {
-    //    case Max14819_Port::PortNr::PORTA:
-    //        return PORTA;
-    //        break;
-    //    case Max14819_Port::PortNr::PORTB:
-    //        return PORTB;
-    //        break;
-    //
-    //    default:
-    //        return nullptr;
-    //        break;
-    //    }
-    //}
+    //!*****************************************************************************
+    //! \brief  Initializes the GPIOs that are associated to the chip.
+    //!
+    //!*****************************************************************************
+    template <int ChipNr>
+    void Max14819<ChipNr>::initGPIOs()
+    {
+        IRQPin::init();
+        CSPin::init();
+        CSPin::setHigh(); // deassert (chip select is low-active)
+    }
+
+    //!*****************************************************************************
+    //! \brief  Configures the chip
+    //! \todo   Move code from OpeniolinkShieldHat::configureBothMax14819() to here.
+    //!
+    //!*****************************************************************************
+    template <int ChipNr>
+    void Max14819<ChipNr>::configure()
+    {
+    }
+
+    //!*****************************************************************************
+    //! \brief  Resets the whole chip
+    //!
+    //! \return uint8_t 0 if success
+    //!
+    //!*****************************************************************************
+    template <int ChipNr>
+    uint8_t Max14819<ChipNr>::reset()
+    {
+        uint8_t retValue = SUCCESS;
+        // Reset all max14819 registers
+        retValue = writeRegister(ChanStatA, Rst);
+        retValue = uint8_t(retValue | writeRegister(ChanStatB, Rst));
+        retValue = uint8_t(retValue | writeRegister(InterruptEn, 0));
+        retValue = uint8_t(retValue | writeRegister(LEDCtrl, 0));
+        retValue = uint8_t(retValue | writeRegister(Trigger, 0));
+        retValue = uint8_t(retValue | writeRegister(DrvrCurrLim, 0));
+        // Return Error state
+        return retValue;
+    }
 
 } // namespace openiolink // TODO ::PCB?

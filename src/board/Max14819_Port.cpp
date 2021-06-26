@@ -29,10 +29,13 @@
 //!
 //!*****************************************************************************
 
-#include "protocol/IOLMasterPort.hpp"
+// This .cpp file is included by the same-named .hpp file. For explanations see
+// the end of the .hpp file.
+// #include "Max14819_Port.hpp"
 
-#include "Max14819_Port.hpp"
 #include "Max14819.hpp"
+#include "protocol/IOLMasterPort.hpp"
+#include "board/PrintAndWait.hpp"
 
 #ifdef ARDUINO
 #include <stdint.h>
@@ -44,29 +47,26 @@
 
 namespace openiolink // TODO ::PCB?
 {
-
-    //! \name Commands to read or write registers
-    //!\{
-    constexpr uint8_t read = 0b00000001;  //!< read command
-    constexpr uint8_t write = 0b01111111; //!< write command
-
-    //!\}
-
-    //--------------------------------------------------------------------------
-
     //!*****************************************************************************
-    //! \brief Construct a new Max14819_Port object
+    //! \brief  Construct a new Max14819_Port object
+    //!
+    //! \note   To be compatible with the template template parameter of
+    //!         IOLMasterClass, the constructor of Max14819_Port must not take any
+    //!         arguments.
     //!
     //!*****************************************************************************
-    Max14819_Port<IOLPortNr, ChipNr>::Max14819_Port() : detectedCOM{0U, 0U}
+    template <int IOLPortNr>
+    Max14819_Port<IOLPortNr>::Max14819_Port() : detectedCOM{0U, 0U}
     {
+        initGPIOs();
     }
 
     //!*****************************************************************************
     //! \brief Destroy the Max14819_Port object
     //!
     //!*****************************************************************************
-    Max14819_Port<IOLPortNr, ChipNr>::~Max14819_Port()
+    template <int IOLPortNr>
+    Max14819_Port<IOLPortNr>::~Max14819_Port()
     {
     }
 
@@ -83,9 +83,10 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t 0 if success
     //!
     //!*****************************************************************************
-    //template <int IOLPortNr, int ChipNr>
-    //Max14819_Port<IOLPortNr, ChipNr>::writeIOLData()
-    uint8_t Max14819_Port<IOLPortNr, ChipNr>::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
+    template <int IOLPortNr>
+    uint8_t Max14819_Port<IOLPortNr>::sendIOLData(const /*FIXME OK?*/ uint8_t *data,
+                                                  uint8_t sizeofdata,
+                                                  uint8_t sizeofanswer)
     {
         uint8_t retValue = SUCCESS;
         uint8_t offset = 0;
@@ -95,14 +96,14 @@ namespace openiolink // TODO ::PCB?
             offset = 1; // PORTB Registers are 1 address higher than PORTA Register
         }
 
-        retValue = uint8_t(retValue | chip->writeRegister(TxRxDataA + offset, sizeofanswer)); // number of bytes for answer
-        retValue = uint8_t(retValue | chip->writeRegister(TxRxDataA + offset, sizeofdata));   // number of bytes for answer
+        retValue = uint8_t(retValue | mChip->writeRegister(ChipDef::TxRxDataA + offset, sizeofanswer)); // number of bytes for answer
+        retValue = uint8_t(retValue | mChip->writeRegister(ChipDef::TxRxDataA + offset, sizeofdata));   // number of bytes for answer
         // send data
         for (uint8_t i = 0; i < sizeofdata; i++)
         {
-            retValue = uint8_t(retValue | chip->writeRegister(TxRxDataA + offset, data[i]));
+            retValue = uint8_t(retValue | mChip->writeRegister(ChipDef::TxRxDataA + offset, data[i]));
         }
-        retValue = uint8_t(retValue | chip->writeRegister(CQCtrlA + offset, CQSend | communicationInfo.comSpeed));
+        retValue = uint8_t(retValue | mChip->writeRegister(ChipDef::CQCtrlA + offset, ChipDef::CQSend | detectedCOM.comSpeed));
         return retValue;
     }
 
@@ -117,23 +118,23 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t 0 if success
     //!
     //!*****************************************************************************
-    template <int IOLPortNr, int ChipNr>
-    uint8_t Max14819_Port<IOLPortNr, ChipNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
+    template <int IOLPortNr>
+    uint8_t Max14819_Port<IOLPortNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
     {
         uint8_t bufferRegister;
         uint8_t retValue = SUCCESS;
         // Use corresponding transmit FIFO address
         uint8_t offset = 0;
         // Todo remove offset and replace with enum
-        if (port == Port::PORTB)
+        if (channelNr == Port::PORTB)
         {
             offset = 1; // PORTB Registers are 1 address higher than PORTA Register
         }
 
-        chip->wait->ms(10); // TODO another solution to wait for an iol answer should be implemented
+        wait_ms(10); // TODO another solution to wait for an iol answer should be implemented
 
         // Controll if the aswer has the expected length (first byte in the FIFO is the messagelength)
-        if (sizeofdata != chip->readRegister(bufferRegister))
+        if (sizeofdata != mChip->readRegister(bufferRegister))
         {
             // TODO Error Handling if Buffer is corrupted
             retValue = ERROR;
@@ -142,7 +143,7 @@ namespace openiolink // TODO ::PCB?
         // Read data from FIFO
         for (uint8_t i = 0; i < sizeofdata; i++)
         {
-            *data++ = chip->readRegister(bufferRegister);
+            *data++ = mChip->readRegister(bufferRegister);
         }
         // Return Error state
         return retValue;
@@ -153,8 +154,8 @@ namespace openiolink // TODO ::PCB?
     //!
     //!
     //!*****************************************************************************
-    template <int IOLPortNr, int ChipNr>
-    void Max14819_Port<IOLPortNr, ChipNr>::setMode(const Modes &targetMode)
+    template <int IOLPortNr>
+    void Max14819_Port<IOLPortNr>::setMode(const Mode &targetMode)
     {
         // TODO set mode
     }
@@ -165,9 +166,8 @@ namespace openiolink // TODO ::PCB?
     //! \note   Specification 5.2.2.2 (PL_WakeUp.req)
     //! TODO: rename to establishCom()
     //!*****************************************************************************
-    //Specification 5.2.2.2 (PL_WakeUp.req)
-    template <int IOLPortNr, int ChipNr>
-    void Max14819_Port<IOLPortNr, ChipNr>::wakeUpRequest()
+    template <int IOLPortNr>
+    void Max14819_Port<IOLPortNr>::wakeUpRequest()
     {
         uint8_t retValue = 0;
         uint8_t comReqRunning = 0;
@@ -175,58 +175,72 @@ namespace openiolink // TODO ::PCB?
         uint16_t length = 0;
         uint8_t offset = 0;
 
-        if (port == Port::PORTB)
+        if (channelNr == Port::PORTB)
         {
             offset = 1; // PORTB Registers are 1 address higher than PORTA Register
         }
 
         // Start wakeup and communcation
-        retValue = uint8_t(retValue | chip->writeRegister(IOStCfgA + offset, 0));         // Disable tx needed for wake up
-        retValue = uint8_t(retValue | chip->writeRegister(ChanStatA + offset, FramerEn)); // Enable ChanA Framer
-        retValue = uint8_t(retValue | chip->writeRegister(MsgCtrlA + offset, 0));         // Dont use InsChks when transmit OD Data, max14819 doesnt calculate it right
-        retValue = uint8_t(retValue | chip->writeRegister(CQCtrlA + offset, EstCom));     // Start communication
+        retValue = uint8_t(retValue | mChip->writeRegister(ChipDef::IOStCfgA + offset, 0));                  // Disable tx needed for wake up
+        retValue = uint8_t(retValue | mChip->writeRegister(ChipDef::ChanStatA + offset, ChipDef::FramerEn)); // Enable ChanA Framer
+        retValue = uint8_t(retValue | mChip->writeRegister(ChipDef::MsgCtrlA + offset, 0));                  // Dont use InsChks when transmit OD Data, max14819 doesnt calculate it right
+        retValue = uint8_t(retValue | mChip->writeRegister(ChipDef::CQCtrlA + offset, ChipDef::EstCom));     // Start communication
 
         // Wait till establish communication sequence is over or timeout is reached
         do
         {
-            comReqRunning = chip->readRegister(CQCtrlA + offset);
-            comReqRunning &= EstCom;
+            comReqRunning = mChip->readRegister(ChipDef::CQCtrlA + offset);
+            comReqRunning &= ChipDef::EstCom;
             timeOutCounter++;
-            chip->wait->ms(1);
-        } while (comReqRunning || (timeOutCounter < INIT_WURQ_TIMEOUT));
+            wait_ms(1);
+        } while (comReqRunning || (timeOutCounter < ChipDef::INIT_WURQ_TIMEOUT));
 
-        chip->wait->ms(10);
+        wait_ms(10);
         // Clear buffer
-        length = chip->readRegister(RxFIFOLvlA + offset);
+        length = mChip->readRegister(ChipDef::RxFIFOLvlA + offset);
         for (uint8_t i = 0; i < length; i++)
         {
-            chip->readRegister(TxRxDataA + offset);
+            mChip->readRegister(ChipDef::TxRxDataA + offset);
         }
 
         // read communication speed
-        communicationInfo.comSpeed = chip->readRegister(CQCtrlA + offset) & (ComRt0 | ComRt1);
+        detectedCOM.comSpeed = mChip->readRegister(ChipDef::CQCtrlA + offset) & (ChipDef::ComRt0 | ChipDef::ComRt1);
 
         // Set correct communication speed in kBaud/s
-        switch (communicationInfo.comSpeed)
+        switch (detectedCOM.comSpeed)
         {
-        case ComRt0:
+        case ChipDef::ComRt0:
             // Communication established at 4.8 kBaud/s
-            communicationInfo.comSpeedBaud = 4800;
+            detectedCOM.comSpeedBaud = 4800;
             break;
-        case ComRt1:
+        case ChipDef::ComRt1:
             // Communication established at 38.4 kBaud/s
-            communicationInfo.comSpeedBaud = 38400;
+            detectedCOM.comSpeedBaud = 38400;
             break;
-        case (ComRt0 | ComRt1):
+        case (ChipDef::ComRt0 | ChipDef::ComRt1):
             // Communication established at 230.4 kBaud/s
-            communicationInfo.comSpeedBaud = 230400;
+            detectedCOM.comSpeedBaud = 230400;
             break;
         default:
             // No communication established or other error occured
-            communicationInfo.comSpeedBaud = 0;
+            detectedCOM.comSpeedBaud = 0;
             break;
         }
-        chip->debug_interface->print("wurq done");
+        print("wurq done");
         // return SUCCESS;
     }
+
+    //!*****************************************************************************
+    //! \brief  Initializes the GPIOs that are associated to the port.
+    //!
+    //!*****************************************************************************
+    template <int IOLPortNr>
+    void Max14819_Port<IOLPortNr>::initGPIOs()
+    {
+        DIPin::init();
+        RxRdyPin::init();
+        RxErrPin::init();
+        StateLED::init();
+    }
+
 } // namespace openiolink

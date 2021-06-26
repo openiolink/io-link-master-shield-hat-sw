@@ -26,8 +26,7 @@
 //!  limitations under the License.
 //!
 //!*****************************************************************************
-
-#ifndef IOLGENERICDEVICE_HPP_INCLUDED // TODO rename
+#ifndef IOLGENERICDEVICE_HPP_INCLUDED /* TODO rename */
 #define IOLGENERICDEVICE_HPP_INCLUDED
 
 #include "IOLMasterPort.hpp"

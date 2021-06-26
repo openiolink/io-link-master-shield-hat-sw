@@ -1,15 +1,11 @@
 //!*****************************************************************************
-//! \file   Pin_Raspberry.cpp
+//! \file   BicolorLED.cpp
 //!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
-//! \brief  Abstraction of input-GPIOs and output-GPIOs of an Raspberry Pi 3
+//! \brief  Abstraction of a bicolor LED
 //!
-//!         This module contains the following classes:
-//!         PinBase, OutputPin and InputPin
-//!         They are not intended to be instantiated.
-//!
-//! \date   2021-06-02
+//! \date   2021-06-18
 //!
 //!
 //! ****************************************************************************
@@ -33,11 +29,9 @@
 
 // This .cpp file is included by the same-named .hpp file. For explanations see
 // the end of the .hpp file.
-// #include "Pin_Raspberry.hpp"
+//#include "BicolorLed.hpp"
 
 namespace openiolink
 {
-    namespace raspberry
-    {
-    } // namespace raspberry
+
 } // namespace openiolink

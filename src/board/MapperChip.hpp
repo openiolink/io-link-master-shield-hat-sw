@@ -1,42 +1,53 @@
 //!*****************************************************************************
-//!  \file MapperChip.hpp
+//! \file   MapperChip.hpp
 //!
-//!  \author Tobias Gammeter (tobias.gammeter@gmail.com)
+//! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
-//!  \brief Struct template to configure associations to a Transceiver chip which
+//! \brief  Struct template to configure associations to a Transceiver chip which
 //!         are valid for the "IO-Link-Master-Shield/Hat" from openiolink
 //!         independent of the target plattform (e.g. Raspberry Pi or Arduino).
 //!
-//!  \date 2021-06-01
+//! \date   2021-06-01
+//!
+//! \note   This .hpp file has no associated .cpp file.
 //!
 //!
-//!  *****************************************************************************
+//! ****************************************************************************
 //!
-//!  \copyright
-//!  Copyright 2021 Bern University of Applied Sciences and Balluff AG
-//!  \n\n
-//!  Licensed under the Apache License, Version 2.0 (the "License");
-//!  you may not use this file except in compliance with the License.
-//!  You may obtain a copy of the License at
-//!  \n\n
-//!      http://www.apache.org/licenses/LICENSE-2.0
-//!  \n\n
-//!  Unless required by applicable law or agreed to in writing, software
-//!  distributed under the License is distributed on an "AS IS" BASIS,
-//!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//!  See the License for the specific language governing permissions and
-//!  limitations under the License.
+//! \copyright
+//! Copyright 2021 Bern University of Applied Sciences and Balluff AG
+//! \n\n
+//! Licensed under the Apache License, Version 2.0 (the "License");
+//! you may not use this file except in compliance with the License.
+//! You may obtain a copy of the License at
+//! \n\n
+//!     http://www.apache.org/licenses/LICENSE-2.0
+//! \n\n
+//! Unless required by applicable law or agreed to in writing, software
+//! distributed under the License is distributed on an "AS IS" BASIS,
+//! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//! See the License for the specific language governing permissions and
+//! limitations under the License.
 //!
 //!*****************************************************************************
+#ifndef MAPPERCHIP_HPP
+#define MAPPERCHIP_HPP
 
-#ifndef MAPPERCHIP_SHIELDHAT_H
-#define MAPPERCHIP_SHIELDHAT_H
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/MapperChip_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/MapperChip_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
 
-#include <iostream>
+// generic (other) headers
+#include <iostream> // uint8_t
 #include "MapperSpi.hpp"
-#include "MapperChip_Arduino.hpp"
-#include "MapperChip_Raspberry.hpp"
-#include "../platform.hpp"
+#include "platform.hpp" // namespace platform
 
 namespace openiolink
 {
@@ -65,17 +76,18 @@ namespace openiolink
             static constexpr int SPINr = 1;
             using SPI = MapperSpi<SPINr>::SPI;
         };
+
     }
 
     // TODO Doc
     template <int ChipNr>
     struct MapperChip
     {
-        static constexpr uint8_t SPIAddress = shield_hat::MapperChip::SPIAddress;
-        static constexpr int SPINr = shield_hat::MapperChip::SPINr;
-        using SPI = shield_hat::MapperChip::SPI;
-        static constexpr int CSPinNr = platform::MapperChip::CSPinNr;
-        static constexpr int IRQPinNr = platform::MapperChip::IRQPinNr;
+        static constexpr uint8_t SPIAddress = shield_hat::MapperChip<ChipNr>::SPIAddress;
+        static constexpr int SPINr = shield_hat::MapperChip<ChipNr>::SPINr;
+        using SPI = typename shield_hat::MapperChip<ChipNr>::SPI;
+        static constexpr int CSPinNr = platform::MapperChip<ChipNr>::CSPinNr;
+        static constexpr int IRQPinNr = platform::MapperChip<ChipNr>::IRQPinNr;
     };
 
     // TODO Doc
@@ -103,4 +115,4 @@ namespace openiolink
 
 } // namespace openiolink
 
-#endif // MAPPERCHIP_SHIELDHAT_H
+#endif // MAPPERCHIP_HPP

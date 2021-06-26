@@ -26,7 +26,6 @@
 //!  limitations under the License.
 //!  
 //!*****************************************************************************
-
 #ifndef IOLMESSAGE_HPP_INCLUDED
 #define IOLMESSAGE_HPP_INCLUDED
 
