@@ -89,10 +89,11 @@ namespace openiolink // TODO ::PCB?
 
         Max14819_Port();
         virtual ~Max14819_Port();
-        virtual uint8_t sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer) override; // TODO static_assert(mChip!=nullptr)
-        virtual uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;                       // TODO static_assert(mChip!=nullptr)
-        virtual void setMode(const Mode &targetMode) override;                                         // TODO static_assert(mChip!=nullptr)
-        virtual void wakeUpRequest() override;                                                         // TODO static_assert(mChip!=nullptr)
+        virtual uint8_t sendIOLData(const /*FIXME OK?*/ uint8_t *data,
+                                    uint8_t sizeofdata, uint8_t sizeofanswer) override; // TODO static_assert(mChip!=nullptr)
+        virtual uint8_t readIOLData(uint8_t *data, uint8_t sizeofdata) override;        // TODO static_assert(mChip!=nullptr)
+        virtual void setMode(const Mode &targetMode) override;                          // TODO static_assert(mChip!=nullptr)
+        virtual void wakeUpRequest() override;                                          // TODO static_assert(mChip!=nullptr)
 
         inline CommunicationInfo getCommunicationInfo();
         inline void setChip(Max14819<ChipNr> *chip);

@@ -30,6 +30,7 @@
 #define OPENIOLINK_OPENIOLINKSHIELDHAT_HPP
 
 #include "Max14819.hpp"
+#include "Max14819_Port.hpp"
 
 namespace openiolink
 {
@@ -38,7 +39,8 @@ namespace openiolink
     {
     public:
         // note: members not in initializer list: default initialization: https://en.cppreference.com/w/cpp/language/default_initialization
-        OpeniolinkShieldHat();
+        OpeniolinkShieldHat(Max14819_Port<0> *port0, Max14819_Port<1> *port1,
+                            Max14819_Port<2> *port2, Max14819_Port<3> *port3);
         ~OpeniolinkShieldHat();
         void configureBothMax14819();
 

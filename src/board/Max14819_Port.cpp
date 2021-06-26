@@ -96,7 +96,9 @@ namespace openiolink // TODO ::PCB?
     //Max14819_Port<IOLPortNr, ChipNr>::writeIOLData()
     template <int IOLPortNr>
     //uint8_t Max14819_Port<IOLPortNr, ChipNr>::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
-    uint8_t Max14819_Port<IOLPortNr>::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
+    uint8_t Max14819_Port<IOLPortNr>::sendIOLData(const /*FIXME OK?*/ uint8_t *data,
+                                                  uint8_t sizeofdata,
+                                                  uint8_t sizeofanswer)
     {
         uint8_t retValue = SUCCESS;
         uint8_t offset = 0;
