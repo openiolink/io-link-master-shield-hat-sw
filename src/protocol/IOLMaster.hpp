@@ -98,6 +98,7 @@ namespace openiolink
     //!                    Please consult the documentation for details.
     //!
     //!*************************************************************************
+    template <template <int IOLPortNr> class IOLMasterPortImplementation>
     inline void IOLMasterClass<IOLMasterPortImplementation>::stepFSM()
     {
         //mAL.stepFSM();
@@ -112,7 +113,7 @@ namespace openiolink
     //! \brief  This class represents the IO-Link Master.
     //!
     //! \note   The user application must instantiate this class once per
-    //!         Master in use.
+    //!         IO-Link-Master in use.
     //!
     //! \todo   Max14819_Port von config-header beziehen, nicht hardcodiert hier.
     //!
@@ -121,4 +122,20 @@ namespace openiolink
     //typedef IOLMasterClass<Max14819_Port> IOLMaster; // this would say the same
 
 } // namespace openiolink
+
+// We need to include "our" .cpp file here. Explanation:
+// Part of the methods of the class template declared in this .hpp file are
+// defined in the same-named .cpp file. Since these are template methods the
+// compiler won't do anything when compiling the .cpp file, because he does not
+// know the actual template parameter(s) (value or type) that will be given when
+// the template is instatiated.
+// Wherever this class template will be used (i.e. instantiated), the compiler
+// will only have this .hpp at hand (assuming it was included), but lacks the
+// implementation details (the definitions). Those are located in the .cpp and
+// tis is why we include the .cpp file here.
+// (There may be other solutions to this problem, see e.g.
+// https://www.codeproject.com/Articles/48575/How-to-Define-a-Template-Class-in-a-h-File-and-Imp)
+//#ifndef EDITING
+#include "IOLMaster.cpp"
+//#endif
 #endif

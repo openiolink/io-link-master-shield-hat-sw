@@ -27,10 +27,18 @@
 //!
 //!*****************************************************************************
 
-#include "IOLMaster.hpp"
-#include "GenericIOLDevice.hpp"
+//#define EDITING
+//#ifdef EDITING
+//#include "IOLMaster.hpp" // to enable syntax highlighting
+////#define OPENIOLINK_IOLMASTER_HPP
+//#endif
+//
+//#ifndef OPENIOLINK_IOLMASTER_HPP
+//#error "do not use this directly!"
+//#else
 
 #include "IOLMessage.hpp"
+//#include "GenericIOLDevice.hpp"
 
 namespace openiolink
 {
@@ -53,7 +61,7 @@ namespace openiolink
           //mSM{static_cast<IOLMasterPort &>(mPort0), static_cast<IOLMasterPort &>(mPort1),
           //    static_cast<IOLMasterPort &>(mPort2), static_cast<IOLMasterPort &>(mPort3),
           //    mAL.getDL(), mAL},
-          mPCB{} //and finally the shield/hat object.
+          mPCB{&mPort0, &mPort1, &mPort2, &mPort3} //and finally the shield/hat object.
           {
               // FIXME should there be a call to stepFSM() in this place?
           };
@@ -78,7 +86,7 @@ namespace openiolink
             break;
 
         default:
-            assert(false, "not port 0");
+            assert(false); // "not port 0"
             break;
         }
     }
@@ -88,7 +96,6 @@ namespace openiolink
     void IOLMasterClass<IOLMasterPortImplementation>::getPage1(const int port)
     {
         // FIXME currently ignores argument "port" and only returns Page1 of port 0!
-
 
         //!*****************************************************************************
         //!  \brief Page 1 data
@@ -112,8 +119,8 @@ namespace openiolink
                     uint8_t bytes[2];
                     uint16_t value;
                 } VendorID;
-                union _attribute__((__packed__))   // TODO, prüfen, ob __packed__ wirklich funktioniert (1): eins schreiben, andere lesen, (2): sizeof() prüfen
-                {     // damit es bei jedem Kompilieren die Grösse überprüft wird, z.B. 1/(13-sizeof(x)) sollte division /0 bzw. static_assert(). Falls dies nicht geht, Subtraktion der Addressen des letzten und ersten Elements.
+                union __attribute__((__packed__)) // TODO, prüfen, ob __packed__ wirklich funktioniert (1): eins schreiben, andere lesen, (2): sizeof() prüfen
+                {                                 // damit es bei jedem Kompilieren die Grösse überprüft wird, z.B. 1/(13-sizeof(x)) sollte division /0 bzw. static_assert(). Falls dies nicht geht, Subtraktion der Addressen des letzten und ersten Elements.
                     uint8_t bytes[3];
                     uint32_t value : 24;
                 } deviceID;
@@ -147,15 +154,16 @@ namespace openiolink
         std::cout << "read page1 data\n\r";
     }
 
-    }
-
     //
     //bind an IOL-Device to a port of the Master
     //NOTE: check the return value (false = OK, true = ERROR)
     //TODO: registerPortModeHandler(), registerALServiceHandler(), device.setAL()
     //[[nodiscard]] to force the user to use the returned value
+    template <template <int IOLPortNr> class IOLMasterPortImplementation>
     bool IOLMasterClass<IOLMasterPortImplementation>::connectDevice(const int portNr, const GenericIOLDevice &device)
     {
+        return true;
     }
 
 } // namespace openiolink
+//#endif
