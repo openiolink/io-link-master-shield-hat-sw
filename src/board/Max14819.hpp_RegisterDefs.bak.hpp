@@ -1,10 +1,4 @@
 
-        //! \name Error define
-        //!\{
-        static constexpr uint8_t ERROR  = static_cast<uint8_t>(BoolError);    //!< return value for errors
-        static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
-        //!\}
-
         //! \name MAX14819 DI Init defines
         //!\{
         static constexpr uint8_t CURRENT_SOURCE    = 0x02u;     //!< DI Init definition current source
@@ -211,5 +205,3 @@
 
         static constexpr uint8_t MAX_REG       = RevID; //!< register definition
         //! \}
-
-        static constexpr uint8_t MAX_MSG_LENGTH= 64; //!< maximal number of bytes to send (according to max14819 FIFO length)
