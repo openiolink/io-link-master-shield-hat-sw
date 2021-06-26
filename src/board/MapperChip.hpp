@@ -71,8 +71,8 @@ namespace openiolink
     {
         static constexpr uint8_t SPIAddress = 0x00;
         static constexpr int SPINr = 0;
-        //using SPI = MapperSpi<SPINr>::SPI;
-        using SPI = float;
+        using SPI = MapperSpi<SPINr>::SPI;
+        //using SPI = float;
         //typedef ::openiolink::MapperSpi<SPINr>::SPI SPI;
         //typedef MapperSpi<SPINr>::SPI SPI;
     };
@@ -83,8 +83,8 @@ namespace openiolink
     {
         static constexpr uint8_t SPIAddress = 0x02;
         static constexpr int SPINr = 1;
-        //using SPI = MapperSpi<SPINr>::SPI;
-        using SPI = uint32_t;
+        using SPI = MapperSpi<SPINr>::SPI;
+        //using SPI = uint32_t;
         //typedef MapperSpi<SPINr>::SPI SPI;
     };
 
@@ -97,8 +97,8 @@ namespace openiolink
     {
         static constexpr uint8_t SPIAddress = ShieldHatMapperChip<ChipNr>::SPIAddress;
         static constexpr int SPINr = ShieldHatMapperChip<ChipNr>::SPINr;
-        //using SPI = ShieldHatMapperChip<ChipNr>::SPI;
-        using SPI = uint16_t;
+        using SPI = typename ShieldHatMapperChip<ChipNr>::SPI;
+        //using SPI = uint16_t;
         static constexpr int CSPinNr = platform::MapperChip<ChipNr>::CSPinNr;
         static constexpr int IRQPinNr = platform::MapperChip<ChipNr>::IRQPinNr;
     };
