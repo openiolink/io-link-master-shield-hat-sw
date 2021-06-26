@@ -2,7 +2,7 @@
 // #include "catch.hpp"
 
 // #include "OpenIOLink.hpp" TODO
-#include <iostream>
+//#include <iostream>
 
 // includes for development purposes
 #include "protocol/IOLMaster.hpp"
@@ -34,9 +34,9 @@
 
 int main(int argc, char const *argv[])
 {
-    IOLMaster master;
-    master.wakeUpRequest(0);
-    master.getPage1(0);
+    openiolink::IOLMaster master;
+    master.wakeUpPort(0);
+    //master.getPage1(0);
 
     return 0;
 }

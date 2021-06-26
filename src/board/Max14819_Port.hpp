@@ -53,10 +53,6 @@ static_assert(false, "no known platform defined");
 
 namespace openiolink // TODO ::PCB?
 {
-    // FIXME make code using ERROR or SUCCESS use BoolError or BoolSuccess diectly
-    static constexpr uint8_t ERROR = static_cast<uint8_t>(BoolError);     //!< return value for errors
-    static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
-
     //!*****************************************************************************
     //! \brief  This class is the implementation of class IOLMasterPort (the
     //!         abstraction of the Physical Layer PL) for the MAX14819 IO-Link
@@ -126,6 +122,16 @@ namespace openiolink // TODO ::PCB?
 
         typedef Max14819<ChipNr> Chip; //!< the chip to which this port belongs to
         Chip *mChip = nullptr;         //!< the chip to which this port belongs to
+
+        //!*****************************************************************************
+        //! \brief alias to access the register definitions
+        //!
+        //!*****************************************************************************
+        using ChipDef = Max14819_Base;
+
+        // FIXME make code using ERROR or SUCCESS use BoolError or BoolSuccess diectly
+        static constexpr uint8_t ERROR = static_cast<uint8_t>(BoolError);     //!< return value for errors
+        static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
 
         //! describes which port=channel of the chip the object is
         static constexpr int channelNr = MapperIOLPort<IOLPortNr>::ChannelNr;

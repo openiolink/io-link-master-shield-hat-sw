@@ -57,9 +57,6 @@ namespace openiolink // TODO ::PCB?
     template <int PortNr>
     class Max14819_Port;
 
-    static constexpr uint8_t ERROR = static_cast<uint8_t>(BoolError);     //!< return value for errors
-    static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
-
     //!*****************************************************************************
     //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
     //!         MAX14819
@@ -89,6 +86,11 @@ namespace openiolink // TODO ::PCB?
 
     public:                                           // TODO private?
         static constexpr uint8_t MAX_MSG_LENGTH = 64; //!< maximal number of bytes to send (according to max14819 FIFO length)
+
+    private:
+        // FIXME make code using ERROR or SUCCESS use BoolError or BoolSuccess diectly
+        static constexpr uint8_t ERROR = static_cast<uint8_t>(BoolError);     //!< return value for errors
+        static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
 
     private:
         using SPI = typename MapperChip<ChipNr>::SPI; // was defaulted template parameter
