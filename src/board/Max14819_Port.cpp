@@ -56,7 +56,6 @@ namespace openiolink // TODO ::PCB?
     //!
     //!*****************************************************************************
     template <int IOLPortNr>
-    //Max14819_Port<IOLPortNr, ChipNr>::Max14819_Port() : detectedCOM{0U, 0U}
     Max14819_Port<IOLPortNr>::Max14819_Port() : detectedCOM{0U, 0U}
     {
         initGPIOs();
@@ -67,7 +66,6 @@ namespace openiolink // TODO ::PCB?
     //!
     //!*****************************************************************************
     template <int IOLPortNr>
-    //Max14819_Port<IOLPortNr, ChipNr>::~Max14819_Port()
     Max14819_Port<IOLPortNr>::~Max14819_Port()
     {
     }
@@ -85,10 +83,7 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t 0 if success
     //!
     //!*****************************************************************************
-    //template <int IOLPortNr, int ChipNr>
-    //Max14819_Port<IOLPortNr, ChipNr>::sendIOLData()
     template <int IOLPortNr>
-    //uint8_t Max14819_Port<IOLPortNr, ChipNr>::sendIOLData(uint8_t *data, uint8_t sizeofdata, uint8_t sizeofanswer)
     uint8_t Max14819_Port<IOLPortNr>::sendIOLData(const /*FIXME OK?*/ uint8_t *data,
                                                   uint8_t sizeofdata,
                                                   uint8_t sizeofanswer)
@@ -123,8 +118,6 @@ namespace openiolink // TODO ::PCB?
     //! \return uint8_t 0 if success
     //!
     //!*****************************************************************************
-    //template <int IOLPortNr, int ChipNr>
-    //uint8_t Max14819_Port<IOLPortNr, ChipNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
     template <int IOLPortNr>
     uint8_t Max14819_Port<IOLPortNr>::readIOLData(uint8_t *data, uint8_t sizeofdata)
     {
@@ -161,8 +154,6 @@ namespace openiolink // TODO ::PCB?
     //!
     //!
     //!*****************************************************************************
-    //template <int IOLPortNr, int ChipNr>
-    //void Max14819_Port<IOLPortNr, ChipNr>::setMode(const Mode &targetMode)
     template <int IOLPortNr>
     void Max14819_Port<IOLPortNr>::setMode(const Mode &targetMode)
     {

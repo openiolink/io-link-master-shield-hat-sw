@@ -101,13 +101,13 @@ namespace openiolink
         mChip0.writeRegister(ChipDef::LEDCtrl, ChipDef::RxRdyEnA | ChipDef::RxErrEnA | shadowReg);
         // Initialize the Port A register
         mChip0.writeRegister(ChipDef::LCnfgA, ChipDef::LRT0 | ChipDef::LBL0 | ChipDef::LBL1 | ChipDef::LClimDis | ChipDef::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        mChip0.writeRegister(ChipDef::CQCfgA, ChipDef::SinkSel0 | ChipDef::PushPul);                                                // Int Current Sink, 5 mA, PushPull, Channel Enable
+        mChip0.writeRegister(ChipDef::CQCfgA, ChipDef::SinkSel0 | ChipDef::PushPul);                                             // Int Current Sink, 5 mA, PushPull, Channel Enable
 
         shadowReg = mChip1.readRegister(ChipDef::LEDCtrl);
         mChip1.writeRegister(ChipDef::LEDCtrl, ChipDef::RxRdyEnA | ChipDef::RxErrEnA | shadowReg);
         // Initialize the Port A register
         mChip1.writeRegister(ChipDef::LCnfgA, ChipDef::LRT0 | ChipDef::LBL0 | ChipDef::LBL1 | ChipDef::LClimDis | ChipDef::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        mChip1.writeRegister(ChipDef::CQCfgA, ChipDef::SinkSel0 | ChipDef::PushPul);                                                // Int Current Sink, 5 mA, PushPull, Channel Enable
+        mChip1.writeRegister(ChipDef::CQCfgA, ChipDef::SinkSel0 | ChipDef::PushPul);                                             // Int Current Sink, 5 mA, PushPull, Channel Enable
 
         // PortB
         // Set all Interrupts
@@ -122,13 +122,13 @@ namespace openiolink
         mChip0.writeRegister(ChipDef::LEDCtrl, ChipDef::RxRdyEnB | ChipDef::RxErrEnB | shadowReg);
         // Initialize the Channel A register
         mChip0.writeRegister(ChipDef::LCnfgB, ChipDef::LRT0 | ChipDef::LBL0 | ChipDef::LBL1 | ChipDef::LClimDis | ChipDef::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        mChip0.writeRegister(ChipDef::CQCfgB, ChipDef::SinkSel0 | ChipDef::PushPul);                                                // Int Current Sink, 5 mA, PushPull, Channel Enable
+        mChip0.writeRegister(ChipDef::CQCfgB, ChipDef::SinkSel0 | ChipDef::PushPul);                                             // Int Current Sink, 5 mA, PushPull, Channel Enable
 
         shadowReg = mChip1.readRegister(ChipDef::LEDCtrl);
         mChip1.writeRegister(ChipDef::LEDCtrl, ChipDef::RxRdyEnB | ChipDef::RxErrEnB | shadowReg);
         // Initialize the Channel A register
         mChip1.writeRegister(ChipDef::LCnfgB, ChipDef::LRT0 | ChipDef::LBL0 | ChipDef::LBL1 | ChipDef::LClimDis | ChipDef::LEn); // Enable current retry 0.4s,  disable currentlimiting, enable Current
-        mChip1.writeRegister(ChipDef::CQCfgB, ChipDef::SinkSel0 | ChipDef::PushPul);                                                // Int Current Sink, 5 mA, PushPull, Channel Enable
+        mChip1.writeRegister(ChipDef::CQCfgB, ChipDef::SinkSel0 | ChipDef::PushPul);                                             // Int Current Sink, 5 mA, PushPull, Channel Enable
 
         // Wait 0.2s for bootup of the device
         wait_ms(ChipDef::INIT_BOOTUP_DELAY);

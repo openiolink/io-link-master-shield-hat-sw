@@ -64,8 +64,8 @@ namespace openiolink // TODO ::PCB?
     //! \note   Objects of this class will be owned by "IOLMaster", not by "Max14819".
     //!
     //!*****************************************************************************
-    template <int IOLPortNr>                   //, int ChipNr = MapperIOLPort<IOLPortNr>::ChipNr>
-    class Max14819_Port : public IOLMasterPort // TODO nachdem alle Klassen im namespace opeinolink sind: unnötige ns-Qualifizierer entfernen.
+    template <int IOLPortNr>
+    class Max14819_Port : public IOLMasterPort
     {
     private: // FIXME ok to define this private? do users know wich chipnr to take!?
         //!< the number of the chip to which this port belongs to
@@ -153,9 +153,7 @@ namespace openiolink // TODO ::PCB?
     //! \return CommunicationInfo
     //!
     //!*************************************************************************
-    // (= einfache Alternative zu `DL_Mode`)
     template <int IOLPortNr>
-    //inline Max14819_Port<IOLPortNr, ChipNr>::CommunicationInfo Max14819_Port<IOLPortNr, ChipNr>::getCommunicationInfo()
     inline typename Max14819_Port<IOLPortNr>::CommunicationInfo Max14819_Port<IOLPortNr>::getCommunicationInfo()
     {
         return detectedCOM;
@@ -166,7 +164,6 @@ namespace openiolink // TODO ::PCB?
     //!
     //!*************************************************************************
     template <int IOLPortNr>
-    //inline void Max14819_Port<IOLPortNr, ChipNr>::setChip(Max14819<ChipNr> *chip)
     inline void Max14819_Port<IOLPortNr>::setChip(Max14819<ChipNr> *chip)
     {
         static_assert(mChip == nullptr, "Max14819_Port: chip was already set!");

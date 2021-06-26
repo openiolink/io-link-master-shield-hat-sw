@@ -61,14 +61,8 @@ namespace openiolink // TODO ::PCB?
     //! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
     //!         MAX14819
     //!
-    //! \note   When referencing this class you MUST give the first template
-    //!         parameter (ChipNr) only!
-    //!
     //!*****************************************************************************
-    template <int ChipNr> //,
-                          //class SPI = typename MapperChip<ChipNr>::SPI,
-                          //int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr,
-                          //int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
+    template <int ChipNr>
     class Max14819 : Max14819_Base
     {
     private:
@@ -107,17 +101,6 @@ namespace openiolink // TODO ::PCB?
         void configure();
 
     }; // class Max14819
-
-    ////!*****************************************************************************
-    ////! \brief  Class for the maxim integrated Dual IO-Link Master Transceiver
-    ////!         MAX14819 (alias)
-    ////!
-    ////!*****************************************************************************
-    //template <int ChipNr>
-    //using Max14819Alias = Max14819<ChipNr,
-    //                               class SPI = typename MapperChip<ChipNr>::SPI,
-    //                               int ChAPortNr = BackMapperChip<ChipNr>::Ch1IOLPortNr,
-    //                               int ChBPortNr = BackMapperChip<ChipNr>::Ch2IOLPortNr>
 
 } // namespace openiolink // TODO ::PCB?
 
