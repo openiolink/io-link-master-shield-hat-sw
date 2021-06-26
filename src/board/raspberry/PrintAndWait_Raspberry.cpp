@@ -1,5 +1,5 @@
 //!*****************************************************************************
-//! \file   PrintAndWait.cpp
+//! \file   PrintAndWait_Raspberry.cpp
 //!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!

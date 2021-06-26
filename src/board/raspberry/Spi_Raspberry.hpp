@@ -1,9 +1,9 @@
 //!*****************************************************************************
-//! \file   SpiArduino.hpp
+//! \file   Spi_Raspberry.hpp
 //!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
-//! \brief  API for SPI on Arduino
+//! \brief  API for SPI on Raspberry Pi
 //!
 //! \date   2021-06-01
 //!
@@ -26,27 +26,37 @@
 //! limitations under the License.
 //!
 //!*****************************************************************************
-#ifndef SPI_ARDUINO_HPP
-#define SPI_ARDUINO_HPP
+#ifndef SPI_RASPBERRY_HPP
+#define SPI_RASPBERRY_HPP
 
 #include <iostream>
+#include <wiringPi.h>
+#include <wiringPiSPI.h> // Needed for SPI communication
 
 namespace openiolink
 {
-    namespace arduino
+    namespace raspberry
     {
         template <int SpiPort>
         class SPIClass
         {
         public:
             static bool init();
-            static bool DataRW(uint8_t *data, const int length);
+            static inline bool DataRW(uint8_t *data, const int length);
 
         private:
             static bool mInitDone;
+            static constexpr int spi_speed = 500000;
         };
 
-    } // namespace arduino
+        template <int SpiPort>
+        inline bool SPIClass<SpiPort>::DataRW(uint8_t *data, const int length)
+        {
+            int retval = wiringPiSPIDataRW(SpiPort, data, length);
+            return static_cast<bool>(retval);
+        }
+
+    } // namespace raspberry
 } // namespace openiolink
 
 // We need to include "our" .cpp file here. Explanation:
@@ -61,5 +71,5 @@ namespace openiolink
 // tis is why we include the .cpp file here.
 // (There may be other solutions to this problem, see e.g.
 // https://www.codeproject.com/Articles/48575/How-to-Define-a-Template-Class-in-a-h-File-and-Imp)
-#include "SpiArduino.cpp"
+#include "Spi_Raspberry.cpp"
 #endif

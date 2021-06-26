@@ -25,9 +25,9 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
                             board/arduino/Pin_Arduino.hpp
                             #board/arduino/Pin_Arduino.cpp
                             board/PrintAndWait.hpp
-                            board/arduino/PrintAndWait.cpp
-                            board/arduino/SpiArduino.hpp
-                            #board/arduino/SpiArduino.cpp
+                            board/arduino/PrintAndWait_Arduino.cpp
+                            board/arduino/Spi_Arduino.hpp
+                            #board/arduino/Spi_Arduino.cpp
                             )
     target_link_arduino_libraries(arduionohw PRIVATE SPI core)
     target_link_libraries(arduionohw PRIVATE openiolink)
@@ -45,9 +45,9 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
                                 board/raspberry/Pin_Raspberry.hpp
                                 #board/raspberry/Pin_Raspberry.cpp
                                 board/PrintAndWait.hpp
-                                board/raspberry/PrintAndWait.cpp
-                                board/raspberry/SpiRaspberry.hpp
-                                #board/raspberry/SpiRaspberry.cpp
+                                board/raspberry/PrintAndWait_Raspberry.cpp
+                                board/raspberry/Spi_Raspberry.hpp
+                                #board/raspberry/Spi_Raspberry.cpp
                                 )
         target_link_libraries(openiolink raspberrypihw)
         target_link_libraries(raspberrypihw openiolink)

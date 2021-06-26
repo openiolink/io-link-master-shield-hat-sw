@@ -1,5 +1,5 @@
 //!*****************************************************************************
-//! \file   SpiArduino.cpp
+//! \file   Spi_Arduino.cpp
 //!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
@@ -29,7 +29,7 @@
 
 // This .cpp file is included by the same-named .hpp file. For explanations see
 // the end of the .hpp file.
-// #include "SpiArduino.hpp"
+// #include "Spi_Arduino.hpp"
 
 #include "../typedefs_board.hpp" // boolean return values
 #include <Arduino.h>             // Arduino library

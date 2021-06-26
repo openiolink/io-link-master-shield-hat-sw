@@ -35,10 +35,10 @@
 
 // platform-specific headers
 #ifdef ARDUINO
-#include "arduino/SpiArduino.hpp"
+#include "arduino/Spi_Arduino.hpp"
 #else
 #ifdef RASPBERRY
-#include "raspberry/SpiRaspberry.hpp"
+#include "raspberry/Spi_Raspberry.hpp"
 #else
 static_assert(false, "no known platform defined");
 #endif

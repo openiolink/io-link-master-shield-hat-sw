@@ -1,5 +1,5 @@
 //!*****************************************************************************
-//! \file   SpiRaspberry.cpp
+//! \file   Spi_Raspberry.cpp
 //!
 //! \author Tobias Gammeter (tobias.gammeter@gmail.com)
 //!
@@ -29,7 +29,7 @@
 
 // This .cpp file is included by the same-named .hpp file. For explanations see
 // the end of the .hpp file.
-// #include "SpiRaspberry.hpp"
+// #include "Spi_Raspberry.hpp"
 
 #include "../typedefs_board.hpp"
 #include <wiringPi.h>
