@@ -27,7 +27,9 @@
 //!
 //!*****************************************************************************
 
-#include "BicolorLed.hpp"
+// This .cpp file is included by the same-named .hpp file. For explanations see
+// the end of the .hpp file.
+//#include "BicolorLed.hpp"
 
 namespace openiolink
 {

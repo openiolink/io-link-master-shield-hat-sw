@@ -31,7 +31,9 @@
 //!
 //!*****************************************************************************
 
-#include "Pin_Arduino.hpp"
+// This .cpp file is included by the same-named .hpp file. For explanations see
+// the end of the .hpp file.
+// #include "Pin_Arduino.hpp"
 
 namespace openiolink
 {

@@ -29,9 +29,10 @@
 //!
 //!*****************************************************************************
 
-#include "protocol/IOLMasterPort.hpp"
+// This .cpp file is included by the same-named .hpp file. For explanations see
+// the end of the .hpp file.
+// #include "Max14819.hpp"
 
-#include "Max14819.hpp"
 #include "Max14819_Port.hpp"
 
 // TODO centralize include management
