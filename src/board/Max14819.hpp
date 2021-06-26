@@ -80,6 +80,7 @@ namespace openiolink // TODO ::PCB?
         ~Max14819();
         uint8_t readRegister(uint8_t reg);
         uint8_t writeRegister(uint8_t reg, uint8_t data);
+        uint8_t reset(); // FIXME reset() should be moved to private, but OpeniolinkShieldHat::configureBothMax14819() uses it yet.
         //auto &getPort(Max14819_Port::PortNr port);-> Max14819_Port<port>
         // would be complicated because parametrized. If getPort() is necessary,
         // (A) split it to seperate methods for each port/channel or (B) return a IOLMasterPort reference.
@@ -104,7 +105,6 @@ namespace openiolink // TODO ::PCB?
 
         void initGPIOs();
         void configure();
-        uint8_t reset();
 
     }; // class Max14819
 
