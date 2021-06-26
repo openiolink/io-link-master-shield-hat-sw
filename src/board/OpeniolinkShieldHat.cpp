@@ -28,7 +28,6 @@
 //!*****************************************************************************
 
 #include "OpeniolinkShieldHat.hpp"
-#include "Max14819.hpp"
 #include "PrintAndWait.hpp"
 
 namespace openiolink
