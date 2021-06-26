@@ -33,8 +33,6 @@
 // the end of the .hpp file.
 // #include "Max14819.hpp"
 
-#include "Max14819_Port.hpp"
-
 // TODO centralize include management
 #ifdef ARDUINO
 #include <stdint.h>

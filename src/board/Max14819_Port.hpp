@@ -43,21 +43,20 @@ static_assert(false, "no known platform defined");
 #endif
 
 // generic (other) headers
+#include "Max14819.hpp"
 #include "protocol/IOLMasterPort.hpp"
 #include "protocol/IOLinkConfig.hpp"
 #include "MapperIOLPort.hpp"
 #include "platform.hpp" // namespace platform
 #include "BicolorLed.hpp"
-//#include "Max14819.hpp"
-namespace openiolink
-{
-    // forward declaration to avoid including "Max14819.hpp" (which would result in a cyrcle dependency)
-    template <int ChipNr> //, class SPI, int ChAPortNr, int ChBPortNr>
-    class Max14819;
-} // namespace openiolink
+#include "board/typedefs_board.hpp"
 
 namespace openiolink // TODO ::PCB?
 {
+    // FIXME make code using ERROR or SUCCESS use BoolError or BoolSuccess diectly
+    static constexpr uint8_t ERROR = static_cast<uint8_t>(BoolError);     //!< return value for errors
+    static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
+
     //!*****************************************************************************
     //! \brief  This class is the implementation of class IOLMasterPort (the
     //!         abstraction of the Physical Layer PL) for the MAX14819 IO-Link

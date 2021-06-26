@@ -31,12 +31,33 @@
 #ifndef MAX14819_HPP_INCLUDED
 #define MAX14819_HPP_INCLUDED
 
+// platform-specific headers
+#ifdef ARDUINO
+#include "arduino/Pin_Arduino.hpp"
+#else
+#ifdef RASPBERRY
+#include "raspberry/Pin_Raspberry.hpp"
+#else
+static_assert(false, "no known platform defined");
+#endif
+#endif
+
+// generic (other) headers
 #include "protocol/IOLMasterPort.hpp"
 #include "protocol/IOLMessage.hpp"
 #include "protocol/IOLinkConfig.hpp"
 #include "MapperChip.hpp"
-#include "Max14819_Port.hpp"
 #include "typedefs_board.hpp" // BoolSuccess and BoolError
+
+//#include "Max14819_Port.hpp"
+namespace openiolink
+{
+    // forward declaration to avoid including "Max14819_Port.hpp" (which would
+    // result in a cyrcle dependency)
+    template <int PortNr>
+    class Max14819_Port;
+
+} // namespace openiolink
 
 namespace openiolink // TODO ::PCB?
 {

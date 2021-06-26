@@ -46,16 +46,6 @@
 
 namespace openiolink // TODO ::PCB?
 {
-
-    //! \name Commands to read or write registers
-    //!\{
-    constexpr uint8_t read = 0b00000001;  //!< read command
-    constexpr uint8_t write = 0b01111111; //!< write command
-
-    //!\}
-
-    //--------------------------------------------------------------------------
-
     //!*****************************************************************************
     //! \brief  Construct a new Max14819_Port object
     //!

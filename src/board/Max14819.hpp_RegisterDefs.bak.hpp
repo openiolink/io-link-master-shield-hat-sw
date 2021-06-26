@@ -1,8 +1,8 @@
 
         //! \name Error define
         //!\{
-        static constexpr uint8_t ERROR             = 1u;    //!< return value for errors
-        static constexpr uint8_t SUCCESS           = 0u;    //!< return value for success
+        static constexpr uint8_t ERROR  = static_cast<uint8_t>(BoolError);    //!< return value for errors
+        static constexpr uint8_t SUCCESS = static_cast<uint8_t>(BoolSuccess); //!< return value for success
         //!\}
 
         //! \name MAX14819 DI Init defines

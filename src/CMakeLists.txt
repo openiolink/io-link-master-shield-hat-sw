@@ -14,7 +14,7 @@ add_library(openiolink  OpenIOLink.hpp
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
     add_library(arduionohw  #FIXME typo!
                             board/Max14819.hpp
-                            board/Max14819.cpp
+                            #board/Max14819.cpp # .cpp from class templates are included by their .hpp and should therefore not be compiled independently.
                             #board/arduino/HardwareArduino.hpp
                             #board/arduino/HardwareArduino.cpp
                             #TODO complete or change
@@ -35,7 +35,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     add_compile_definitions(RASPBERRY) #for platform specific header inclusion control
         add_library(raspberrypihw
                                 board/Max14819.hpp
-                                board/Max14819.cpp
+                                #board/Max14819.cpp
                                 #board/raspberry/HardwareRaspberry.hpp
                                 #board/raspberry/HardwareRaspberry.cpp
                                 board/raspberry/MapperChip_Raspberry.hpp
