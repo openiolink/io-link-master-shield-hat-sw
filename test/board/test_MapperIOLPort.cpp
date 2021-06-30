@@ -19,9 +19,31 @@ namespace openiolink
 #include "../../src/board/MapperIOLPort.hpp"
 #include <iostream>
 
+// Umschalten zwischen Catch und static_assert ---------------------------------
+#if 0
+#include "catch.hpp"
+int value(int x)
+{
+    return x;
+}
+#else
+#define TEST_CASE(x) void testfunction() // todo aufrufen
+#define REQUIRE(x) static_assert(x, #x)
+
+TEST_CASE(0);
+
+int main2(int argc, char const *argv[]) // todo catch main() ausschalten
+{
+    std::cout << "test in" << std::endl;
+    testfunction();
+    std::cout << "test out" << std::endl;
+    return 0;
+}
+#endif
+
 using namespace openiolink;
 
-int main(int argc, char *argv[])
+TEST_CASE("Test MapperIOLPort template")
 {
     // Check if we can instatiate this template. This won't be possible if
     // the default constructor is marked with "=delete".
@@ -37,20 +59,20 @@ int main(int argc, char *argv[])
 
     // A few tests on instances of the mapper (although its not intended to
     // instantiate it).
-    static_assert(mapper0.ChannelNr == mapper2.ChannelNr);
-    static_assert(mapper2.ChipNr == mapper3.ChipNr);
+    REQUIRE(mapper0.ChannelNr == mapper2.ChannelNr);
+    REQUIRE(mapper2.ChipNr == mapper3.ChipNr);
 
     // Check all channel number associations
-    static_assert(MapperIOLPort<0>::ChannelNr == 0);
-    static_assert(MapperIOLPort<1>::ChannelNr == 1);
-    static_assert(MapperIOLPort<2>::ChannelNr == 0);
-    static_assert(MapperIOLPort<3>::ChannelNr == 1);
+    REQUIRE(MapperIOLPort<0>::ChannelNr == 0);
+    REQUIRE(MapperIOLPort<1>::ChannelNr == 1);
+    REQUIRE(MapperIOLPort<2>::ChannelNr == 0);
+    REQUIRE(MapperIOLPort<3>::ChannelNr == 1);
 
     // Check all chip number associations
-    static_assert(MapperIOLPort<0>::ChipNr == 0);
-    static_assert(MapperIOLPort<1>::ChipNr == 0);
-    static_assert(MapperIOLPort<2>::ChipNr == 1);
-    static_assert(MapperIOLPort<3>::ChipNr == 1);
+    REQUIRE(MapperIOLPort<0>::ChipNr == 0);
+    REQUIRE(MapperIOLPort<1>::ChipNr == 0);
+    REQUIRE(MapperIOLPort<2>::ChipNr == 1);
+    REQUIRE(MapperIOLPort<3>::ChipNr == 1);
 
     // Check all DI pin number associations. These depend on the platform.
     std::cout << "Platform: " << Platform << std::endl;
@@ -61,6 +83,4 @@ int main(int argc, char *argv[])
 
     // TODO you could also print out the other pin numbers: GreenLedPinNr, RedLedPinNr, RxErrPinNr and RxRdyPinNr
     std::cout << "You could also print out the other pin numbers: GreenLedPinNr, RedLedPinNr, RxErrPinNr and RxRdyPinNr." << std::endl;
-
-    return 0;
 }

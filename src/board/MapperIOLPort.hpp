@@ -103,7 +103,8 @@ namespace openiolink
     template <int IOLPortNr>
     struct MapperIOLPort
     {
-        static constexpr int ChipNr = shield_hat::MapperIOLPort<IOLPortNr>::ChipNr;
+        static constexpr int ChipNr = shield_hat::MapperIOLPort<IOLPortNr>::ChipNr; // geht bei Klassen sowieso nicht, würde die Variable pro CPP-Datei duplizieren
+        // früher mit enums definiert
         static constexpr int ChannelNr = shield_hat::MapperIOLPort<IOLPortNr>::ChannelNr;
         static constexpr int DIPinNr = platform::MapperIOLPort<IOLPortNr>::DIPinNr;
         static constexpr int GreenLedPinNr = platform::MapperIOLPort<IOLPortNr>::GreenLedPinNr;
@@ -111,6 +112,11 @@ namespace openiolink
         static constexpr int RxErrPinNr = platform::MapperIOLPort<IOLPortNr>::RxErrPinNr;
         static constexpr int RxRdyPinNr = platform::MapperIOLPort<IOLPortNr>::RxRdyPinNr;
     };
+
+    template <int IOLPortNr>
+    constexpr int MapperIOLPort<IOLPortNr>::ChipNr;//=shield_hat::MapperIOLPort<IOLPortNr>::ChipNr;
+    // müsste ev. noch explizit instanziiert werden
+    // besser Tests anpassen.
 
 } // namespace openiolink
 

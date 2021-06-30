@@ -1,4 +1,6 @@
+# configure_file(OpenIOLinkConfig.h.in OpenIOLinkConfig.h) # TODO to configure the library from CMake, not directly in the source code
 
+# library openiolink
 add_library(openiolink  OpenIOLink.hpp
                         protocol/IOLinkConfig.hpp
                         protocol/IOLMessage.hpp
@@ -13,8 +15,10 @@ add_library(openiolink  OpenIOLink.hpp
                         )
                         #FIXME: Which files exactly have to be added here?
 
+# hardware-dependent library (arduinohw / raspberrypihw / dummyhw)
 # Check hardwarespecific Files
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
+# (1) platform Arduino
     add_library(arduionohw  #FIXME typo!
                             board/Max14819.hpp
                             #board/Max14819.cpp # .cpp from class templates are included by their .hpp and should therefore not be compiled independently.
@@ -35,6 +39,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Arduino")
     target_link_libraries(openiolink arduionohw)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
+    # (2) platform Raspberry
     add_compile_definitions(RASPBERRY) #for platform specific header inclusion control
         add_library(raspberrypihw
                                 board/Max14819.hpp
@@ -56,15 +61,29 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
         target_link_libraries(openiolink ${WIRINGPI_LIB})
         target_link_libraries(openiolink pthread rt) # TODO clean-up
     else()
-        add_library(dummyhw board/dummy/HardwareDummy.hpp
-                            board/dummy/HardwareDummy.cpp
-                            board/dummy/HardwareDummyChip.hpp
-                            board/dummy/HardwareDummyChip.cpp)
+    # (3) no platform (linux)
+        add_library(dummyhw board/HardwareDummy.hpp
+                            board/HardwareDummy.cpp
+                            board/HardwareDummyChip.hpp
+                            board/HardwareDummyChip.cpp)
         target_link_libraries(openiolink dummyhw)
         target_link_libraries(dummyhw openiolink)
     endif()
                             
 endif()
 
-set_target_properties(openiolink PROPERTIES CXX_STANDARD_REQUIRED 11 CXX_STANDARD 14)
-target_include_directories(openiolink PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+# properties for the library openiolink
+set_target_properties(openiolink
+    PROPERTIES
+        CXX_STANDARD_REQUIRED ON
+        CXX_STANDARD 17  # mindestens 17 nötig für static constexpr member
+)
+
+# Define incluce directories
+target_include_directories(openiolink
+    # TODO use  $<INSTALL_INTERFACE:...> and $<BUILD_INTERFACE:...> generator expressions to distinguish between building and installing the library
+    PUBLIC              # means "INTERFACE" and "PRIVATE"
+        ${CMAKE_CURRENT_SOURCE_DIR}
+    # TODO INTERFACE    everything that only the user of the library needs
+    # TODO PRIVATE      everything that's only needed to build the library
+)

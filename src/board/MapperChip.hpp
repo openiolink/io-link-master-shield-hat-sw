@@ -76,8 +76,7 @@ namespace openiolink
             static constexpr int SPINr = 1;
             using SPI = MapperSpi<SPINr>::SPI;
         };
-
-    }
+    } // namespace shield_hat
 
     // TODO Doc
     template <int ChipNr>
