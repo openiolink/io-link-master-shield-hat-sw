@@ -68,7 +68,7 @@ namespace openiolink
 // Wherever this class template will be used (i.e. instantiated), the compiler
 // will only have this .hpp at hand (assuming it was included), but lacks the
 // implementation details (the definitions). Those are located in the .cpp and
-// tis is why we include the .cpp file here.
+// this is why we include the .cpp file here.
 // (There may be other solutions to this problem, see e.g.
 // https://www.codeproject.com/Articles/48575/How-to-Define-a-Template-Class-in-a-h-File-and-Imp)
 #include "Spi_Raspberry.cpp"

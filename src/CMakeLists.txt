@@ -8,8 +8,9 @@ add_library(openiolink  OpenIOLink.hpp
                         protocol/IOLGenericDevice.hpp
                         protocol/IOLGenericDevice.cpp
                         board/MapperIOLPort.hpp
-                        board/OpeniolinkShieldHat.hpp
-                        board/OpeniolinkShieldHat.cpp)
+                        #board/OpeniolinkShieldHat.hpp
+                        #board/OpeniolinkShieldHat.cpp
+                        )
                         #FIXME: Which files exactly have to be added here?
 
 # Check hardwarespecific Files
