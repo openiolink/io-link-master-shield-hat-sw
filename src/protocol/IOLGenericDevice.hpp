@@ -1,15 +1,15 @@
 //!*****************************************************************************
 //!  \file IOLGenericDevice.hpp
-//!  
+//!
 //!  \author Janik Lehmann (CrazyGecko) (xxthegeckoxx@gmail.com)
-//!  
+//!
 //!  \brief Contains a class of an IO-Link device
 //!
 //!  \date 2020-11-15
-//!  
-//!  
+//!
+//!
 //!  *****************************************************************************
-//!  
+//!
 //!  \copyright
 //!  Copyright 2020 Bern University of Applied Sciences and Balluff AG
 //!  \n\n
@@ -24,33 +24,36 @@
 //!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //!  See the License for the specific language governing permissions and
 //!  limitations under the License.
-//!  
+//!
 //!*****************************************************************************
-
-#ifndef IOLGENERICDEVICE_HPP_INCLUDED
+#ifndef IOLGENERICDEVICE_HPP_INCLUDED /* TODO rename */
 #define IOLGENERICDEVICE_HPP_INCLUDED
 
 #include "IOLMasterPort.hpp"
 #include <memory>
+//#include "SIODevice.hpp"
+//#include "PortModeObserver.hpp"
+//#include "ALServiceObserver.hpp"
+//#include "state_t.hpp"
 
 namespace openiolink
 {
     //!*****************************************************************************
     //!  \brief Class of an IO-Link device
-    //!  
+    //!
     //!         This class describes an device connected to an IO-Link port
-    //!  
+    //!
     //!*****************************************************************************
-    class IOLGenericDevice
+    class IOLGenericDevice // TODO rename to GenericIOLDevice //  : public SIODevice, protected PortModeHandler, protected ALServiceHandler
     {
     private:
-        std::shared_ptr<IOLMasterPort> port;    //!< Port, where the device is connected
+        std::shared_ptr<IOLMasterPort> port; //!< Port, where the device is connected
 
         //!*****************************************************************************
         //!  \brief Page 1 data
-        //!  
+        //!
         //!         IO-Link Interface and System Specification V1.1.2 Table B.1
-        //!  
+        //!
         //!*****************************************************************************
         union
         {
@@ -69,7 +72,7 @@ namespace openiolink
                     uint16_t value;
                 } VendorID;
                 union //__attribute__((__packed__))   // TODO, prüfen, ob __packed__ wirklich funktioniert (1): eins schreiben, andere lesen, (2): sizeof() prüfen
-                {   // damit es bei jedem Kompilieren die Grösse überprüft wird, z.B. 1/(13-sizeof(x)) sollte division /0 bzw. static_assert(). Falls dies nicht geht, Subtraktion der Addressen des letzten und ersten Elements.
+                {     // damit es bei jedem Kompilieren die Grösse überprüft wird, z.B. 1/(13-sizeof(x)) sollte division /0 bzw. static_assert(). Falls dies nicht geht, Subtraktion der Addressen des letzten und ersten Elements.
                     uint8_t bytes[3];
                     uint32_t value : 24;
                 } deviceID;
@@ -81,48 +84,64 @@ namespace openiolink
             };
         } page1; ///< Aufbau der Page1 eines Sensors
 
+        // protected:
+        // const bool sio_capable;
+        // MSequenceCapability;
+        // unsigned int mDeviceID;
+        // private:
+        // ApplicationLayer *mAL;
+
     public:
         //!*****************************************************************************
         //!  \brief Construct a new IOLGenericDevice object
-        //!  
-        //!  
+        //!
+        //!
         //!*****************************************************************************
-        IOLGenericDevice(){};
+        IOLGenericDevice(){}; // TODO protected
 
         //!*****************************************************************************
         //!  \brief Destroy the IOLGenericDevice object
-        //!  
-        //!  
+        //!
+        //!
         //!*****************************************************************************
         ~IOLGenericDevice(){};
 
         //!*****************************************************************************
         //!  \brief Set the port, where the device is connected
-        //!  
-        //!  
+        //!
+        //!
         //!  \param port_
-        //!  
+        //!
         //!*****************************************************************************
         void setPort(std::shared_ptr<IOLMasterPort> port_);
 
         //!*****************************************************************************
         //!  \brief Reads the page 1 data from the device
-        //!  
+        //!
         //!  \note  Do not use this function. It will be moved to private. It is public
         //!         for debug only.
-        //!  
+        //!
         //!*****************************************************************************
         void readPage1Data();
 
         //!*****************************************************************************
         //!  \brief Prints the data contained in page1 to the ostream object
-        //!  
+        //!
         //!  \note  Do not use this function. It is for debug only. There will be
         //!         functions to read the page1 data
-        //!  
+        //!
         //!*****************************************************************************
         void printPage1Data();
-    };
+
+        // public:
+        // bool isSIOCapable();
+        // state_t SwitchToSIO();
+        // bool getPinStateSIO();
+        // state_t setPinStateSIO(const TODO &PinState); //on,off,tristate
+        // state_t WakeUpRequest();
+        // getDeviceState();
+
+    }; // class GenericIOLDevice
 
 } // namespace openiolink
 

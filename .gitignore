@@ -60,4 +60,10 @@ doc/*
 *.lnk
 script/test.sh
 /origin_develop
-/origin_develop
+/src - Kopie_branch_lehmj3
+.vs
+out
+/.vscode/settings.json
+/src/.vscode/settings.json
+/Demonstrator/.gitignore
+/bte5520_bte5530_gammt1 - Verknüpfung.lnk

@@ -26,7 +26,6 @@
 //!  limitations under the License.
 //!  
 //!*****************************************************************************
-
 #ifndef IOLMESSAGE_HPP_INCLUDED
 #define IOLMESSAGE_HPP_INCLUDED
 
@@ -206,7 +205,7 @@ namespace openiolink
         //!  \return expected length of the answer
         //!  
         //!*****************************************************************************
-        uint8_t getanswer_length(void) const {return answer_length;};
+        uint8_t getanswer_length() const {return answer_length;};
     };
 
 } // namespace openiolink

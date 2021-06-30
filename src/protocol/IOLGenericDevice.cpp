@@ -1,15 +1,15 @@
 //!*****************************************************************************
 //!  \file IOLGenericDevice.cpp
-//!  
+//!
 //!  \author Janik Lehmann (CrazyGecko) (xxthegeckoxx@gmail.com)
-//!  
+//!
 //!  \brief Contains a class of an IO-Link device
-//!  
+//!
 //!  \date 2020-11-15
-//!  
-//!  
+//!
+//!
 //!  *****************************************************************************
-//!  
+//!
 //!  \copyright
 //!  Copyright 2020 Bern University of Applied Sciences and Balluff AG
 //!  \n\n
@@ -24,7 +24,7 @@
 //!  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //!  See the License for the specific language governing permissions and
 //!  limitations under the License.
-//!  
+//!
 //!*****************************************************************************
 
 #include "IOLGenericDevice.hpp"
@@ -46,26 +46,22 @@ namespace openiolink
 
         for (uint8_t i = 0; i < 13; i++)
         {
-            
-            msg.setMC(IOLMessage::Read_Write::Read_access, IOLMessage::Communication_Channel::Page, i+1); // 0x00 is MasterCommand
+
+            msg.setMC(IOLMessage::Read_Write::Read_access, IOLMessage::Communication_Channel::Page, i + 1); // 0x00 is MasterCommand
             //port->prepareForSend()    // u.a. Checksumme berechnen // andererseits gehört es fest zum Senden dazu...
-            // daher in diesem Kontext in einer Funktion zusammen lassen. 
+            // daher in diesem Kontext in einer Funktion zusammen lassen.
             // Vorschlag besserer Name: sendMessage()
             // oder msg->prepareForSend()
             port->sendIOLData(msg);
 
-
             port->readIOLData(buffer, msg.getanswer_length());
             page1.data[i] = buffer[0];
-
         }
-
-
 
         std::cout << "read data\n\r";
     }
 
-    void IOLGenericDevice::printPage1Data(void)
+    void IOLGenericDevice::printPage1Data()
     {
         std::ios_base::fmtflags f(std::cout.flags()); // save flags state
         std::cout << std::showbase << std::hex;
@@ -81,4 +77,30 @@ namespace openiolink
         std::cout << "\n\r";
         std::cout.flags(f); // restore flags state
     }
+
+    // bool GenericIOLDevice::isSIOCapable()
+    // {
+    // }
+    //
+    // state_t GenericIOLDevice::SwitchToSIO()
+    // {
+    // }
+    //
+    // bool GenericIOLDevice::getPinStateSIO()
+    // {
+    // }
+    //
+    // //on,off,tristate
+    // state_t GenericIOLDevice::setPinStateSIO(const TODO &PinState)
+    // {
+    // }
+    //
+    // state_t GenericIOLDevice::WakeUpRequest()
+    // {
+    // }
+    //
+    // GenericIOLDevice::getDeviceState()
+    // {
+    // }
+
 } // namespace openiolink
