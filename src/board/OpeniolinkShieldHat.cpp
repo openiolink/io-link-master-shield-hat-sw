@@ -42,7 +42,7 @@ namespace openiolink
     //!*************************************************************************
     OpeniolinkShieldHat::OpeniolinkShieldHat(Max14819_Port<0> *port0, Max14819_Port<1> *port1,
                                              Max14819_Port<2> *port2, Max14819_Port<3> *port3)
-        : mChip0{*port0, *port1}, mChip1{*port2, *port3} // FIXME this is a manual assignment independent of the mappers!
+        : mChip0{*port0, *port1}, mChip1{*port2, *port3} // FIXME this is a manual assignment of the ports to the chips independent of the mappers!
     {
         // TODO
     }
