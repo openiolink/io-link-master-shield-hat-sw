@@ -1,0 +1,21 @@
+
+    //!*************************************************************************
+    //! \brief  Initializes the pin
+    //!
+    //! \param name [in]    the enumerated pinname
+    //!
+    //! \param mode [out]   mode of the pin
+    //!
+    //! \return 
+    //!
+    //! \note   see IO-Link Specification V1.1.3 par. 7.3.3
+    //!
+    //! \note   class documentation is the same but without \param and \return
+    //!         but maybe with additional description after \brief
+    //!
+    //!*************************************************************************
+
+
+    //**************************************************************************
+    // Implementation of the inline Methods
+    //**************************************************************************
