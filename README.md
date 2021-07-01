@@ -4,6 +4,7 @@
 
 ## Authors
 
+- Tobias Gammeter
 - Janik Lehmann
 - Pascal Frei
 - Markus Gafner, BFH
