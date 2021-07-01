@@ -271,6 +271,26 @@ namespace openiolink
           state{MessageHandlerState::Inactive_0}         // attribute
     {
         // NOTE: mODHandler and mPDHandler must be initialized later via setXDHandler()
+    }
+
+    //!*************************************************************************
+    //! \brief  Destruct the MessageHandler object
+    //!
+    //!*************************************************************************
+    DataLinkLayer::MessageHandler::~MessageHandler()
+    {
+    }
+
+    //!*************************************************************************
+    //! \brief  Move the state machine one step forward (i.e. make a state
+    //!         transition if neccessary).
+    //!
+    //! \note   IMPORTATNT: This function has to be called periodically!
+    //!
+    //!*************************************************************************
+    void DataLinkLayer::MessageHandler::stepFSM()
+    {
+        //TODO: call the step() function of sub-FSMs if present
 
         switch (state)
         {
@@ -314,30 +334,10 @@ namespace openiolink
         case MessageHandlerState::ErrorHandling_17:
             break;
         default:
-            static_assert(false);
+            assert(false);
             std::terminate();
             break;
         }
-    }
-
-    //!*************************************************************************
-    //! \brief  Destruct the MessageHandler object
-    //!
-    //!*************************************************************************
-    DataLinkLayer::MessageHandler::~MessageHandler()
-    {
-    }
-
-    //!*************************************************************************
-    //! \brief  Move the state machine one step forward (i.e. make a state
-    //!         transition if neccessary).
-    //!
-    //! \note   IMPORTATNT: This function has to be called periodically!
-    //!
-    //!*************************************************************************
-    void DataLinkLayer::MessageHandler::stepFSM()
-    {
-        //TODO: call the step() function of sub-FSMs if present
     }
 
     //!*************************************************************************
